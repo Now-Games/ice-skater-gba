@@ -51,6 +51,9 @@ obstacle::obstacle(bn::fixed_point pos, obstacle_type type, bool destructible, d
         case UP:
             _sprite->set_tiles(helper::get_sprite_item(_type).tiles_item().create_tiles((3)));
             break;
+        default:
+            _sprite->set_tiles(helper::get_sprite_item(_type).tiles_item().create_tiles((0)));
+            break;
         }
 
         break;

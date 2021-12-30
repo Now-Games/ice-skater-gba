@@ -16,6 +16,9 @@ enum game_scene
     STAGE_FIVE,
     STAGE_SIX,
     STAGE_SEVEN,
+    STAGE_EIGHT,
+    STAGE_NINE,
+    STAGE_TEN,
     CREDITS
 };
 
