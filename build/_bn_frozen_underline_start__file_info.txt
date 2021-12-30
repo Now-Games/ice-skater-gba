@@ -1,0 +1,3 @@
+graphics/frozen_underline_start.bmp
+2102
+1640746872.0

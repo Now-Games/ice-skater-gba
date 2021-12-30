@@ -1,0 +1,3 @@
+graphics/player_sheet.bmp
+2102
+1640732252.0

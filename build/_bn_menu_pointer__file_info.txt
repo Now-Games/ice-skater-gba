@@ -1,0 +1,3 @@
+graphics/menu_pointer.bmp
+1334
+1640732520.0

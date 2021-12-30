@@ -1,0 +1,3 @@
+graphics/stage_scene.bmp
+66614
+1640827560.0

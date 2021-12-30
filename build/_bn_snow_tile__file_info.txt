@@ -1,0 +1,3 @@
+graphics/snow_tile.bmp
+1334
+1640732476.0

@@ -1,0 +1,3 @@
+graphics/player_front_idle.bmp
+1334
+1640659146.0

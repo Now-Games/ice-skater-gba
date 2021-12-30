@@ -1,0 +1,3 @@
+graphics/player_front_idle.json
+43
+1640235615.008425
