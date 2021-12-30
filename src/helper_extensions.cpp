@@ -276,6 +276,36 @@ scene_details helper::get_scene_details(game_scene current_scene)
             }
         };
     }
+    case STAGE_SEVEN:
+    {
+        return {
+            bn::fixed_point(0, 40),
+            direction::UP,
+            true,
+            "Be on the lookout for cracked walls",
+            {
+                { true, bn::fixed_point(-64, -72), obstacle_type::ROCK_WALL_HOLE },
+                { true, bn::fixed_point(64, -72), obstacle_type::ROCK_WALL_HOLE },
+                { true, bn::fixed_point(-112, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-96, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-80, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-48, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-32, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-16, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(0, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(16, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(32, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(48, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(80, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(96, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(112, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-80, -56), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(64, -56), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(-64, -72), obstacle_type::CRACKED_WALL },
+                { true, bn::fixed_point(0, 40), obstacle_type::SNOW }
+            }
+        };
+    }
     default:
         return scene_details();
     }

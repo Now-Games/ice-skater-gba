@@ -110,7 +110,7 @@ obstacle* scene::get_closest_object() {
             case LEFT:
                 dist = player_point.x() - obj_point.x();
                 if (obj_point.y() == player_point.y() && obj_point.x() < player_point.x() &&
-                        dist < min_distance) {
+                        dist <= min_distance) {
                     object = &map_objects[i];
                     min_distance = dist;
                 }
@@ -118,7 +118,7 @@ obstacle* scene::get_closest_object() {
             case RIGHT:
                 dist = obj_point.x() - player_point.x();
                 if (obj_point.y() == player_point.y() && obj_point.x() > player_point.x() &&
-                        dist < min_distance) {
+                        dist <= min_distance) {
                     object = &map_objects[i];
                     min_distance = dist;
                 }
@@ -126,7 +126,7 @@ obstacle* scene::get_closest_object() {
             case UP:
                 dist = player_point.y() - obj_point.y();
                 if (obj_point.x() == player_point.x() && obj_point.y() < player_point.y() &&
-                        dist < min_distance) {
+                        dist <= min_distance) {
                     object = &map_objects[i];
                     min_distance = dist;
                 }
@@ -134,7 +134,7 @@ obstacle* scene::get_closest_object() {
             case DOWN:
                 dist = obj_point.y() - player_point.y();
                 if (obj_point.x() == player_point.x() && obj_point.y() > player_point.y() &&
-                        dist < min_distance) {
+                        dist <= min_distance) {
                     object = &map_objects[i];
                     min_distance = dist;
                 }

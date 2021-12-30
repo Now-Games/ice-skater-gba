@@ -34,7 +34,7 @@ obstacle::obstacle(bn::fixed_point pos, obstacle_type type, bool destructible, d
         default: break;
         }
         _sprite->set_tiles(bn::sprite_items::cracked_wall_sheet.tiles_item().create_tiles(start));
-        _death_anim = bn::create_sprite_animate_action_once(_sprite.value(), 5,
+        _death_anim = bn::create_sprite_animate_action_once(_sprite.value(), 7,
                                 bn::sprite_items::cracked_wall_sheet.tiles_item(),
                                 start+1, start+2, start+3, start+4, start+4);
         break;
