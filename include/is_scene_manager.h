@@ -9,6 +9,7 @@
 #include "is_floor_title.h"
 #include "is_scene.h"
 #include "is_main_menu.h"
+#include "is_credits.h"
 
 namespace is {
 class scene_manager

@@ -11,6 +11,7 @@
 
 #include "bn_sprite_items_snowball_sheet.h"
 #include "bn_sprite_items_cracked_wall_sheet.h"
+#include "bn_sprite_items_cracked_ice_sheet.h"
 
 #include "is_game_constants.h"
 #include "helper_extensions.h"
@@ -33,6 +34,7 @@ public:
     obstacle(bn::fixed_point, obstacle_type, bool, direction = DOWN);
     ~obstacle();
     bool can_destroy();
+    obstacle_type get_type();
     bn::fixed get_collision_edge(direction);
     bn::fixed_point get_position();
     bool get_destroyed();

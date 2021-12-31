@@ -13,6 +13,7 @@ obstacle::obstacle(bn::fixed_point pos, obstacle_type type, bool destructible, d
     switch(type) {
     case SNOWBALL:
     {
+        BN_LOG("Generating Snowball");
         _sprite->set_tiles(bn::sprite_items::snowball_sheet.tiles_item().create_tiles(0));
         _death_anim = bn::create_sprite_animate_action_once(_sprite.value(), 5,
                                 bn::sprite_items::snowball_sheet.tiles_item(), 1, 2, 3, 4, 5);
@@ -20,16 +21,17 @@ obstacle::obstacle(bn::fixed_point pos, obstacle_type type, bool destructible, d
     }
     case CRACKED_WALL:
     {
+        BN_LOG("Generating Cracked Wall");
         int start = 0;
         switch (_direction) {
         case LEFT:
-            start = 8;
+            start = 10;
             break;
         case RIGHT:
-            start = 4;
+            start = 5;
             break;
         case UP:
-            start = 12;
+            start = 15;
             break;
         default: break;
         }
@@ -38,9 +40,19 @@ obstacle::obstacle(bn::fixed_point pos, obstacle_type type, bool destructible, d
                                 bn::sprite_items::cracked_wall_sheet.tiles_item(),
                                 start+1, start+2, start+3, start+4, start+4);
         break;
+
+    }
+    case CRACKED_ICE:
+    {
+        BN_LOG("Generating Cracked Ice");
+        _sprite->set_tiles(bn::sprite_items::cracked_ice_sheet.tiles_item().create_tiles(0));
+        _death_anim = bn::create_sprite_animate_action_once(_sprite.value(), 5,
+                                bn::sprite_items::cracked_ice_sheet.tiles_item(), 1, 2, 3, 4, 4);
+        break;
     }
     default:
     {
+        BN_LOG("Generating Everything else");
         switch(_direction) {
         case LEFT:
             _sprite->set_tiles(helper::get_sprite_item(_type).tiles_item().create_tiles((2)));
@@ -73,22 +85,22 @@ bn::fixed obstacle::get_collision_edge(direction _direction)
     if (!is_destroyed) {
         switch(_direction) {
         case LEFT:
-            if (_type == ROCK_WALL_HOLE || _type == SNOW)
+            if (_type == ROCK_WALL_HOLE || _type == SNOW || _type == CRACKED_ICE)
                 return _position.x();
             else
                 return _position.x() + 16;
         case RIGHT:
-            if (_type == ROCK_WALL_HOLE || _type == SNOW)
+            if (_type == ROCK_WALL_HOLE || _type == SNOW || _type == CRACKED_ICE)
                 return _position.x();
             else
                 return _position.x() - 16;
         case UP:
-            if (_type == ROCK_WALL_HOLE || _type == SNOW)
+            if (_type == ROCK_WALL_HOLE || _type == SNOW || _type == CRACKED_ICE)
                 return _position.y();
             else
                 return _position.y() + 16;
         case DOWN:
-            if (_type == ROCK_WALL_HOLE || _type == SNOW)
+            if (_type == ROCK_WALL_HOLE || _type == SNOW || _type == CRACKED_ICE)
                 return _position.y();
             else
                 return _position.y() - 16;
@@ -108,6 +120,11 @@ bn::fixed obstacle::get_collision_edge(direction _direction)
 bool obstacle::can_destroy()
 {
     return _can_destroy;
+}
+
+obstacle_type obstacle::get_type()
+{
+    return _type;
 }
 
 bn::fixed_point obstacle::get_position()

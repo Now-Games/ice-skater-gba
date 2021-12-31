@@ -32,12 +32,13 @@ protected:
     bn::optional<bn::regular_bg_ptr> _bg;
     bn::vector<obstacle, 32> map_objects;
     bn::optional<player> _player;
+    int closest_obstacle_index = -1;
     bn::fixed bounds_min_x;
     bn::fixed bounds_max_x;
     bn::fixed bounds_min_y;
     bn::fixed bounds_max_y;
 
-    obstacle* get_closest_object();
+    void get_closest_object();
     void destroy_obstacle(bn::fixed, bn::fixed);
     virtual void set_player_move_limit();
     game_scene get_next_scene();

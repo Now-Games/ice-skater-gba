@@ -3,6 +3,8 @@ audio/mbirds.xm
 audio/music_box.mod
 audio/mystical_p.mod
 audio/sadness.xm
+graphics/cracked_ice_sheet.bmp
+graphics/cracked_ice_sheet.json
 graphics/cracked_wall_sheet.bmp
 graphics/cracked_wall_sheet.json
 graphics/fixed_32x64_font.bmp
@@ -23,6 +25,8 @@ graphics/ice_tile.bmp
 graphics/ice_tile.json
 graphics/menu_pointer.bmp
 graphics/menu_pointer.json
+graphics/player_fall_sheet.bmp
+graphics/player_fall_sheet.json
 graphics/player_sheet.bmp
 graphics/player_sheet.json
 graphics/rock_wall.bmp
@@ -41,6 +45,7 @@ graphics/tutorial_scene.bmp
 graphics/tutorial_scene.json
 include/fixed_32x64_sprite_font.h
 include/helper_extensions.h
+include/is_credits.h
 include/is_direction.h
 include/is_floor_title.h
 include/is_game_constants.h
@@ -54,6 +59,7 @@ include/is_scene.h
 include/is_scene_details.h
 include/is_scene_manager.h
 src/helper_extensions.cpp
+src/is_credits.cpp
 src/is_floor_title.cpp
 src/is_main_menu.cpp
 src/is_obstacle.cpp

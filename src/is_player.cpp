@@ -63,6 +63,18 @@ void player::set_sprite_direction()
     }
 }
 
+void player::play_fall_anim()
+{
+    _sprite->set_tiles(bn::sprite_items::player_fall_sheet.tiles_item().create_tiles(0));
+    _fall_animation = bn::create_sprite_animate_action_once(_sprite.value(), 4,
+                            bn::sprite_items::player_fall_sheet.tiles_item(), 1, 2, 3, 4, 5, 6, 7, 8, 9,
+                                                            10, 11, 12, 13, 14, 15, 16, 17, 17, 17, 17);
+    while (!_fall_animation->done()) {
+        _fall_animation->update();
+        bn::core::update();
+    }
+}
+
 void player::move(bn::fixed dx, bn::fixed dy)
 {
     bn::fixed new_x = _sprite.value().x() + dx;

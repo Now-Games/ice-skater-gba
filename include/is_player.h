@@ -7,6 +7,7 @@
 #include "bn_keypad.h"
 #include "bn_sprite_ptr.h"
 #include "bn_sprite_tiles_ptr.h"
+#include "bn_sprite_animate_actions.h"
 #include "bn_sprite_item.h"
 #include "bn_optional.h"
 #include "bn_log.h"
@@ -15,6 +16,7 @@
 #include "is_game_constants.h"
 
 #include "bn_sprite_items_player_sheet.h"
+#include "bn_sprite_items_player_fall_sheet.h"
 
 namespace is {
 class player
@@ -26,12 +28,14 @@ private:
     bn::fixed_point _position;
     bn::fixed_point _move_limit;
     bn::optional<bn::sprite_ptr> _sprite;
+    bn::optional<bn::sprite_animate_action<20>> _fall_animation;
 
     void set_sprite_direction();
 
 public:
     player(bn::fixed, bn::fixed, direction = UP);
     ~player();
+    void play_fall_anim();
     direction get_direction();
     bn::fixed_point get_position();
     bn::fixed_point get_move_limit();

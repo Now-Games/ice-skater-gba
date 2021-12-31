@@ -96,11 +96,11 @@ void scene::get_input() {
     }
 }
 
-obstacle* scene::get_closest_object() {
+void scene::get_closest_object() {
     bn::fixed_point player_point = _player->get_position();
     bn::fixed min_distance = 280;
     bn::fixed dist = 0;
-    obstacle* object = nullptr;
+    int index = -1;
 
     for (int i = 0; i < map_objects.size(); i ++) {
         if (!map_objects[i].get_destroyed()) {
@@ -111,7 +111,7 @@ obstacle* scene::get_closest_object() {
                 dist = player_point.x() - obj_point.x();
                 if (obj_point.y() == player_point.y() && obj_point.x() < player_point.x() &&
                         dist <= min_distance) {
-                    object = &map_objects[i];
+                    index = i;
                     min_distance = dist;
                 }
                 break;
@@ -119,7 +119,7 @@ obstacle* scene::get_closest_object() {
                 dist = obj_point.x() - player_point.x();
                 if (obj_point.y() == player_point.y() && obj_point.x() > player_point.x() &&
                         dist <= min_distance) {
-                    object = &map_objects[i];
+                    index = i;
                     min_distance = dist;
                 }
                 break;
@@ -127,7 +127,7 @@ obstacle* scene::get_closest_object() {
                 dist = player_point.y() - obj_point.y();
                 if (obj_point.x() == player_point.x() && obj_point.y() < player_point.y() &&
                         dist <= min_distance) {
-                    object = &map_objects[i];
+                    index = i;
                     min_distance = dist;
                 }
                 break;
@@ -135,7 +135,7 @@ obstacle* scene::get_closest_object() {
                 dist = obj_point.y() - player_point.y();
                 if (obj_point.x() == player_point.x() && obj_point.y() > player_point.y() &&
                         dist <= min_distance) {
-                    object = &map_objects[i];
+                    index = i;
                     min_distance = dist;
                 }
                 break;
@@ -145,37 +145,41 @@ obstacle* scene::get_closest_object() {
         }
     }
 
-    return object;
+    closest_obstacle_index = index;
 }
 
 void scene::set_player_move_limit() {
-    obstacle* closest_obj = get_closest_object();
+    get_closest_object();
     switch(_player->get_direction()) {
     case LEFT:
-        if (closest_obj)
-            _player->set_move_limit(closest_obj->get_collision_edge(_player->get_direction()),
-                                   _player->get_position().y());
+        if (closest_obstacle_index != -1)
+            _player->set_move_limit(
+                        map_objects[closest_obstacle_index].get_collision_edge(_player->get_direction()),
+                        _player->get_position().y());
         else
             _player->set_move_limit(bounds_min_x, _player->get_position().y());
         break;
     case RIGHT:
-        if (closest_obj)
-            _player->set_move_limit(closest_obj->get_collision_edge(_player->get_direction()),
-                                   _player->get_position().y());
+        if (closest_obstacle_index != -1)
+            _player->set_move_limit(
+                        map_objects[closest_obstacle_index].get_collision_edge(_player->get_direction()),
+                        _player->get_position().y());
         else
             _player->set_move_limit(bounds_max_x, _player->get_position().y());
         break;
     case UP:
-        if (closest_obj)
-            _player->set_move_limit(_player->get_position().x(),
-                                   closest_obj->get_collision_edge(_player->get_direction()));
+        if (closest_obstacle_index != -1)
+            _player->set_move_limit(
+                        _player->get_position().x(),
+                        map_objects[closest_obstacle_index].get_collision_edge(_player->get_direction()));
         else
             _player->set_move_limit(_player->get_position().x(), bounds_min_y);
         break;
     case DOWN:
-        if (closest_obj)
-            _player->set_move_limit(_player->get_position().x(),
-                                   closest_obj->get_collision_edge(_player->get_direction()));
+        if (closest_obstacle_index != -1)
+            _player->set_move_limit(
+                        _player->get_position().x(),
+                        map_objects[closest_obstacle_index].get_collision_edge(_player->get_direction()));
         else
             _player->set_move_limit(_player->get_position().x(), bounds_max_y);
         break;
@@ -200,8 +204,23 @@ game_scene scene::update()
                      bn::keypad::pressed(bn::keypad::key_type::RIGHT)) {
                 set_player_move_limit();
             }
-            if (_player->get_position() == map_objects[0].get_position()) {
-                return get_next_scene();
+
+            if (closest_obstacle_index != -1 &&
+                    _player->get_position() == map_objects[closest_obstacle_index].get_position()) {
+                switch (map_objects[closest_obstacle_index].get_type()) {
+                case CRACKED_ICE:
+                {
+                    map_objects[closest_obstacle_index].set_destroy();
+                    _player->play_fall_anim();
+                    return _scene;
+                }
+                case ROCK_WALL_HOLE:
+                {
+                    return get_next_scene();
+                }
+                default:
+                    break;
+                }
             }
         }
 

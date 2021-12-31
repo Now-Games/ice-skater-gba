@@ -13,6 +13,7 @@
 #include "bn_sprite_items_ice_rock.h"
 #include "bn_sprite_items_snowball_sheet.h"
 #include "bn_sprite_items_cracked_wall_sheet.h"
+#include "bn_sprite_items_cracked_ice_sheet.h"
 
 namespace is {
 

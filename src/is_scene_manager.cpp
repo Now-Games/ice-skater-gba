@@ -4,7 +4,6 @@ namespace is {
 scene_manager::scene_manager() : _current_scene(game_scene::MAIN_MENU)
 {
     read_save();
-    bn::music_items::mystical_p.play(0.5);
 }
 
 scene_manager::~scene_manager()
@@ -52,9 +51,17 @@ void scene_manager::update()
     {
     case MAIN_MENU:
     {
+        bn::music_items::music_box.play(0.5);
         bn::unique_ptr<main_menu> menu_ptr = bn::unique_ptr(new main_menu(save.current_scene));
         _next_scene = menu_ptr->update();
         BN_LOG("Next Scene: ", _next_scene);
+        bn::music_items::mystical_p.play(0.4);
+        break;
+    }
+    case CREDITS:
+    {
+        bn::unique_ptr<credits> credit_ptr = bn::unique_ptr(new credits());
+        _next_scene =  credit_ptr->update();
         break;
     }
     default:
