@@ -23,6 +23,7 @@ scene::scene(game_scene _current_scene, scene_details details) :
         bounds_max_y = (bn::display::height() / 2) - 8;
         _bg = bn::regular_bg_items::stage_scene.create_bg(0, 0);
     }
+    _bg->set_z_order(6);
 
     BN_LOG("Background and text set");
 
@@ -69,13 +70,11 @@ game_scene scene::get_next_scene()
 
 void scene::get_input() {
     if (bn::keypad::start_pressed()) {
-        scene_paused = !scene_paused;
-
-        if (scene_paused) {
-            //display pause display
-        }
+        //display pause display
+        pause pause_display = pause();
+        pause_display.update();
     }
-    if (!scene_paused && bn::keypad::a_pressed()) {
+    else if (bn::keypad::a_pressed()) {
         //destroy snowball
         switch(_player->get_direction()) {
         case LEFT:
@@ -196,31 +195,29 @@ game_scene scene::update()
     while (true) {
         get_input();
 
-        if (!scene_paused) {
-            _player->update();
-            if (bn::keypad::pressed(bn::keypad::key_type::UP) ||
-                     bn::keypad::pressed(bn::keypad::key_type::DOWN) ||
-                     bn::keypad::pressed(bn::keypad::key_type::LEFT) ||
-                     bn::keypad::pressed(bn::keypad::key_type::RIGHT)) {
-                set_player_move_limit();
-            }
+        _player->update();
+        if (bn::keypad::pressed(bn::keypad::key_type::UP) ||
+                 bn::keypad::pressed(bn::keypad::key_type::DOWN) ||
+                 bn::keypad::pressed(bn::keypad::key_type::LEFT) ||
+                 bn::keypad::pressed(bn::keypad::key_type::RIGHT)) {
+            set_player_move_limit();
+        }
 
-            if (closest_obstacle_index != -1 &&
-                    _player->get_position() == map_objects[closest_obstacle_index].get_position()) {
-                switch (map_objects[closest_obstacle_index].get_type()) {
-                case CRACKED_ICE:
-                {
-                    map_objects[closest_obstacle_index].set_destroy();
-                    _player->play_fall_anim();
-                    return _scene;
-                }
-                case ROCK_WALL_HOLE:
-                {
-                    return get_next_scene();
-                }
-                default:
-                    break;
-                }
+        if (closest_obstacle_index != -1 &&
+                _player->get_position() == map_objects[closest_obstacle_index].get_position()) {
+            switch (map_objects[closest_obstacle_index].get_type()) {
+            case CRACKED_ICE:
+            {
+                map_objects[closest_obstacle_index].set_destroy();
+                _player->play_fall_anim();
+                return _scene;
+            }
+            case ROCK_WALL_HOLE:
+            {
+                return get_next_scene();
+            }
+            default:
+                break;
             }
         }
 

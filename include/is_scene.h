@@ -14,6 +14,7 @@
 #include "is_obstacle.h"
 #include "helper_extensions.h"
 #include "is_player.h"
+#include "is_pause.h"
 
 #include "bn_regular_bg_items_stage_scene.h"
 #include "bn_regular_bg_items_tutorial_scene.h"

@@ -429,8 +429,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
                 { true, bn::fixed_point(-112, 8), obstacle_type::ROCK_WALL, direction::RIGHT },
                 { true, bn::fixed_point(-112, 24), obstacle_type::ROCK_WALL, direction::RIGHT },
                 { true, bn::fixed_point(-96, -8), obstacle_type::CRACKED_ICE },
-                { true, bn::fixed_point(112, -8), obstacle_type::SNOW },
-                { true, bn::fixed_point(112, 40), obstacle_type::SNOW }
+                { true, bn::fixed_point(112, -8), obstacle_type::SNOW }
             }
         };
     }
@@ -465,6 +464,80 @@ scene_details helper::get_scene_details(game_scene current_scene)
                 { true, bn::fixed_point(64, 72), obstacle_type::ICE_ROCK },
                 { true, bn::fixed_point(-96, 8), obstacle_type::CRACKED_ICE },
                 { true, bn::fixed_point(112, -72), obstacle_type::SNOW }
+            }
+        };
+    }
+    case STAGE_THIRTEEN:
+    {
+        return {
+            bn::fixed_point(0, 72),
+            direction::UP,
+            false,
+            "",
+            {
+                { true, bn::fixed_point(-32, -72), obstacle_type::ROCK_WALL_HOLE },
+                { true, bn::fixed_point(-112, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-96, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-80, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-64, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-48, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-16, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(0, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(16, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(32, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(48, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(64, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(80, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(96, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(112, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-112, -56), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(-96, 24), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(-48, -24), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(-48, 72), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(32, -40), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(48, 8), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(-32, 24), obstacle_type::CRACKED_ICE },
+                { true, bn::fixed_point(0, 72), obstacle_type::SNOW },
+            }
+        };
+    }
+    case STAGE_FOURTEEN:
+    {
+        return {
+            bn::fixed_point(0, 72),
+            direction::UP,
+            false,
+            "",
+            {
+                { true, bn::fixed_point(-64, -72), obstacle_type::ROCK_WALL_HOLE },
+                { true, bn::fixed_point(80, -72), obstacle_type::ROCK_WALL_HOLE },
+                { true, bn::fixed_point(-112, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-96, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-80, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-48, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-32, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-16, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(0, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(16, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(32, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(48, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(64, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(96, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(112, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-64, -72), obstacle_type::CRACKED_WALL },
+                { true, bn::fixed_point(16, -56), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(-48, -24), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(0, -8), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(-80, -8), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(-96, 8), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(112, 8), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(96, 24), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(32, 40), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(-32, 56), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(-112, 72), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(-64, 40), obstacle_type::CRACKED_ICE },
+                { true, bn::fixed_point(64, 24), obstacle_type::CRACKED_ICE },
+                { true, bn::fixed_point(0, 72), obstacle_type::SNOW },
             }
         };
     }

@@ -7,7 +7,7 @@ player::player(bn::fixed x, bn::fixed y, direction _dir) : _position(x, y)
     isMoving = false;
     _move_limit = bn::fixed_point(max_x, max_y);
     _sprite = bn::sprite_items::player_sheet.create_sprite(_position.x(), _position.y());
-    _sprite->set_z_order(0);
+    _sprite->set_z_order(4);
 }
 
 player::~player()

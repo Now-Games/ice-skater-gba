@@ -25,6 +25,8 @@ graphics/ice_tile.bmp
 graphics/ice_tile.json
 graphics/menu_pointer.bmp
 graphics/menu_pointer.json
+graphics/pause_scene.bmp
+graphics/pause_scene.json
 graphics/player_fall_sheet.bmp
 graphics/player_fall_sheet.json
 graphics/player_sheet.bmp
@@ -53,6 +55,7 @@ include/is_game_scene.h
 include/is_main_menu.h
 include/is_obstacle.h
 include/is_obstacle_type.h
+include/is_pause.h
 include/is_player.h
 include/is_save_data.h
 include/is_scene.h
@@ -63,6 +66,7 @@ src/is_credits.cpp
 src/is_floor_title.cpp
 src/is_main_menu.cpp
 src/is_obstacle.cpp
+src/is_pause.cpp
 src/is_player.cpp
 src/is_scene.cpp
 src/is_scene_manager.cpp

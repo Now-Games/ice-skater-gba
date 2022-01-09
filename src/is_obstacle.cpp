@@ -72,7 +72,7 @@ obstacle::obstacle(bn::fixed_point pos, obstacle_type type, bool destructible, d
     }
     }
 
-    _sprite->set_z_order(1);
+    _sprite->set_z_order(5);
 }
 
 obstacle::~obstacle()
