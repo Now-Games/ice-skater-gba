@@ -27,6 +27,7 @@ private:
     bn::fixed_point _position;
     bool _can_destroy = false;
     bool is_destroyed = false;
+    direction _direction = DOWN;
     bn::optional<bn::sprite_ptr> _sprite;
     bn::optional<bn::sprite_animate_action<5>> _death_anim;
 
@@ -35,6 +36,7 @@ public:
     ~obstacle();
     bool can_destroy();
     obstacle_type get_type();
+    direction get_direction();
     bn::fixed get_collision_edge(direction);
     bn::fixed_point get_position();
     bool get_destroyed();

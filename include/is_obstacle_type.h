@@ -12,7 +12,8 @@ enum obstacle_type {
     CRACKED_WALL,
     CRACKED_ICE,
     ICE_ROCK,
-    ROCK_WALL_HOLE
+    STAIRS,
+    ROCK_WALL_HOLE,
 };
 
 }

@@ -546,6 +546,11 @@ scene_details helper::get_scene_details(game_scene current_scene)
     }
 }
 
+scene_details helper::get_sub_scene_details(sub_scene current_scene)
+{
+
+}
+
 bn::sprite_item helper::get_sprite_item(obstacle_type type) {
     switch(type) {
     case ROCK_WALL:

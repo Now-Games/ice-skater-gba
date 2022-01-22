@@ -39,10 +39,13 @@ protected:
     bn::fixed bounds_min_y;
     bn::fixed bounds_max_y;
 
+    void load_scene_bg(bool, bn::string<64> = "");
+    void load_scene_objects(scene_details);
     void get_closest_object();
     void destroy_obstacle(bn::fixed, bn::fixed);
     virtual void set_player_move_limit();
-    game_scene get_next_scene();
+    int get_next_scene();
+    virtual int update_logic();
 
 public:
     scene(game_scene, scene_details);

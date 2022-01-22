@@ -21,6 +21,7 @@ class helper
 {
 public:
     static game_scene cast_to_scene(int);
+    static scene_details get_sub_scene_details(sub_scene);
     static scene_details get_scene_details(game_scene);
     static bn::sprite_item get_sprite_item(obstacle_type);
     static bool is_destructible(obstacle_type);

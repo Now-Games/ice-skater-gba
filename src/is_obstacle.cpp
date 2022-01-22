@@ -8,6 +8,7 @@ obstacle::obstacle(bn::fixed_point pos, obstacle_type type, bool destructible, d
 {
     _type = type;
     _can_destroy = destructible;
+    this->_direction = _direction;
     _sprite = helper::get_sprite_item(type).create_sprite(pos.x(), pos.y());
 
     switch(type) {
@@ -125,6 +126,11 @@ bool obstacle::can_destroy()
 obstacle_type obstacle::get_type()
 {
     return _type;
+}
+
+direction obstacle::get_direction()
+{
+    return _direction;
 }
 
 bn::fixed_point obstacle::get_position()

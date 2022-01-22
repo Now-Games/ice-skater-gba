@@ -53,6 +53,7 @@ include/is_floor_title.h
 include/is_game_constants.h
 include/is_game_scene.h
 include/is_main_menu.h
+include/is_multilevel_scene.h
 include/is_obstacle.h
 include/is_obstacle_type.h
 include/is_pause.h
@@ -65,6 +66,7 @@ src/helper_extensions.cpp
 src/is_credits.cpp
 src/is_floor_title.cpp
 src/is_main_menu.cpp
+src/is_multilevel_scene.cpp
 src/is_obstacle.cpp
 src/is_pause.cpp
 src/is_player.cpp

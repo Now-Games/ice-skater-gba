@@ -11,11 +11,20 @@ scene::scene(game_scene _current_scene, scene_details details) :
     bounds_min_y = -(bn::display::height() / 2 + 8);
 
     BN_LOG("Bounds Set");
-    if (details.event_scene) {
+
+    load_scene_bg(details.event_scene, details.event_message);
+    load_scene_objects(details);
+
+    _player = player(details._player_pos.x(), details._player_pos.y(), details._player_dir);
+}
+
+void scene::load_scene_bg(bool isEventScene, bn::string<64> message)
+{
+    if (isEventScene) {
         bounds_max_y = (bn::display::height() / 2) - 40;
 
         text_generator.set_center_alignment();
-        text_generator.generate(0, bounds_max_y + 26, details.event_message, text_sprites);
+        text_generator.generate(0, bounds_max_y + 26, message, text_sprites);
 
         _bg = bn::regular_bg_items::tutorial_scene.create_bg(0, 0);
     }
@@ -26,7 +35,11 @@ scene::scene(game_scene _current_scene, scene_details details) :
     _bg->set_z_order(6);
 
     BN_LOG("Background and text set");
+}
 
+void scene::load_scene_objects(scene_details details)
+{
+    map_objects.clear();
     int size = sizeof(details.obstacles) / sizeof(details.obstacles[0]);
     for (int i = 0; i < size; i ++) {
         if (details.obstacles[i].exists) {
@@ -38,8 +51,6 @@ scene::scene(game_scene _current_scene, scene_details details) :
         }
     }
     BN_LOG("Generated Objects");
-
-    _player = player(details._player_pos.x(), details._player_pos.y(), details._player_dir);
 }
 
 scene::~scene() {
@@ -60,12 +71,12 @@ void scene::destroy_obstacle(bn::fixed dx, bn::fixed dy)
     }
 }
 
-game_scene scene::get_next_scene()
+int scene::get_next_scene()
 {
     int current = static_cast<int>(_scene);
     current ++;
     BN_LOG("Current Scene is: ", current);
-    return helper::cast_to_scene(current);
+    return current;
 }
 
 void scene::get_input() {
@@ -190,41 +201,59 @@ void scene::set_player_move_limit() {
     BN_LOG("Move Limit y: ", _player->get_move_limit().y());
 }
 
+int scene::update_logic()
+{
+    get_input();
+
+    _player->update();
+    if (bn::keypad::pressed(bn::keypad::key_type::UP) ||
+             bn::keypad::pressed(bn::keypad::key_type::DOWN) ||
+             bn::keypad::pressed(bn::keypad::key_type::LEFT) ||
+             bn::keypad::pressed(bn::keypad::key_type::RIGHT)) {
+        set_player_move_limit();
+    }
+
+    if (closest_obstacle_index != -1 &&
+            _player->get_position() == map_objects[closest_obstacle_index].get_position()) {
+        switch (map_objects[closest_obstacle_index].get_type()) {
+        case CRACKED_ICE:
+        {
+            map_objects[closest_obstacle_index].set_destroy();
+            _player->play_fall_anim();
+            return -1;
+        }
+        case ROCK_WALL_HOLE:
+        {
+            return get_next_scene();
+        }
+        default:
+            break;
+        }
+    }
+
+    return 0;
+}
+
 game_scene scene::update()
 {
+    int result = 0;
+
     while (true) {
-        get_input();
+        result = update_logic();
 
-        _player->update();
-        if (bn::keypad::pressed(bn::keypad::key_type::UP) ||
-                 bn::keypad::pressed(bn::keypad::key_type::DOWN) ||
-                 bn::keypad::pressed(bn::keypad::key_type::LEFT) ||
-                 bn::keypad::pressed(bn::keypad::key_type::RIGHT)) {
-            set_player_move_limit();
-        }
-
-        if (closest_obstacle_index != -1 &&
-                _player->get_position() == map_objects[closest_obstacle_index].get_position()) {
-            switch (map_objects[closest_obstacle_index].get_type()) {
-            case CRACKED_ICE:
-            {
-                map_objects[closest_obstacle_index].set_destroy();
-                _player->play_fall_anim();
-                return _scene;
-            }
-            case ROCK_WALL_HOLE:
-            {
-                return get_next_scene();
-            }
-            default:
-                break;
-            }
+        //break out if death (-1) or result is greater than 0 and not the same as the current scene
+        if (result == -1 || (result > 0 && result != static_cast<int>(_scene))) {
+            break;
         }
 
         bn::core::update();
     }
 
-    return game_scene::MAIN_MENU;
+    if (result == -1)
+        return helper::cast_to_scene(_scene);
+    else {
+        return helper::cast_to_scene(result);
+    }
 }
 
 }

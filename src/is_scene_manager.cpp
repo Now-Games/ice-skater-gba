@@ -39,6 +39,7 @@ game_scene scene_manager::load_scene() {
     }
     bn::unique_ptr<scene> scene_ptr = bn::unique_ptr(new scene(_current_scene,
                                                         helper::get_scene_details(_current_scene)));
+
     game_scene next = scene_ptr->update();
     return next;
 }

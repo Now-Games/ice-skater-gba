@@ -23,7 +23,14 @@ enum game_scene
     STAGE_TWELVE,
     STAGE_THIRTEEN,
     STAGE_FOURTEEN,
+    STAGE_FIFTEEN,
     CREDITS
+};
+
+enum sub_scene
+{
+    STAGE_FIFTEEN_M,
+    STAGE_FIFTEEN_B1
 };
 
 }
