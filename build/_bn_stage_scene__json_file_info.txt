@@ -1,3 +1,0 @@
-graphics/stage_scene.json
-29
-1640509868.764934

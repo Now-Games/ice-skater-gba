@@ -1,3 +1,0 @@
-graphics/rock_wall_hole.json
-43
-1640199997.637079

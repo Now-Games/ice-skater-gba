@@ -13,7 +13,7 @@
 //	+ regular map (flat), not compressed, 32x32 
 //	Total size: 128 + 5696 + 2048 = 7872
 //
-//	Time-stamp: 2021-12-31, 16:18:09
+//	Time-stamp: 2022-01-24, 00:07:29
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.16
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -23,7 +23,7 @@
 #define GRIT_PAUSE_SCENE_BN_GFX_H
 
 #define pause_scene_bn_gfxTilesLen 5696
-extern const bn::tile pause_scene_bn_gfxTiles[bn::max(1424 / 8, 1)];
+extern const bn::tile pause_scene_bn_gfxTiles[178];
 
 #define pause_scene_bn_gfxMapLen 2048
 extern const bn::regular_bg_map_cell pause_scene_bn_gfxMap[1024];

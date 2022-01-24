@@ -12,7 +12,7 @@
 //	+ 16 tiles not compressed
 //	Total size: 32 + 512 = 544
 //
-//	Time-stamp: 2022-01-23, 15:59:05
+//	Time-stamp: 2022-01-24, 00:07:29
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.16
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -22,7 +22,7 @@
 #define GRIT_STAIRS_SHEET_BN_GFX_H
 
 #define stairs_sheet_bn_gfxTilesLen 512
-extern const bn::tile stairs_sheet_bn_gfxTiles[bn::max(128 / 8, 1)];
+extern const bn::tile stairs_sheet_bn_gfxTiles[16];
 
 #define stairs_sheet_bn_gfxPalLen 32
 extern const bn::color stairs_sheet_bn_gfxPal[16];

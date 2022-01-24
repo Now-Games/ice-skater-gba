@@ -1,3 +1,0 @@
-graphics/player_right_idle.json
-43
-1640682395.888219

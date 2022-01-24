@@ -1,3 +1,0 @@
-graphics/cracked_wall_sheet.json
-42
-1640739888.936994

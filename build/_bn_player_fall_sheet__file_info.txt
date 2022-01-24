@@ -1,3 +1,0 @@
-graphics/player_fall_sheet.bmp
-5686
-1640936176.0

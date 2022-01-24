@@ -1,3 +1,0 @@
-graphics/fixed_32x64_font.json
-40
-1639636284.0

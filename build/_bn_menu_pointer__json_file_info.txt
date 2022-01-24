@@ -1,3 +1,0 @@
-graphics/menu_pointer.json
-43
-1640586994.633776

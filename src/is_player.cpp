@@ -92,8 +92,8 @@ void player::move(bn::fixed dx, bn::fixed dy)
         }
     }
     else {
-        BN_LOG("Player Position x: ", _position.x());
-        BN_LOG("Player Position y: ", _position.y());
+//        BN_LOG("Player Position x: ", _position.x());
+//        BN_LOG("Player Position y: ", _position.y());
         isMoving = false;
     }
 }
@@ -107,22 +107,22 @@ void player::update()
 
     if (!isMoving) {
         if (bn::keypad::left_pressed()) {
-            BN_LOG("Player moving Left");
+//            BN_LOG("Player moving Left");
             player_facing = direction::LEFT;
             isMoving = true;
         }
         else if (bn::keypad::right_pressed()) {
-            BN_LOG("Player moving Right");
+//            BN_LOG("Player moving Right");
             player_facing = direction::RIGHT;
             isMoving = true;
         }
         else if (bn::keypad::up_pressed()) {
-            BN_LOG("Player moving Up");
+//            BN_LOG("Player moving Up");
             player_facing = direction::UP;
             isMoving = true;
         }
         else if (bn::keypad::down_pressed()) {
-            BN_LOG("Player moving Down");
+//            BN_LOG("Player moving Down");
             player_facing = direction::DOWN;
             isMoving = true;
         }
@@ -152,8 +152,8 @@ void player::update()
             }
         }
         else {
-            BN_LOG("Player Position x: ", _position.x());
-            BN_LOG("Player Position y: ", _position.y());
+//            BN_LOG("Player Position x: ", _position.x());
+//            BN_LOG("Player Position y: ", _position.y());
             isMoving = false;
 //            _move_limit = bn::fixed_point(max_x, max_y);
         }

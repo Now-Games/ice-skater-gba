@@ -12,7 +12,7 @@
 //	+ 20 tiles not compressed
 //	Total size: 128 + 1280 = 1408
 //
-//	Time-stamp: 2021-12-31, 00:43:51
+//	Time-stamp: 2022-01-24, 00:07:29
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.16
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -22,7 +22,7 @@
 #define GRIT_CRACKED_ICE_SHEET_BN_GFX_H
 
 #define cracked_ice_sheet_bn_gfxTilesLen 1280
-extern const bn::tile cracked_ice_sheet_bn_gfxTiles[bn::max(320 / 8, 1)];
+extern const bn::tile cracked_ice_sheet_bn_gfxTiles[40];
 
 #define cracked_ice_sheet_bn_gfxPalLen 128
 extern const bn::color cracked_ice_sheet_bn_gfxPal[64];

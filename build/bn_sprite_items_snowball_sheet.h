@@ -12,7 +12,7 @@
 //	+ 24 tiles not compressed
 //	Total size: 96 + 1536 = 1632
 //
-//	Time-stamp: 2021-12-29, 23:15:38
+//	Time-stamp: 2022-01-24, 00:07:29
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.16
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -22,7 +22,7 @@
 #define GRIT_SNOWBALL_SHEET_BN_GFX_H
 
 #define snowball_sheet_bn_gfxTilesLen 1536
-extern const bn::tile snowball_sheet_bn_gfxTiles[bn::max(384 / 8, 1)];
+extern const bn::tile snowball_sheet_bn_gfxTiles[48];
 
 #define snowball_sheet_bn_gfxPalLen 96
 extern const bn::color snowball_sheet_bn_gfxPal[48];

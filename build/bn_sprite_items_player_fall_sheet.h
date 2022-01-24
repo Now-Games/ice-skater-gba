@@ -12,7 +12,7 @@
 //	+ 72 tiles not compressed
 //	Total size: 64 + 4608 = 4672
 //
-//	Time-stamp: 2021-12-31, 00:43:51
+//	Time-stamp: 2022-01-24, 00:07:29
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.16
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -22,7 +22,7 @@
 #define GRIT_PLAYER_FALL_SHEET_BN_GFX_H
 
 #define player_fall_sheet_bn_gfxTilesLen 4608
-extern const bn::tile player_fall_sheet_bn_gfxTiles[bn::max(1152 / 8, 1)];
+extern const bn::tile player_fall_sheet_bn_gfxTiles[144];
 
 #define player_fall_sheet_bn_gfxPalLen 64
 extern const bn::color player_fall_sheet_bn_gfxPal[32];

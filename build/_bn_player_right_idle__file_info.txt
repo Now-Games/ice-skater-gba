@@ -1,3 +1,0 @@
-graphics/player_right_idle.bmp
-1334
-1640659720.0

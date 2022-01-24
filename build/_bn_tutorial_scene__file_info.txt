@@ -1,3 +1,0 @@
-graphics/tutorial_scene.bmp
-66614
-1640827594.0

@@ -12,7 +12,7 @@
 //	+ 4 tiles not compressed
 //	Total size: 96 + 256 = 352
 //
-//	Time-stamp: 2021-12-28, 16:06:04
+//	Time-stamp: 2022-01-24, 00:07:29
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.16
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -22,7 +22,7 @@
 #define GRIT_ICE_TILE_BN_GFX_H
 
 #define ice_tile_bn_gfxTilesLen 256
-extern const bn::tile ice_tile_bn_gfxTiles[bn::max(64 / 8, 1)];
+extern const bn::tile ice_tile_bn_gfxTiles[8];
 
 #define ice_tile_bn_gfxPalLen 96
 extern const bn::color ice_tile_bn_gfxPal[48];

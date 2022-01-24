@@ -1,3 +1,0 @@
-graphics/snowball_sheet.json
-43
-1640727089.459888

@@ -12,7 +12,7 @@
 //	+ 80 tiles not compressed
 //	Total size: 32 + 2560 = 2592
 //
-//	Time-stamp: 2021-12-29, 21:37:50
+//	Time-stamp: 2022-01-24, 00:07:29
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.16
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -22,7 +22,7 @@
 #define GRIT_CRACKED_WALL_SHEET_BN_GFX_H
 
 #define cracked_wall_sheet_bn_gfxTilesLen 2560
-extern const bn::tile cracked_wall_sheet_bn_gfxTiles[bn::max(640 / 8, 1)];
+extern const bn::tile cracked_wall_sheet_bn_gfxTiles[80];
 
 #define cracked_wall_sheet_bn_gfxPalLen 32
 extern const bn::color cracked_wall_sheet_bn_gfxPal[16];

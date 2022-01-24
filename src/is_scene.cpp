@@ -39,8 +39,9 @@ void scene::load_scene_bg(scene_type _type, bn::string<64> message)
 
 void scene::load_scene_objects(scene_details details)
 {
+    bn::vector<obstacle, 32> temp;
     if (map_objects.size() > 0)
-        bn::vector<obstacle, 32>().swap(map_objects);
+        temp = std::move(map_objects);
 
     int size = sizeof(details.obstacles) / sizeof(details.obstacles[0]);
     for (int i = 0; i < size; i ++) {
@@ -199,8 +200,8 @@ void scene::set_player_move_limit() {
         break;
     }
 
-    BN_LOG("Move Limit x: ", _player->get_move_limit().x());
-    BN_LOG("Move Limit y: ", _player->get_move_limit().y());
+//    BN_LOG("Move Limit x: ", _player->get_move_limit().x());
+//    BN_LOG("Move Limit y: ", _player->get_move_limit().y());
 }
 
 int scene::update_logic()

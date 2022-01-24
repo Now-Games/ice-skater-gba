@@ -1,3 +1,0 @@
-graphics/snow_tile.json
-43
-1640200001.194318

@@ -13,7 +13,7 @@
 //	+ regular map (flat), not compressed, 32x32 
 //	Total size: 128 + 9920 + 2048 = 12096
 //
-//	Time-stamp: 2021-12-28, 16:06:04
+//	Time-stamp: 2022-01-24, 00:07:29
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.16
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -23,7 +23,7 @@
 #define GRIT_TITLE_SCENE_BN_GFX_H
 
 #define title_scene_bn_gfxTilesLen 9920
-extern const bn::tile title_scene_bn_gfxTiles[bn::max(2480 / 8, 1)];
+extern const bn::tile title_scene_bn_gfxTiles[310];
 
 #define title_scene_bn_gfxMapLen 2048
 extern const bn::regular_bg_map_cell title_scene_bn_gfxMap[1024];

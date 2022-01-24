@@ -1,3 +1,0 @@
-graphics/rock_wall.bmp
-2102
-1640838008.0

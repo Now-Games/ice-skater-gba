@@ -1,3 +1,0 @@
-graphics/ice_rock.bmp
-1334
-1640746734.0

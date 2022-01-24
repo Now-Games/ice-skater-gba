@@ -1,3 +1,0 @@
-graphics/fixed_32x64_font.bmp
-112758
-1639636284.0

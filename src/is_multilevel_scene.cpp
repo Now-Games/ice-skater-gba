@@ -17,9 +17,11 @@ multilevel_scene::~multilevel_scene()
 int multilevel_scene::start_sub_level(sub_scene next_scene)
 {
     scene_details details = helper::get_sub_scene_details(next_scene);
-    load_scene_objects(details);
-//    _player->set_position(details._player_pos);
-//    _player->set_player_direction(details._player_dir);
+//    load_scene_objects(details);
+//    closest_obstacle_index = -1;
+//    bn::unique_ptr<multilevel_scene> scene_ptr = bn::unique_ptr(new multilevel_scene(_scene, next_scene,
+//                                                                      details));
+//    scene_ptr->update();
 }
 
 int multilevel_scene::update_logic()
@@ -51,10 +53,12 @@ int multilevel_scene::update_logic()
         {
             //run new multilevel scene update
             if (map_objects[closest_obstacle_index].get_direction() == UP) {
+                BN_LOG("Going Up");
                 int next_level = static_cast<int>(_current_level);
                 start_sub_level(static_cast<sub_scene>(--next_level));
             }
             else if (map_objects[closest_obstacle_index].get_direction() == DOWN) {
+                BN_LOG("Going Down");
                 int next_level = static_cast<int>(_current_level);
                 start_sub_level(static_cast<sub_scene>(++next_level));
             }

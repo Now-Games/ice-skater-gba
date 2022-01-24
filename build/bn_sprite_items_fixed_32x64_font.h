@@ -12,7 +12,7 @@
 //	+ 3520 tiles not compressed
 //	Total size: 32 + 112640 = 112672
 //
-//	Time-stamp: 2021-12-28, 18:23:51
+//	Time-stamp: 2022-01-24, 00:07:29
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.16
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -22,7 +22,7 @@
 #define GRIT_FIXED_32X64_FONT_BN_GFX_H
 
 #define fixed_32x64_font_bn_gfxTilesLen 112640
-extern const bn::tile fixed_32x64_font_bn_gfxTiles[bn::max(28160 / 8, 1)];
+extern const bn::tile fixed_32x64_font_bn_gfxTiles[3520];
 
 #define fixed_32x64_font_bn_gfxPalLen 32
 extern const bn::color fixed_32x64_font_bn_gfxPal[16];

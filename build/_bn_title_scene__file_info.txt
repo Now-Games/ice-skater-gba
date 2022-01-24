@@ -1,3 +1,0 @@
-graphics/title_scene.bmp
-66614
-1640732400.0

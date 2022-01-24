@@ -574,7 +574,7 @@ scene_details helper::get_sub_scene_details(sub_scene current_scene)
     case STAGE_FIFTEEN_M:
     {
         return {
-            bn::fixed_point(64, 72),
+            bn::fixed_point(-64, 72),
             direction::UP,
             MULTILEVEL,
             "", {
@@ -606,7 +606,7 @@ scene_details helper::get_sub_scene_details(sub_scene current_scene)
     case STAGE_FIFTEEN_B1:
     {
         return {
-            bn::fixed_point(64, 72),
+            bn::fixed_point(-64, 72),
             direction::UP,
             MULTILEVEL,
             "", {
@@ -620,7 +620,6 @@ scene_details helper::get_sub_scene_details(sub_scene current_scene)
                 { true, bn::fixed_point(96, 72), obstacle_type::ICE_ROCK },
                 { true, bn::fixed_point(0, 8), obstacle_type::STAIRS, UP },
                 { true, bn::fixed_point(96, -40), obstacle_type::STAIRS, UP },
-                { true, bn::fixed_point(-64, 72), obstacle_type::SNOW },
             }
         };
     }

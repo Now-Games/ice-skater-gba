@@ -12,7 +12,7 @@
 //	+ 4 tiles not compressed
 //	Total size: 32 + 128 = 160
 //
-//	Time-stamp: 2021-12-28, 16:06:04
+//	Time-stamp: 2022-01-24, 00:07:29
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.16
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -22,7 +22,7 @@
 #define GRIT_SNOW_TILE_BN_GFX_H
 
 #define snow_tile_bn_gfxTilesLen 128
-extern const bn::tile snow_tile_bn_gfxTiles[bn::max(32 / 8, 1)];
+extern const bn::tile snow_tile_bn_gfxTiles[4];
 
 #define snow_tile_bn_gfxPalLen 32
 extern const bn::color snow_tile_bn_gfxPal[16];
