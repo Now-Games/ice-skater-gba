@@ -39,7 +39,7 @@ protected:
     bn::fixed bounds_min_y;
     bn::fixed bounds_max_y;
 
-    void load_scene_bg(bool, bn::string<64> = "");
+    void load_scene_bg(scene_type, bn::string<64> = "");
     void load_scene_objects(scene_details);
     void get_closest_object();
     void destroy_obstacle(bn::fixed, bn::fixed);

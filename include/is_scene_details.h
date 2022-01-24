@@ -6,6 +6,7 @@
 #include "bn_fixed_point.h"
 #include "is_direction.h"
 #include "is_obstacle_type.h"
+#include "is_game_scene.h"
 
 namespace is
 {
@@ -20,7 +21,7 @@ struct scene_obstacle {
 struct scene_details {
     bn::fixed_point _player_pos;
     direction _player_dir = UP;
-    bool event_scene;
+    scene_type _type;
     bn::string<64> event_message;
     scene_obstacle obstacles[32];
 };

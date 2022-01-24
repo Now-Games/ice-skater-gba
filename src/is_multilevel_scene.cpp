@@ -18,8 +18,8 @@ int multilevel_scene::start_sub_level(sub_scene next_scene)
 {
     scene_details details = helper::get_sub_scene_details(next_scene);
     load_scene_objects(details);
-    _player->set_position(details._player_pos);
-    _player->set_player_direction(details._player_dir);
+//    _player->set_position(details._player_pos);
+//    _player->set_player_direction(details._player_dir);
 }
 
 int multilevel_scene::update_logic()

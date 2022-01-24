@@ -12,15 +12,15 @@ scene::scene(game_scene _current_scene, scene_details details) :
 
     BN_LOG("Bounds Set");
 
-    load_scene_bg(details.event_scene, details.event_message);
+    load_scene_bg(details._type, details.event_message);
     load_scene_objects(details);
 
     _player = player(details._player_pos.x(), details._player_pos.y(), details._player_dir);
 }
 
-void scene::load_scene_bg(bool isEventScene, bn::string<64> message)
+void scene::load_scene_bg(scene_type _type, bn::string<64> message)
 {
-    if (isEventScene) {
+    if (_type == EVENT) {
         bounds_max_y = (bn::display::height() / 2) - 40;
 
         text_generator.set_center_alignment();
@@ -39,7 +39,9 @@ void scene::load_scene_bg(bool isEventScene, bn::string<64> message)
 
 void scene::load_scene_objects(scene_details details)
 {
-    map_objects.clear();
+    if (map_objects.size() > 0)
+        bn::vector<obstacle, 32>().swap(map_objects);
+
     int size = sizeof(details.obstacles) / sizeof(details.obstacles[0]);
     for (int i = 0; i < size; i ++) {
         if (details.obstacles[i].exists) {

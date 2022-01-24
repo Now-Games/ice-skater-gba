@@ -19,7 +19,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
         return {
             bn::fixed_point(0, 40),
             direction::UP,
-            true,
+            EVENT,
             "Use D-Pad to move character",
             {
                 { true, bn::fixed_point(0, -72), obstacle_type::ROCK_WALL_HOLE },
@@ -46,7 +46,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
         return {
             bn::fixed_point(0, 40),
             direction::UP,
-            true,
+            EVENT,
             "Press A to destroy certain objects",
             {
                 { true, bn::fixed_point(0, -72), obstacle_type::ROCK_WALL_HOLE },
@@ -74,7 +74,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
         return {
             bn::fixed_point(0, 72),
             direction::UP,
-            false,
+            NORMAL,
             "",
             {
                 { true, bn::fixed_point(0, -72), obstacle_type::ROCK_WALL_HOLE },
@@ -103,7 +103,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
         return {
             bn::fixed_point(0, 72),
             direction::UP,
-            false,
+            NORMAL,
             "",
             {
                 { true, bn::fixed_point(-64, -72), obstacle_type::ROCK_WALL_HOLE },
@@ -137,7 +137,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
         return {
             bn::fixed_point(112, 40),
             direction::LEFT,
-            false,
+            NORMAL,
             "",
             {
                 { true, bn::fixed_point(-112, -24), obstacle_type::ROCK_WALL_HOLE, RIGHT },
@@ -170,7 +170,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
         return {
             bn::fixed_point(-64, 72),
             direction::UP,
-            false,
+            NORMAL,
             "",
             {
                 { true, bn::fixed_point(-32, -72), obstacle_type::ROCK_WALL_HOLE },
@@ -208,7 +208,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
         return {
             bn::fixed_point(0, 40),
             direction::UP,
-            true,
+            EVENT,
             "I wonder how deep this cave goes...",
             {
                 { true, bn::fixed_point(0, -72), obstacle_type::ROCK_WALL_HOLE },
@@ -241,7 +241,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
         return {
             bn::fixed_point(112, 24),
             direction::LEFT,
-            false,
+            NORMAL,
             "",
             {
                 { true, bn::fixed_point(0, -72), obstacle_type::ROCK_WALL_HOLE },
@@ -281,7 +281,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
         return {
             bn::fixed_point(0, 40),
             direction::UP,
-            true,
+            EVENT,
             "Be on the lookout for cracked walls",
             {
                 { true, bn::fixed_point(-64, -72), obstacle_type::ROCK_WALL_HOLE },
@@ -311,7 +311,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
         return {
             bn::fixed_point(-16, 72),
             direction::UP,
-            false,
+            NORMAL,
             "",
             {
                 { true, bn::fixed_point(-32, -72), obstacle_type::ROCK_WALL_HOLE },
@@ -347,7 +347,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
         return {
             bn::fixed_point(0, 40),
             direction::UP,
-            true,
+            EVENT,
             "I have to hurry...",
             {
                 { true, bn::fixed_point(0, -72), obstacle_type::ROCK_WALL_HOLE },
@@ -375,7 +375,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
         return {
             bn::fixed_point(16, 72),
             direction::UP,
-            false,
+            NORMAL,
             "",
             {
                 { true, bn::fixed_point(0, -72), obstacle_type::ROCK_WALL_HOLE },
@@ -417,7 +417,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
         return {
             bn::fixed_point(112, -8),
             direction::LEFT,
-            true,
+            EVENT,
             "That ice looks quite fragile...",
             {
                 { true, bn::fixed_point(-112, -8), obstacle_type::ROCK_WALL_HOLE, direction::RIGHT },
@@ -438,7 +438,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
         return {
             bn::fixed_point(112, -72),
             direction::DOWN,
-            false,
+            NORMAL,
             "",
             {
                 { true, bn::fixed_point(-112, -8), obstacle_type::ROCK_WALL_HOLE, direction::RIGHT },
@@ -472,7 +472,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
         return {
             bn::fixed_point(0, 72),
             direction::UP,
-            false,
+            NORMAL,
             "",
             {
                 { true, bn::fixed_point(-32, -72), obstacle_type::ROCK_WALL_HOLE },
@@ -506,7 +506,7 @@ scene_details helper::get_scene_details(game_scene current_scene)
         return {
             bn::fixed_point(0, 72),
             direction::UP,
-            false,
+            NORMAL,
             "",
             {
                 { true, bn::fixed_point(-64, -72), obstacle_type::ROCK_WALL_HOLE },
@@ -541,14 +541,94 @@ scene_details helper::get_scene_details(game_scene current_scene)
             }
         };
     }
+    case STAGE_FIFTEEN:
+    {
+        return {
+            bn::fixed_point(64, 72),
+            direction::UP,
+            MULTILEVEL,
+            "", {
+                //Scene details are taken from the sublevels
+            }
+        };
+    }
     default:
         return scene_details();
     }
 }
 
+sub_scene helper::get_sub_scene_main(game_scene scene)
+{
+    switch (scene)
+    {
+    case STAGE_FIFTEEN:
+        return STAGE_FIFTEEN_M;
+    default:
+        break;
+    }
+}
+
 scene_details helper::get_sub_scene_details(sub_scene current_scene)
 {
+    switch (current_scene) {
+    case STAGE_FIFTEEN_M:
+    {
+        return {
+            bn::fixed_point(64, 72),
+            direction::UP,
+            MULTILEVEL,
+            "", {
+                { true, bn::fixed_point(0, -72), obstacle_type::ROCK_WALL_HOLE },
+                { true, bn::fixed_point(-112, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-96, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-80, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-64, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-48, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-32, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-16, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(16, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(32, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(48, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(64, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(80, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(96, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(112, -72), obstacle_type::ROCK_WALL },
+                { true, bn::fixed_point(-64, -56), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(64, -40), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(112, 56), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(48, 72), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(0, 8), obstacle_type::STAIRS, DOWN },
+                { true, bn::fixed_point(96, -40), obstacle_type::STAIRS, DOWN },
+                { true, bn::fixed_point(-64, 72), obstacle_type::SNOW },
+            }
+        };
+    }
+    case STAGE_FIFTEEN_B1:
+    {
+        return {
+            bn::fixed_point(64, 72),
+            direction::UP,
+            MULTILEVEL,
+            "", {
+                { true, bn::fixed_point(0, -72), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(-80, -56), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(0, -40), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(16, 56), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(-80, 56), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(-16, 72), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(0, 72), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(96, 72), obstacle_type::ICE_ROCK },
+                { true, bn::fixed_point(0, 8), obstacle_type::STAIRS, UP },
+                { true, bn::fixed_point(96, -40), obstacle_type::STAIRS, UP },
+                { true, bn::fixed_point(-64, 72), obstacle_type::SNOW },
+            }
+        };
+    }
+    default:
+        break;
+    }
 
+    return scene_details();
 }
 
 bn::sprite_item helper::get_sprite_item(obstacle_type type) {
@@ -567,6 +647,8 @@ bn::sprite_item helper::get_sprite_item(obstacle_type type) {
         return bn::sprite_items::rock_wall_hole;
     case ICE_ROCK:
         return bn::sprite_items::ice_rock;
+    case STAIRS:
+        return bn::sprite_items::stairs_sheet;
     default:
         return bn::sprite_items::rock_wall;
     }

@@ -4,6 +4,13 @@
 namespace is
 {
 
+enum scene_type
+{
+    EVENT,
+    NORMAL,
+    MULTILEVEL
+};
+
 enum game_scene
 {
     MAIN_MENU,

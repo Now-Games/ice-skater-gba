@@ -7,7 +7,7 @@
 #include "bn_music_items.h"
 #include "is_save_data.h"
 #include "is_floor_title.h"
-#include "is_scene.h"
+#include "is_multilevel_scene.h"
 #include "is_main_menu.h"
 #include "is_credits.h"
 

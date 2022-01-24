@@ -37,11 +37,26 @@ game_scene scene_manager::load_scene() {
         title_ptr->update();
         title_ptr.reset();
     }
-    bn::unique_ptr<scene> scene_ptr = bn::unique_ptr(new scene(_current_scene,
-                                                        helper::get_scene_details(_current_scene)));
 
-    game_scene next = scene_ptr->update();
-    return next;
+    scene_details details = helper::get_scene_details(_current_scene);
+
+    if (details._type == NORMAL || details._type == EVENT) {
+        bn::unique_ptr<scene> scene_ptr = bn::unique_ptr(new scene(_current_scene,
+                                                            details));
+        game_scene next = scene_ptr->update();
+        return next;
+    }
+    else {
+        sub_scene sub = helper::get_sub_scene_main(_current_scene);
+        bn::unique_ptr<multilevel_scene> scene_ptr =
+                bn::unique_ptr(new multilevel_scene(
+                                   _current_scene,
+                                   sub,
+                                   helper::get_sub_scene_details(sub)));
+        game_scene next = scene_ptr->update();
+        return next;
+    }
+
 }
 
 void scene_manager::update()

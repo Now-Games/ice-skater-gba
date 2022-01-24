@@ -86,22 +86,22 @@ bn::fixed obstacle::get_collision_edge(direction _direction)
     if (!is_destroyed) {
         switch(_direction) {
         case LEFT:
-            if (_type == ROCK_WALL_HOLE || _type == SNOW || _type == CRACKED_ICE)
+            if (_type == ROCK_WALL_HOLE || _type == SNOW || _type == CRACKED_ICE || _type == STAIRS)
                 return _position.x();
             else
                 return _position.x() + 16;
         case RIGHT:
-            if (_type == ROCK_WALL_HOLE || _type == SNOW || _type == CRACKED_ICE)
+            if (_type == ROCK_WALL_HOLE || _type == SNOW || _type == CRACKED_ICE || _type == STAIRS)
                 return _position.x();
             else
                 return _position.x() - 16;
         case UP:
-            if (_type == ROCK_WALL_HOLE || _type == SNOW || _type == CRACKED_ICE)
+            if (_type == ROCK_WALL_HOLE || _type == SNOW || _type == CRACKED_ICE || _type == STAIRS)
                 return _position.y();
             else
                 return _position.y() + 16;
         case DOWN:
-            if (_type == ROCK_WALL_HOLE || _type == SNOW || _type == CRACKED_ICE)
+            if (_type == ROCK_WALL_HOLE || _type == SNOW || _type == CRACKED_ICE || _type == STAIRS)
                 return _position.y();
             else
                 return _position.y() - 16;
