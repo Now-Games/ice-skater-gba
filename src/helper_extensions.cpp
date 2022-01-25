@@ -544,11 +544,14 @@ scene_details helper::get_scene_details(game_scene current_scene)
     case STAGE_FIFTEEN:
     {
         return {
-            bn::fixed_point(64, 72),
+            bn::fixed_point(-64, 72),
             direction::UP,
             MULTILEVEL,
             "", {
                 //Scene details are taken from the sublevels
+            }, {
+                STAGE_FIFTEEN_M,
+                STAGE_FIFTEEN_B1
             }
         };
     }

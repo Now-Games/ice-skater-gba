@@ -32,28 +32,27 @@ void scene_manager::read_save()
 }
 
 game_scene scene_manager::load_scene() {
+    scene_details details = helper::get_scene_details(_current_scene);
+
     if (_current_scene != TUTORIAL_SCENE && _current_scene != TUTORIAL_SCENE_2) {
         bn::unique_ptr<floor_title> title_ptr = bn::unique_ptr(new floor_title(_current_scene));
         title_ptr->update();
         title_ptr.reset();
     }
 
-    scene_details details = helper::get_scene_details(_current_scene);
-
     if (details._type == NORMAL || details._type == EVENT) {
         bn::unique_ptr<scene> scene_ptr = bn::unique_ptr(new scene(_current_scene,
                                                             details));
-        game_scene next = scene_ptr->update();
+        game_scene next = helper::cast_to_scene(scene_ptr->update());
         return next;
     }
     else {
-        sub_scene sub = helper::get_sub_scene_main(_current_scene);
         bn::unique_ptr<multilevel_scene> scene_ptr =
                 bn::unique_ptr(new multilevel_scene(
                                    _current_scene,
-                                   sub,
-                                   helper::get_sub_scene_details(sub)));
-        game_scene next = scene_ptr->update();
+                                   helper::get_sub_scene_main(_current_scene),
+                                   helper::get_scene_details(_current_scene)));
+        game_scene next = helper::cast_to_scene(scene_ptr->update());
         return next;
     }
 

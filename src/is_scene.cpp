@@ -204,10 +204,8 @@ void scene::set_player_move_limit() {
 //    BN_LOG("Move Limit y: ", _player->get_move_limit().y());
 }
 
-int scene::update_logic()
+void scene::update_player()
 {
-    get_input();
-
     _player->update();
     if (bn::keypad::pressed(bn::keypad::key_type::UP) ||
              bn::keypad::pressed(bn::keypad::key_type::DOWN) ||
@@ -215,7 +213,10 @@ int scene::update_logic()
              bn::keypad::pressed(bn::keypad::key_type::RIGHT)) {
         set_player_move_limit();
     }
+}
 
+int scene::update_obstacle_interaction()
+{
     if (closest_obstacle_index != -1 &&
             _player->get_position() == map_objects[closest_obstacle_index].get_position()) {
         switch (map_objects[closest_obstacle_index].get_type()) {
@@ -223,7 +224,7 @@ int scene::update_logic()
         {
             map_objects[closest_obstacle_index].set_destroy();
             _player->play_fall_anim();
-            return -1;
+            return -2;
         }
         case ROCK_WALL_HOLE:
         {
@@ -234,28 +235,30 @@ int scene::update_logic()
         }
     }
 
-    return 0;
+    return _scene;
 }
 
-game_scene scene::update()
+int scene::update()
 {
     int result = 0;
 
     while (true) {
-        result = update_logic();
+        get_input();
+        update_player();
+        result = update_obstacle_interaction();
 
-        //break out if death (-1) or result is greater than 0 and not the same as the current scene
-        if (result == -1 || (result > 0 && result != static_cast<int>(_scene))) {
+        //break out if death (-2) or result is greater than 0 and not the same as the current scene
+        if (result < 0 || result != static_cast<int>(_scene)) {
             break;
         }
 
         bn::core::update();
     }
 
-    if (result == -1)
-        return helper::cast_to_scene(_scene);
+    if (result == -2)
+        return _scene;
     else {
-        return helper::cast_to_scene(result);
+        return result;
     }
 }
 

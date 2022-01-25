@@ -45,13 +45,14 @@ protected:
     void destroy_obstacle(bn::fixed, bn::fixed);
     virtual void set_player_move_limit();
     int get_next_scene();
-    virtual int update_logic();
+    virtual void update_player();
+    virtual int update_obstacle_interaction();
 
 public:
     scene(game_scene, scene_details);
     virtual ~scene();
     virtual void get_input();
-    virtual game_scene update();
+    virtual int update();
 };
 }
 

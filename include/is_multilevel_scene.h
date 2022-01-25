@@ -1,22 +1,26 @@
 #ifndef IS_MULTILEVEL_SCENE_H
 #define IS_MULTILEVEL_SCENE_H
 
-#include "is_scene.h"
+#include "is_sub_level.h"
 
 namespace is
 {
 
-class multilevel_scene : public scene
+class multilevel_scene
 {
 private:
-    sub_scene _current_level;
+    game_scene _current_scene;
+    int _main_level;
+    int _current_level;
+    bn::vector<sub_scene, 10> sub_levels;
+    bn::fixed_point _player_position;
 
-    int start_sub_level(sub_scene);
+    bn::unique_ptr<sub_level> start_sub_level(sub_scene);
 
 public:
     multilevel_scene(game_scene, sub_scene, scene_details);
     ~multilevel_scene();
-    int update_logic() override;
+    int update();
 };
 
 }

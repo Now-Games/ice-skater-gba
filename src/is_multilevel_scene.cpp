@@ -4,9 +4,16 @@ namespace is
 {
 
 multilevel_scene::multilevel_scene(game_scene _current_scene, sub_scene _current_level, scene_details details)
-    : scene(_current_scene, details), _current_level(_current_level)
+    : _current_scene(_current_scene)
 {
-
+    int level_size = sizeof(details.sub_levels) / sizeof(details.sub_levels[0]);
+    for (int i = 0; i < level_size; i ++) {
+        if (details.sub_levels[i] == _current_level) {
+            this->_main_level = i;
+        }
+        sub_levels.push_back(details.sub_levels[i]);
+    }
+    _player_position = details._player_pos;
 }
 
 multilevel_scene::~multilevel_scene()
@@ -14,62 +21,40 @@ multilevel_scene::~multilevel_scene()
 
 }
 
-int multilevel_scene::start_sub_level(sub_scene next_scene)
+bn::unique_ptr<sub_level> multilevel_scene::start_sub_level(sub_scene next_scene)
 {
-    scene_details details = helper::get_sub_scene_details(next_scene);
-//    load_scene_objects(details);
-//    closest_obstacle_index = -1;
-//    bn::unique_ptr<multilevel_scene> scene_ptr = bn::unique_ptr(new multilevel_scene(_scene, next_scene,
-//                                                                      details));
-//    scene_ptr->update();
+    bn::unique_ptr<sub_level> scene_ptr = bn::unique_ptr(new sub_level(_current_scene, next_scene, _player_position,
+                                                            helper::get_sub_scene_details(next_scene)));
+    return scene_ptr;
 }
 
-int multilevel_scene::update_logic()
+int multilevel_scene::update()
 {
-    get_input();
+    bn::unique_ptr<sub_level> scene_ptr = start_sub_level(sub_levels[_main_level]);
+    while (true) {
+        int next = scene_ptr->update();
+        BN_LOG("Scene completed with code: ", next);
 
-    _player->update();
-    if (bn::keypad::pressed(bn::keypad::key_type::UP) ||
-             bn::keypad::pressed(bn::keypad::key_type::DOWN) ||
-             bn::keypad::pressed(bn::keypad::key_type::LEFT) ||
-             bn::keypad::pressed(bn::keypad::key_type::RIGHT)) {
-        set_player_move_limit();
-    }
-
-    if (closest_obstacle_index != -1 &&
-            _player->get_position() == map_objects[closest_obstacle_index].get_position()) {
-        switch (map_objects[closest_obstacle_index].get_type()) {
-        case CRACKED_ICE:
-        {
-            map_objects[closest_obstacle_index].set_destroy();
-            _player->play_fall_anim();
-            return -1;
+        if (next == -2) {
+            _current_level = _main_level;
+            BN_LOG("Restarting current Game level");
+            scene_ptr = start_sub_level(sub_levels[_main_level]);
         }
-        case ROCK_WALL_HOLE:
-        {
-            return get_next_scene();
+        else if (next == -1) {
+            int next_game_scene = static_cast<int>(_current_scene);
+            BN_LOG("Next Game Scene: ", (next_game_scene+1));
+            return ++next_game_scene;
         }
-        case STAIRS:
-        {
-            //run new multilevel scene update
-            if (map_objects[closest_obstacle_index].get_direction() == UP) {
-                BN_LOG("Going Up");
-                int next_level = static_cast<int>(_current_level);
-                start_sub_level(static_cast<sub_scene>(--next_level));
+        else {
+            if (next != _current_level) {
+                _current_level = next;
+                _player_position = scene_ptr->get_player_position();
+                scene_ptr = start_sub_level(sub_levels[next]);
             }
-            else if (map_objects[closest_obstacle_index].get_direction() == DOWN) {
-                BN_LOG("Going Down");
-                int next_level = static_cast<int>(_current_level);
-                start_sub_level(static_cast<sub_scene>(++next_level));
-            }
-            break;
         }
-        default:
-            break;
-        }
-    }
 
-    return 0;
+        bn::core::update();
+    }
 }
 
 }

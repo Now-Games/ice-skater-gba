@@ -62,6 +62,7 @@ include/is_save_data.h
 include/is_scene.h
 include/is_scene_details.h
 include/is_scene_manager.h
+include/is_sub_level.h
 src/helper_extensions.cpp
 src/is_credits.cpp
 src/is_floor_title.cpp
@@ -72,4 +73,5 @@ src/is_pause.cpp
 src/is_player.cpp
 src/is_scene.cpp
 src/is_scene_manager.cpp
+src/is_sub_level.cpp
 src/main.cpp
