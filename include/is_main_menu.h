@@ -18,6 +18,7 @@
 #include "bn_sprite_items_menu_pointer.h"
 #include "bn_regular_bg_items_title_scene.h"
 #include "common_variable_8x16_sprite_font.h"
+#include "common_variable_8x8_sprite_font.h"
 
 namespace is
 {
@@ -27,6 +28,8 @@ class main_menu
 private:
     bn::vector<bn::sprite_ptr, 32> text_sprites;
     bn::sprite_text_generator text_generator;
+    bn::vector<bn::sprite_ptr, 32> version_sprites;
+    bn::sprite_text_generator version_generator;
     bn::vector<bn::string_view, 2> menu_options;
     bn::optional<bn::regular_bg_ptr> _bg;
     bn::optional<bn::sprite_ptr> menu_ptr;

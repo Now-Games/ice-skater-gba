@@ -14,7 +14,7 @@ namespace is {
     const bn::fixed min_x = -(bn::display::width() / 2);
     const bn::fixed max_x = (bn::display::width() / 2);
     const bn::fixed tile_height = 16;
-
+    const bn::string<6> game_version = "1.1";
 }
 
 #endif // GAME_CONSTANTS_H

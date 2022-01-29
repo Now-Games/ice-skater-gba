@@ -4,11 +4,12 @@ namespace is
 {
 
 main_menu::main_menu(int _saved_scene) :
-    text_generator(bn::sprite_text_generator(common::variable_8x16_sprite_font))
+    text_generator(bn::sprite_text_generator(common::variable_8x16_sprite_font)),
+    version_generator(bn::sprite_text_generator(common::variable_8x8_sprite_font))
 {
     saved_scene = _saved_scene;
     current_selection = 0;
-    _bg = bn::regular_bg_items::title_scene.create_bg(0, 0);
+    _bg = bn::regular_bg_items::title_scene.create_bg(0, 12);
     menu_ptr = bn::sprite_items::menu_pointer.create_sprite(min_x + 20, max_y - 40);
 
     menu_options.push_back("CONTINUE");
@@ -20,6 +21,9 @@ main_menu::main_menu(int _saved_scene) :
     for (int i = 0; i < menu_options.size(); i ++) {
         text_generator.generate(start_x + (i * 120), max_y - 40, menu_options[i], text_sprites);
     }
+
+    version_generator.set_center_alignment();
+    version_generator.generate(0, max_y-6, "v"+game_version, version_sprites);
 }
 
 main_menu::~main_menu()
