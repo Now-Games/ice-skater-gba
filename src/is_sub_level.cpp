@@ -53,6 +53,7 @@ int sub_level::update_obstacle_interaction()
         }
     }
 
+    BN_LOG("Current sub level: ", current_sub_level);
     return static_cast<int>(current_sub_level);
 }
 

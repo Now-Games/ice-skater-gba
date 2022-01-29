@@ -240,7 +240,7 @@ int scene::update_obstacle_interaction()
 
 int scene::update()
 {
-    int result = 0;
+    int result = static_cast<int>(_scene);
 
     while (true) {
         get_input();

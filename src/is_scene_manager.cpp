@@ -47,6 +47,7 @@ game_scene scene_manager::load_scene() {
         return next;
     }
     else {
+        BN_LOG("Loading Multilevel Game Scene: ", _current_scene);
         bn::unique_ptr<multilevel_scene> scene_ptr =
                 bn::unique_ptr(new multilevel_scene(
                                    _current_scene,

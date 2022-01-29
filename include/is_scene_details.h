@@ -24,7 +24,6 @@ struct scene_details {
     scene_type _type;
     bn::string<64> event_message;
     scene_obstacle obstacles[32];
-    bn::array<sub_scene, 10> sub_levels;
 };
 
 }
