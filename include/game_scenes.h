@@ -508,7 +508,7 @@ static SceneInfo getSceneDetails(int sceneIndex)
             };
         case 16:
             return { //Stage 15 Main
-                "B15",
+                "B17",
                 bn::fixed_point(-8, 9),
                 Direction::Up,
                 {
@@ -558,7 +558,7 @@ static SceneInfo getSceneDetails(int sceneIndex)
             };
         case 18:
             return { //Stage 16 Sub
-                "B16",
+                "",
                 bn::fixed_point(0, 9),
                 Direction::Up,
                 {
@@ -598,7 +598,7 @@ static SceneInfo getSceneDetails(int sceneIndex)
             };
         case 19:
             return { //Stage 16 Main
-                "B16",
+                "B18",
                 bn::fixed_point(0, 9),
                 Direction::Down,
                 {
@@ -617,7 +617,7 @@ static SceneInfo getSceneDetails(int sceneIndex)
             };
         case 20:
             return {
-                "B17",
+                "B19",
                 bn::fixed_point(0, 5),
                 Direction::Down,
                 {
@@ -647,8 +647,8 @@ static SceneInfo getSceneDetails(int sceneIndex)
                 SceneType::Event, 18, 22
             };
         case 21:
-            return {
-                "B18",
+            return { //Stage 20 sub
+                "",
                 bn::fixed_point(0, 9),
                 Direction::Down,
                 {
@@ -669,8 +669,8 @@ static SceneInfo getSceneDetails(int sceneIndex)
                 SceneType::MultiLevel, 20, -1
             };
         case 22:
-            return {
-                "B18",
+            return { //Stage 20 Main
+                "B20",
                 bn::fixed_point(0, 9),
                 Direction::Down,
                 {
@@ -708,8 +708,8 @@ static SceneInfo getSceneDetails(int sceneIndex)
                 SceneType::MultiLevel, 20, -1
             };
         case 23:
-            return {
-                "B18",
+            return { //Stage 20 sub
+                "",
                 bn::fixed_point(),
                 Direction::Down,
                 {

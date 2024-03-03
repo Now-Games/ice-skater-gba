@@ -11,6 +11,10 @@
 #define MIN_Y -80
 #define MAX_Y 80
 
+const int BLOCK_SIZE = 8;
 const bn::string<6> version = "2.0";
+const int sceneIndexes[] = {
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 19, 20, 22
+};
 
 #endif // GAME_CONSTANTS_H

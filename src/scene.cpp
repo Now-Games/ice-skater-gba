@@ -16,8 +16,8 @@ Scene::Scene(SceneInfo sceneInfo)
             obstacles.push_back(Obstacle(info));
     }
     
-    maxBounds = bn::fixed_point((SCREEN_WIDTH / 2) - 8, (SCREEN_HEIGHT / 2) - 8);
-    minBounds = bn::fixed_point(-(SCREEN_WIDTH / 2) + 8, -(SCREEN_HEIGHT / 2) + 8);
+    maxBounds = bn::fixed_point((SCREEN_WIDTH / 2) - BLOCK_SIZE, (SCREEN_HEIGHT / 2) - BLOCK_SIZE);
+    minBounds = bn::fixed_point(-(SCREEN_WIDTH / 2) + BLOCK_SIZE, -(SCREEN_HEIGHT / 2) + BLOCK_SIZE);
     
     //load in the background
     switch(sceneInfo.sceneType) 
@@ -104,8 +104,9 @@ SceneUpdateResult Scene::update()
                 return SceneUpdateResult::S_Restart;
             }
             
-            if (bn::keypad::a_pressed() && (obstacles[obstacleIndex].getType() == ObstacleType::CrackedWall || 
-                                            obstacles[obstacleIndex].getType() == ObstacleType::Snowball))
+            if (bn::keypad::a_pressed() && 
+                (obstacles[obstacleIndex].getType() == ObstacleType::CrackedWall || 
+                obstacles[obstacleIndex].getType() == ObstacleType::Snowball))
             {
                 obstacles[obstacleIndex].setDestroy();
             }

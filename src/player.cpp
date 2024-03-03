@@ -4,10 +4,11 @@
 #include "bn_keypad.h"
 #include "bn_sprite_items_player_sheet.h"
 #include "bn_sprite_items_player_fall_sheet.h"
+#include "game_constants.h"
 
 Player::Player(bn::fixed_point pos, Direction dir) : 
-    sprite(bn::sprite_items::player_sheet.create_sprite(pos * 8)),
-    position(pos * 8)
+    sprite(bn::sprite_items::player_sheet.create_sprite(pos * BLOCK_SIZE)),
+    position(pos * BLOCK_SIZE)
 {
     sprite.set_z_order(4);
     fallAnim = bn::create_sprite_animate_action_once(sprite, 4, 
@@ -106,6 +107,7 @@ void Player::playFallingAnimation()
 {
     while (!fallAnim->done())
     {
+        BN_LOG("Player falling");
         fallAnim->update();
         bn::core::update();
     }

@@ -1,4 +1,5 @@
 #include "obstacle.h"
+#include "game_constants.h"
 #include "bn_core.h"
 #include "bn_log.h"
 #include "bn_sprite_items_stairs_sheet.h"
@@ -6,7 +7,7 @@
 Obstacle::Obstacle(ObstacleInfo info)
 {
     type = info.type;
-    rawPosition = info.position * 8;
+    rawPosition = info.position * BLOCK_SIZE;
     direction = info.direction;
     
     loadSprite(info.type);
@@ -55,12 +56,12 @@ void Obstacle::loadSprite(ObstacleType type)
             break;
         }
         case ObstacleType::CrackedIce:
-        {
             destructible = true;
             sprite = bn::sprite_items::cracked_ice_sheet.create_sprite(rawPosition);
+            sprite->set_tiles(bn::sprite_items::cracked_ice_sheet.tiles_item().create_tiles(0));
             spritesheet = bn::create_sprite_animate_action_once(sprite.value(), 5, 
                                 bn::sprite_items::cracked_ice_sheet.tiles_item(), 1, 2, 3, 4, 4);
-        }
+            break;
         case ObstacleType::StairsDown:
         case ObstacleType::StairsUp:
             destructible = false;
@@ -71,7 +72,7 @@ void Obstacle::loadSprite(ObstacleType type)
             break;
     }
     
-    sprite->set_z_order(5);
+    sprite->set_z_order(7);
 }
 
 void Obstacle::setDestroy()
@@ -113,8 +114,9 @@ bool Obstacle::isDestroyed()
 
 bn::fixed_point Obstacle::getStopPosition(Direction dir)
 {
-    if (type == ObstacleType::RockHole || type == ObstacleType::SnowPatch || type == ObstacleType::StairsDown ||
-            type == ObstacleType::StairsUp || type == ObstacleType::CrackedIce)
+    if (type == ObstacleType::RockHole || type == ObstacleType::SnowPatch || 
+        type == ObstacleType::StairsDown ||
+        type == ObstacleType::StairsUp || type == ObstacleType::CrackedIce)
     {
         return rawPosition;
     }

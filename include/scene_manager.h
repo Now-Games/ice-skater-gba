@@ -11,6 +11,7 @@
 #include "floor_title_scene.h"
 #include "title_scene.h"
 #include "pause_window.h"
+#include "level_select_scene.h"
 
 class SceneManager
 {
@@ -18,18 +19,20 @@ class SceneManager
         bool paused = false;
         SceneType currentSceneDisplayed = SceneType::Basic;
         bn::unique_ptr<PauseWindow> pauseMenu;
-       bn::unique_ptr<TitleScene> titleScene;
-//        bn::unique_ptr<LevelSelectScene> levelSelectScene;
+        bn::unique_ptr<TitleScene> titleScene;
+        bn::unique_ptr<LevelSelectScene> levelSelectScene;
         bn::unique_ptr<Scene> currentScene;
         bn::unique_ptr<EventScene> currentEventScene;
         bn::unique_ptr<MultiLevelScene> currentMultiLevelScene;
         bn::unique_ptr<FloorTitleScene> floorTitleScene;
         bool isShowingFloorTitle = false;
         bool isShowingTitle = true;
+        bool isShowingLevelSelect = false;
         SaveData saveData;
         void readSaveData();
         void saveSaveData();
         void loadTitleScene();
+        void loadLevelSelectScene();
         void loadFloorTitleScene();
         void loadScene();
         void togglePause();

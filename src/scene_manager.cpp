@@ -57,6 +57,16 @@ void SceneManager::loadTitleScene()
     titleScene = bn::unique_ptr(new TitleScene(saveData));
 }
 
+void SceneManager::loadLevelSelectScene()
+{
+    pauseMenu.reset();
+    currentScene.reset();
+    currentEventScene.reset();
+    currentMultiLevelScene.reset();
+
+    levelSelectScene = bn::unique_ptr(new LevelSelectScene(saveData));
+}
+
 void SceneManager::loadFloorTitleScene()
 {
     pauseMenu.reset();
@@ -112,6 +122,7 @@ void SceneManager::update()
         if (scene >= 0) {
             bn::music_items::mystical_p.play(0.4);
             saveData.currentScene = scene;
+            saveSaveData();
             isShowingTitle = false;
             titleScene.reset();
             loadFloorTitleScene();
@@ -158,11 +169,29 @@ void SceneManager::update()
                 isShowingTitle = true;
                 loadTitleScene();
                 return;
+            case PauseResult::P_LevelSelect:
+                isShowingLevelSelect = true;
+                loadLevelSelectScene();
+                return;
             default:
                 return;
         }
     }
-        
+    
+    if (isShowingLevelSelect)
+    {
+        int scene = levelSelectScene->update();
+        if (scene >= 0)
+        {
+            isShowingLevelSelect = false;
+            saveData.currentScene = scene;
+            levelSelectScene.reset();
+            saveSaveData();
+            loadFloorTitleScene();
+        }
+        return;
+    }
+
     //depending on which scene is displayed, run that scene
     switch (currentSceneDisplayed)
     {
@@ -184,8 +213,9 @@ void SceneManager::update()
         SceneInfo currentSceneInfo = getSceneDetails(saveData.currentScene);
         if (result == SceneUpdateResult::S_Next) 
         {
-            saveData.furthestScene = saveData.currentScene;
-            saveData.currentScene = currentSceneInfo.nextScene; //get the next scene
+            if (currentSceneInfo.nextScene != -1)
+                saveData.furthestScene = currentSceneInfo.nextScene;
+                saveData.currentScene = currentSceneInfo.nextScene; //get the next scene
         }
         else if (result == SceneUpdateResult::S_Previous) 
         {

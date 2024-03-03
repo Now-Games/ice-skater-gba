@@ -34,7 +34,7 @@ TitleScene::TitleScene(SaveData saveData) :
     
     //Version
     versionGenerator.set_left_alignment();
-    versionGenerator.generate(MIN_X, MAX_Y - 8, "v" + version, versionSprites);
+    versionGenerator.generate(MIN_X, MAX_Y - 16, "v" + version, versionSprites);
 
     updatePointerPosition();
 }
