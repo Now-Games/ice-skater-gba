@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${default}",
+                "../../butano/include/",
+                "../../common/include/",
+                "${workspaceFolder}/build/",
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/graphics",
+                "${workspaceFolder}/audio"
+            ],
+            "defines": [],
+            "cStandard": "c17",
+            "cppStandard": "c++20",
+            "compilerPath": "/opt/devkitpro/devkitARM/bin/arm-none-eabi-g++"
+        }
+    ],
+    "version": 4
+}
