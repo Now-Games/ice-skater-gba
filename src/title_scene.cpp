@@ -20,7 +20,7 @@ TitleScene::TitleScene(SaveData saveData) :
     menuOptions.push_back("New Game");
     if (saveData.furthestScene > 0)
         menuOptions.push_back("Continue");
-    menuOptions.push_back("About");
+    menuOptions.push_back("Credits");
 
     menuGenerator.set_center_alignment();
     for (int i = 0; i < menuOptions.size(); i ++) 
@@ -73,7 +73,7 @@ int TitleScene::update()
                 return 0;
             case 1:
                 return lastPlayedScene;
-            case 2: //About (Controls, credits)
+            case 2: //Credits
                 return -2;
             }
     }

@@ -40,17 +40,9 @@ void SceneManager::saveSaveData()
     bn::sram::write(saveData);
 }
 
-bool SceneManager::isPaused()
-{
-    return paused;
-}
-
 void SceneManager::loadTitleScene()
 {
-    currentScene.reset();
-    currentEventScene.reset();
-    currentMultiLevelScene.reset();
-    pauseMenu.reset();
+    currentGameState = GameState::GS_Title;
 
     //Load the title scene
     bn::music_items::music_box.play(0.5);
@@ -59,30 +51,21 @@ void SceneManager::loadTitleScene()
 
 void SceneManager::loadLevelSelectScene()
 {
-    pauseMenu.reset();
-    currentScene.reset();
-    currentEventScene.reset();
-    currentMultiLevelScene.reset();
-
+    currentGameState = GameState::GS_LevelSelect;
     levelSelectScene = bn::unique_ptr(new LevelSelectScene(saveData));
 }
 
 void SceneManager::loadFloorTitleScene()
 {
-    pauseMenu.reset();
-    currentScene.reset();
-    currentEventScene.reset();
-    currentMultiLevelScene.reset();
-    
+    currentGameState = GameState::GS_FloorTitle;
+
     SceneInfo sceneInfo = getSceneDetails(saveData.currentScene);
     floorTitleScene = bn::unique_ptr(new FloorTitleScene(sceneInfo.sceneName));
-    isShowingFloorTitle = true;
 }
 
 void SceneManager::loadScene()
 {
-    //clear the title scene
-    floorTitleScene.reset();
+    currentGameState = GameState::GS_Floor;
     
     SceneInfo sceneInfo = getSceneDetails(saveData.currentScene);
     currentSceneDisplayed = sceneInfo.sceneType;
@@ -105,94 +88,60 @@ void SceneManager::loadScene()
     }
 }
 
-void SceneManager::togglePause()
+void SceneManager::loadPauseMenu()
 {
-    paused = !paused;
-    if (paused)
-        pauseMenu = bn::unique_ptr(new PauseWindow());
-    else
-        pauseMenu.reset();
+    currentGameState = GameState::GS_Paused;
+    pauseMenu = bn::unique_ptr(new PauseWindow());
 }
 
-void SceneManager::update()
+void SceneManager::updateTitleScene()
 {
-    if (isShowingTitle)
-    {
-        int scene = titleScene->update();
-        if (scene >= 0) {
-            bn::music_items::mystical_p.play(0.4);
-            saveData.currentScene = scene;
-            saveSaveData();
-            isShowingTitle = false;
-            titleScene.reset();
-            loadFloorTitleScene();
-        }
-        return;
+    int scene = titleScene->update();
+    if (scene >= 0) {
+        bn::music_items::mystical_p.play(0.4);
+        saveData.currentScene = scene;
+        saveSaveData();
+        titleScene.reset();
+        loadFloorTitleScene();
     }
+    else if (scene == -2)
+    {
+        titleScene.reset();
+        // loadCreditsScene();
+    }
+}
+
+void SceneManager::updateCreditsScene()
+{
     
+}
+
+void SceneManager::updateLevelSelectScene()
+{
+    int scene = levelSelectScene->update();
+    if (scene >= 0)
+    {
+        saveData.currentScene = scene;
+        levelSelectScene.reset();
+        saveSaveData();
+        loadFloorTitleScene();
+    }
+}
+
+void SceneManager::updateFloorTitleScene()
+{
+    SceneUpdateResult result = floorTitleScene->update();
+    if (result == S_Next)
+    {
+        floorTitleScene.reset();
+        loadScene();
+    }
+}
+
+void SceneManager::updateFloorScene()
+{
     SceneUpdateResult result = SceneUpdateResult::S_None;
-
-    //if showing floor title screen, wait for A press
-    if (isShowingFloorTitle)
-    {
-        result = floorTitleScene->update();
-        if (result == S_Next)
-        {
-            isShowingFloorTitle = false;
-            floorTitleScene.reset();
-            loadScene();
-        }
-
-        return;
-    }
     
-    
-    if (bn::keypad::start_pressed())
-    {
-        togglePause();
-    }
-
-    //if the game is paused, only update the pause menu
-    if (paused)
-    {
-        PauseResult pauseResult = pauseMenu->update();
-        if (pauseResult != PauseResult::P_None)
-            togglePause();
-
-        switch (pauseResult)
-        {
-            case PauseResult::P_Restart:
-                result = SceneUpdateResult::S_Restart;
-                loadFloorTitleScene();
-                return;
-            case PauseResult::P_Title:
-                isShowingTitle = true;
-                loadTitleScene();
-                return;
-            case PauseResult::P_LevelSelect:
-                isShowingLevelSelect = true;
-                loadLevelSelectScene();
-                return;
-            default:
-                return;
-        }
-    }
-    
-    if (isShowingLevelSelect)
-    {
-        int scene = levelSelectScene->update();
-        if (scene >= 0)
-        {
-            isShowingLevelSelect = false;
-            saveData.currentScene = scene;
-            levelSelectScene.reset();
-            saveSaveData();
-            loadFloorTitleScene();
-        }
-        return;
-    }
-
-    //depending on which scene is displayed, run that scene
     switch (currentSceneDisplayed)
     {
         case SceneType::Basic:
@@ -224,9 +173,76 @@ void SceneManager::update()
         saveSaveData();
 
         BN_LOG("Scene Index: ", saveData.currentScene);
+        currentScene.reset();
+        currentEventScene.reset();
+        currentMultiLevelScene.reset();
+        
         if (saveData.currentScene > -1)
             loadFloorTitleScene();
         else
             loadTitleScene();
+    }
+}
+
+void SceneManager::updatePauseMenu()
+{
+    PauseResult result = pauseMenu->update();
+    if (result != P_None) {
+        pauseMenu.reset();
+        if (result != P_Continue)
+        {
+            currentScene.reset();
+            currentEventScene.reset();
+            currentMultiLevelScene.reset();
+        }
+    }
+    
+    switch (result)
+    {
+        case PauseResult::P_Continue:
+            currentGameState = GameState::GS_Floor;
+            break;
+        case PauseResult::P_Restart:
+            loadFloorTitleScene();
+            break;
+        case PauseResult::P_LevelSelect:
+            loadLevelSelectScene();
+            break;
+        case PauseResult::P_Title:
+            loadTitleScene();
+            break;
+        default:
+            break;
+    }
+}
+
+void SceneManager::update()
+{
+    switch (currentGameState)
+    {
+        case GameState::GS_Title:
+            updateTitleScene();
+            return;
+        case GameState::GS_LevelSelect:
+            updateLevelSelectScene();
+            return;
+        case GameState::GS_Credits:
+            updateCreditsScene();
+            return;
+        case GameState::GS_FloorTitle:
+            updateFloorTitleScene();
+            return;
+        case GameState::GS_Floor:
+            updateFloorScene();
+            if (bn::keypad::start_pressed())
+            {
+                loadPauseMenu();
+            }
+            return;
+        case GameState::GS_Paused:
+            updatePauseMenu();
+            return;
+        default:
+            return;
     }
 }

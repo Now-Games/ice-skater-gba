@@ -13,10 +13,19 @@
 #include "pause_window.h"
 #include "level_select_scene.h"
 
+enum GameState
+{
+    GS_Title,
+    GS_LevelSelect,
+    GS_Credits,
+    GS_FloorTitle,
+    GS_Floor,
+    GS_Paused
+};
+
 class SceneManager
 {
     private:
-        bool paused = false;
         SceneType currentSceneDisplayed = SceneType::Basic;
         bn::unique_ptr<PauseWindow> pauseMenu;
         bn::unique_ptr<TitleScene> titleScene;
@@ -25,23 +34,28 @@ class SceneManager
         bn::unique_ptr<EventScene> currentEventScene;
         bn::unique_ptr<MultiLevelScene> currentMultiLevelScene;
         bn::unique_ptr<FloorTitleScene> floorTitleScene;
-        bool isShowingFloorTitle = false;
-        bool isShowingTitle = true;
-        bool isShowingLevelSelect = false;
+        GameState currentGameState = GameState::GS_Title;
         SaveData saveData;
         void readSaveData();
         void saveSaveData();
         void loadTitleScene();
+        void loadCreditsScene();
         void loadLevelSelectScene();
         void loadFloorTitleScene();
         void loadScene();
-        void togglePause();
+        void loadPauseMenu();
+
+        void updateTitleScene();
+        void updateCreditsScene();
+        void updateLevelSelectScene();
+        void updateFloorTitleScene();
+        void updateFloorScene();
+        void updatePauseMenu();
 
     public:
         SceneManager();
         ~SceneManager();
         void update();
-        bool isPaused();
 };
 
 #endif // SCENE_MANAGER_H
