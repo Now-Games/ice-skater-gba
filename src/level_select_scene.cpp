@@ -16,9 +16,9 @@ LevelSelectScene::LevelSelectScene(SaveData saveData) :
     pointer(bn::sprite_items::menu_pointer.create_sprite(0, 0)),
     titleGenerator(bn::sprite_text_generator(common::variable_16x16_sprite_font))
 {
-    furthestUnlockedScene = saveData.furthestScene;
+    // furthestUnlockedScene = saveData.furthestScene;
     BN_LOG("Current Scene: ", currentScene);
-    BN_LOG("Furthest Scene: ", furthestUnlockedScene);
+    // BN_LOG("Furthest Scene: ", furthestUnlockedScene);
     
     //write level select title
     titleGenerator.set_center_alignment();
@@ -29,12 +29,12 @@ LevelSelectScene::LevelSelectScene(SaveData saveData) :
     int numScenes = sizeof(sceneIndexes) / sizeof(sceneIndexes[0]);
     for (int i = 0; i <= numScenes; i++)
     {
-        if (furthestUnlockedScene < sceneIndexes[i])
+        if (saveData.furthestScene < sceneIndexes[i])
             break;
             
         if (saveData.currentScene == sceneIndexes[i])
             currentScene = i;
-            
+        
         int x = -96 + (col * 32);
         int y = -24 + (row * 24);
         scenes.push_back({
@@ -44,6 +44,7 @@ LevelSelectScene::LevelSelectScene(SaveData saveData) :
         if (i == currentScene)
             pointer.set_position(x - 16, y);
 
+        furthestUnlockedScene++;
         col++;
         if (col >= maxCols) {
             col = 0;
@@ -88,8 +89,8 @@ int LevelSelectScene::update()
     else if (bn::keypad::right_pressed())
     {
         currentScene++;
-        if (currentScene > furthestUnlockedScene)
-            currentScene = furthestUnlockedScene;
+        if (currentScene >= furthestUnlockedScene)
+            currentScene = furthestUnlockedScene - 1;
         updatePointerPosition();
         updateFloorName();
     }
@@ -104,8 +105,8 @@ int LevelSelectScene::update()
     else if (bn::keypad::down_pressed())
     {
         currentScene += maxCols;
-        if (currentScene > furthestUnlockedScene)
-            currentScene = furthestUnlockedScene;
+        if (currentScene >= furthestUnlockedScene)
+            currentScene = furthestUnlockedScene - 1;
         updatePointerPosition();
         updateFloorName();
     }

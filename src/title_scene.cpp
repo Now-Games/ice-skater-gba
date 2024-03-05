@@ -27,14 +27,14 @@ TitleScene::TitleScene(SaveData saveData) :
     {
         menuGenerator.generate(
             0,
-            MENU_START_Y + (i * 16),
+            MENU_START_Y + (i * 20),
             menuOptions.at(i),
             menuSprites);
     }
     
     //Version
     versionGenerator.set_left_alignment();
-    versionGenerator.generate(MIN_X, MAX_Y - 16, "v" + version, versionSprites);
+    versionGenerator.generate(MIN_X + 4, MAX_Y - 8, "v" + version, versionSprites);
 
     updatePointerPosition();
 }
@@ -43,7 +43,7 @@ void TitleScene::updatePointerPosition()
 {
     menuPointer.set_position(
         -(menuOptions.at(currentSelection).size() / 2 * 8) - 16, 
-        MENU_START_Y + (currentSelection * 16)
+        MENU_START_Y + (currentSelection * 20)
     );
 }
 

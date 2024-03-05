@@ -636,7 +636,7 @@ static SceneInfo getSceneDetails(int sceneIndex)
                     { ObstacleType::RockWall, bn::fixed_point(10, -9), Direction::Down },
                     { ObstacleType::RockWall, bn::fixed_point(12, -9), Direction::Down },
                     { ObstacleType::RockWall, bn::fixed_point(14, -9), Direction::Down },
-                    { ObstacleType::SnowPatch, bn::fixed_point(0, -8), Direction::Down },
+                    { ObstacleType::SnowPatch, bn::fixed_point(0, -1), Direction::Down },
                     { ObstacleType::SnowPatch, bn::fixed_point(0, -3), Direction::Down },
                     { ObstacleType::SnowPatch, bn::fixed_point(0, -5), Direction::Down },
                     { ObstacleType::SnowPatch, bn::fixed_point(0, -7), Direction::Down },

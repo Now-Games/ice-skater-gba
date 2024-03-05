@@ -49,6 +49,13 @@ void SceneManager::loadTitleScene()
     titleScene = bn::unique_ptr(new TitleScene(saveData));
 }
 
+void SceneManager::loadCreditsScene()
+{
+    currentGameState = GameState::GS_Credits;
+
+    creditsScene = bn::unique_ptr(new CreditsScene());
+}
+
 void SceneManager::loadLevelSelectScene()
 {
     currentGameState = GameState::GS_LevelSelect;
@@ -107,13 +114,18 @@ void SceneManager::updateTitleScene()
     else if (scene == -2)
     {
         titleScene.reset();
-        // loadCreditsScene();
+        loadCreditsScene();
     }
 }
 
 void SceneManager::updateCreditsScene()
 {
-    
+    creditsScene->update();
+    if (bn::keypad::b_pressed() || bn::keypad::a_pressed())
+    {
+        creditsScene.reset();
+        loadTitleScene();
+    }
 }
 
 void SceneManager::updateLevelSelectScene()
@@ -162,9 +174,11 @@ void SceneManager::updateFloorScene()
         SceneInfo currentSceneInfo = getSceneDetails(saveData.currentScene);
         if (result == SceneUpdateResult::S_Next) 
         {
-            if (currentSceneInfo.nextScene != -1)
+            if (currentSceneInfo.nextScene != -1) 
+            {
                 saveData.furthestScene = currentSceneInfo.nextScene;
                 saveData.currentScene = currentSceneInfo.nextScene; //get the next scene
+            }
         }
         else if (result == SceneUpdateResult::S_Previous) 
         {

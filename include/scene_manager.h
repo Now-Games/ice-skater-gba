@@ -12,6 +12,7 @@
 #include "title_scene.h"
 #include "pause_window.h"
 #include "level_select_scene.h"
+#include "credits_scene.h"
 
 enum GameState
 {
@@ -34,6 +35,7 @@ class SceneManager
         bn::unique_ptr<EventScene> currentEventScene;
         bn::unique_ptr<MultiLevelScene> currentMultiLevelScene;
         bn::unique_ptr<FloorTitleScene> floorTitleScene;
+        bn::unique_ptr<CreditsScene> creditsScene;
         GameState currentGameState = GameState::GS_Title;
         SaveData saveData;
         void readSaveData();

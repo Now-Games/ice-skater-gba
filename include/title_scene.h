@@ -11,7 +11,7 @@
 class TitleScene
 {
     private:
-        const int MENU_START_Y = 24;
+        const int MENU_START_Y = 8;
         bn::sprite_text_generator menuGenerator;
         bn::sprite_text_generator versionGenerator;
         bn::vector<bn::sprite_ptr, 64> menuSprites;
