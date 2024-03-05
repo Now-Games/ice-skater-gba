@@ -32,7 +32,6 @@ class SceneManager
         bn::unique_ptr<TitleScene> titleScene;
         bn::unique_ptr<LevelSelectScene> levelSelectScene;
         bn::unique_ptr<Scene> currentScene;
-        bn::unique_ptr<EventScene> currentEventScene;
         bn::unique_ptr<MultiLevelScene> currentMultiLevelScene;
         bn::unique_ptr<FloorTitleScene> floorTitleScene;
         bn::unique_ptr<CreditsScene> creditsScene;

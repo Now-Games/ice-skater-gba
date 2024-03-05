@@ -77,21 +77,25 @@ void SceneManager::loadScene()
     SceneInfo sceneInfo = getSceneDetails(saveData.currentScene);
     currentSceneDisplayed = sceneInfo.sceneType;
     
-    //load the scene depending on which type of scene it is
-    if (currentSceneDisplayed == SceneType::Event) 
-    { 
-        EventScene *eventScene = new EventScene(sceneInfo, getEventDetails(saveData.currentScene));
-        currentEventScene = bn::unique_ptr(eventScene);
-    }
-    else if (currentSceneDisplayed == SceneType::Basic)
+    switch (currentSceneDisplayed)
     {
-        Scene *scene = new Scene(sceneInfo);
-        currentScene = bn::unique_ptr(scene);
-    }
-    else if (currentSceneDisplayed == SceneType::MultiLevel)
-    {
-        MultiLevelScene *multiScene = new MultiLevelScene(getMultiLevelDetails(saveData.currentScene));
-        currentMultiLevelScene = bn::unique_ptr(multiScene);
+        case SceneType::Basic:
+            currentScene = bn::unique_ptr(new Scene(sceneInfo));
+            break;
+        case SceneType::Event:
+        {
+            EventSceneInfo eventInfo = getEventDetails(saveData.currentScene);
+            currentScene = bn::unique_ptr(static_cast<Scene *>(new EventScene(sceneInfo, eventInfo)));
+            break;
+        }
+        case SceneType::MultiLevel:
+        {
+            MultiLevelScene *multiScene = new MultiLevelScene(getMultiLevelDetails(saveData.currentScene));
+            currentMultiLevelScene = bn::unique_ptr(multiScene);
+            break;
+        }
+        default:
+            break;
     }
 }
 
@@ -157,10 +161,8 @@ void SceneManager::updateFloorScene()
     switch (currentSceneDisplayed)
     {
         case SceneType::Basic:
-            result = currentScene->update();
-            break;
         case SceneType::Event:
-            result = currentEventScene->update();
+            result = currentScene->update();
             break;
         case SceneType::MultiLevel:
             result = currentMultiLevelScene->update();
@@ -176,7 +178,8 @@ void SceneManager::updateFloorScene()
         {
             if (currentSceneInfo.nextScene != -1) 
             {
-                saveData.furthestScene = currentSceneInfo.nextScene;
+                if (currentSceneInfo.nextScene > saveData.furthestScene)
+                    saveData.furthestScene = currentSceneInfo.nextScene;
                 saveData.currentScene = currentSceneInfo.nextScene; //get the next scene
             }
         }
@@ -188,7 +191,6 @@ void SceneManager::updateFloorScene()
 
         BN_LOG("Scene Index: ", saveData.currentScene);
         currentScene.reset();
-        currentEventScene.reset();
         currentMultiLevelScene.reset();
         
         if (saveData.currentScene > -1)
@@ -206,7 +208,6 @@ void SceneManager::updatePauseMenu()
         if (result != P_Continue)
         {
             currentScene.reset();
-            currentEventScene.reset();
             currentMultiLevelScene.reset();
         }
     }

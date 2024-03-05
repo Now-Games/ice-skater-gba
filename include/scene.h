@@ -25,8 +25,8 @@ class Scene
         
     public:
         explicit Scene(SceneInfo sceneInfo);
-        ~Scene() = default;
-        SceneUpdateResult update();
+        virtual ~Scene() {};
+        virtual SceneUpdateResult update();
         bn::fixed_point getMaxBounds();
         bn::fixed_point getMinBounds();
         void setMaxBounds(bn::fixed_point bounds);

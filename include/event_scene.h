@@ -4,18 +4,18 @@
 #include "bn_sprite_text_generator.h"
 #include "scene.h"
 
-class EventScene
+class EventScene : public Scene
 {
     protected:
-        Scene scene;
+        // Scene scene;
         bn::sprite_text_generator textGenerator;
         bn::vector<bn::sprite_ptr, 32> textSprites;
         
     public:
         EventScene(SceneInfo sceneInfo, EventSceneInfo eventDetails);
-        ~EventScene() = default;
+        ~EventScene() {};
         Scene* getScene();
-        SceneUpdateResult update();
+        SceneUpdateResult update() override;
 };
 
 #endif // EVENT_SCENE_H
