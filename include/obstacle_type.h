@@ -12,7 +12,8 @@ enum ObstacleType
     CrackedWall,
     CrackedIce,
     StairsDown,
-    StairsUp
+    StairsUp,
+    OT_Shuriken
 };
 
 #endif // OBSTACLE_TYPE_H

@@ -6,15 +6,16 @@
 #include "bn_sprite_items_player_fall_sheet.h"
 #include "game_constants.h"
 
-Player::Player(bn::fixed_point pos, Direction dir) : 
-    sprite(bn::sprite_items::player_sheet.create_sprite(pos * BLOCK_SIZE)),
-    position(pos * BLOCK_SIZE)
+Player::Player(Scene *scene, bn::fixed_point pos, Direction dir) : 
+    GameObject(pos, bn::sprite_items::player_sheet),
+    moveComponent(this, 4),
+    colliderComponent(this, 16, 16)
 {
-    sprite.set_z_order(4);
-    fallAnim = bn::create_sprite_animate_action_once(sprite, 4, 
+    fallAnim = bn::create_sprite_animate_action_once(sprite.value(), 4, 
                        bn::sprite_items::player_fall_sheet.tiles_item(), 
                        1, 2, 3, 4, 5, 6, 7, 8, 9,10, 11, 12, 13, 14, 15, 16, 17, 17, 17, 17);
-    
+
+    currentScene = bn::unique_ptr(scene);
     setDirection(dir);
 }
 
@@ -26,81 +27,57 @@ void Player::setDirection(Direction dir)
     }
     
     direction = dir;
-    sprite.set_tiles(bn::sprite_items::player_sheet.tiles_item().create_tiles(direction));
+    sprite->set_tiles(bn::sprite_items::player_sheet.tiles_item().create_tiles(direction));
 }
 
-Direction Player::getDirection()
+MoveComponent* Player::getMoveComponent()
 {
-    return direction;
+    return &moveComponent;
 }
 
-bn::fixed_point Player::getPosition()
+ColliderComponent* Player::getColliderComponent()
 {
-    return position;
+    return &colliderComponent;
 }
 
-void Player::setPosition(bn::fixed_point pos)
+void Player::getInput()
 {
-    this->position = pos;
-    sprite.set_position(pos);
-}
+    Direction newDirection = direction;
+    bn::fixed_point limits = bn::fixed_point();
 
-void Player::setMoveLimit(bn::fixed_point newPos)
-{
-    if (moveLimit == newPos)
-        return;
-    
-    moving = true;
-    moveLimit = newPos;
-    BN_LOG("Move Limit X: ", moveLimit.x());
-    BN_LOG("Move Limit Y: ", moveLimit.y());
-}
-
-bool Player::isMoving()
-{
-    return moving;
-}
-
-void Player::move(Direction dir)
-{
-    bn::fixed_point delta;
-    switch (dir)
+    if (bn::keypad::up_pressed())
     {
-        case Direction::Up:
-            delta = bn::fixed_point(0, -moveSpeed);
-            break;
-        case Direction::Down:
-            delta = bn::fixed_point(0, moveSpeed);
-            break;
-        case Direction::Left:
-            delta = bn::fixed_point(-moveSpeed, 0);
-            break;
-        case Direction::Right:
-            delta = bn::fixed_point(moveSpeed, 0);
-        default:
-            break;
+        newDirection = Direction::Up;
+        limits = bn::fixed_point(position.x(), MIN_Y);
     }
-    
-    position += delta;
-    if ((dir == Direction::Right && position.x() > moveLimit.x()) ||
-            (dir == Direction::Left && position.x() < moveLimit.x()) ||
-            (dir == Direction::Down && position.y() > moveLimit.y()) ||
-            (dir == Direction::Up && position.y() < moveLimit.y()))
+    else if (bn::keypad::down_pressed())
     {
-        position = moveLimit;
-        moving = false;
-        BN_LOG("Player move is finished");
+        newDirection = Direction::Down;
+        limits = bn::fixed_point(position.x(), MAX_Y);
     }
-    
-    sprite.set_position(position);
+    else if (bn::keypad::left_pressed())
+    {
+        newDirection = Direction::Left;
+        limits = bn::fixed_point(MIN_X, position.y());
+    }
+    else if (bn::keypad::right_pressed())
+    {
+        newDirection = Direction::Right;
+        limits = bn::fixed_point(MAX_X, position.y());
+    }
+
+    setDirection(newDirection);
+    int obstacleIndex = currentScene->getNextObstacle(position, newDirection);
+    if (obstacleIndex == -1)
+        moveComponent.setPosition(limits); //Set the move position limit to the obstacle's stopping position based on direction
+    else
+        BN_LOG("Stop at the Object's stopping point");
 }
 
 void Player::update()
 {
-    if (!moving)
-        return;
-    
-    move(direction);
+    getInput();
+    moveComponent.update();
 }
 
 void Player::playFallingAnimation()

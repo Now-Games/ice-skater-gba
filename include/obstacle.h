@@ -24,7 +24,7 @@ class Obstacle
         
     public:
         Obstacle(ObstacleInfo info);
-        ~Obstacle() = default;
+        virtual ~Obstacle() = default;
         void setDestroy();
         bn::fixed_point getPosition();
         ObstacleType getType();

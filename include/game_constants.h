@@ -11,6 +11,8 @@
 #define MIN_Y -80
 #define MAX_Y 80
 
+#define PLAYER_INDEX 0
+
 const int BLOCK_SIZE = 8;
 const bn::string<6> version = "2.0";
 const int sceneIndexes[] = {

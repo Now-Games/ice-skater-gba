@@ -13,8 +13,8 @@
 //	+ regular map (flat), not compressed, 32x32 
 //	Total size: 96 + 576 + 2048 = 2720
 //
-//	Time-stamp: 2022-11-30, 20:23:03
-//	Exported by Cearn's GBA Image Transmogrifier, v0.8.16
+//	Time-stamp: 2024-03-06, 22:44:52
+//	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
 //======================================================================
@@ -40,7 +40,7 @@ namespace bn::regular_bg_items
     constexpr inline regular_bg_item stage_scene(
             regular_bg_tiles_item(span<const tile>(stage_scene_bn_gfxTiles, 18), bpp_mode::BPP_8, compression_type::NONE), 
             bg_palette_item(span<const color>(stage_scene_bn_gfxPal, 48), bpp_mode::BPP_8, compression_type::NONE),
-            regular_bg_map_item(stage_scene_bn_gfxMap[0], size(32, 32), compression_type::NONE));
+            regular_bg_map_item(stage_scene_bn_gfxMap[0], size(32, 32), compression_type::NONE, 1, false));
 }
 
 #endif
