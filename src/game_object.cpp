@@ -60,8 +60,3 @@ void GameObject::setPosition(bn::fixed_point newPos)
     if (sprite.has_value())
         sprite->set_position(position);
 }
-
-void GameObject::update()
-{
-    
-}

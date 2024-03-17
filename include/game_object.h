@@ -6,6 +6,21 @@
 #include "bn_sprite_ptr.h"
 #include "bn_sprite_item.h"
 
+enum GameObjectType
+{
+    GOT_None,
+    GOT_Player,
+    GOT_IceRock,
+    GOT_RockWall,
+    GOT_RockHole,
+    GOT_CrackedIce,
+    GOT_Snowball,
+    GOT_SnowPatch,
+    GOT_StairsUp,
+    GOT_StairsDown,
+    GOT_Shuriken
+};
+
 class GameObject
 {
     protected:
@@ -29,20 +44,5 @@ class GameObject
         void setActive(bool a);
         virtual void setPosition(bn::fixed_point newPos);
         virtual void setDirection(Direction newDir);
-        virtual void update();
-};
-
-enum GameObjectType
-{
-    GOT_None,
-    GOT_Player,
-    GOT_IceRock,
-    GOT_RockWall,
-    GOT_RockHole,
-    GOT_CrackedIce,
-    GOT_Snowball,
-    GOT_SnowPatch,
-    GOT_StairsUp,
-    GOT_StairsDown,
-    GOT_Shuriken
+        virtual void update() {};
 };

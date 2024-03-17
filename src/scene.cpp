@@ -47,10 +47,9 @@ SceneUpdateResult Scene::update()
         obstacles[i].update();
     }
 
-    Player *player = dynamic_cast<Player*>(&obstacles[PLAYER_INDEX]);
     if (obstacleIndex != -1)
     {
-        if (player->getPosition() == obstacles[obstacleIndex].getPosition())
+        if (obstacles[PLAYER_INDEX].getPosition() == obstacles[obstacleIndex].getPosition())
         {
             switch (obstacles[obstacleIndex].getObjectType())
             {
@@ -60,46 +59,15 @@ SceneUpdateResult Scene::update()
                     return SceneUpdateResult::S_PreviousFloor;
                 case GameObjectType::GOT_StairsDown:
                     return SceneUpdateResult::S_NextFloor;
+                case GameObjectType::GOT_CrackedIce:
+                    //obstacles[obstacleIndex].setDestroyed();
+                    // obstacles[PLAYER_INDEX].play_fall_animation();
+                    return SceneUpdateResult::S_Restart;
                 default:
                     break;
             }
         }
     }
-
-    // if (!player)
-    //     return SceneUpdateResult::S_None;
-    
-    // if (!player->isMoving())
-    //     getInput();
-    
-    // player->update();
-    
-    // if (!player->isMoving())
-    // {
-    //     //get object type
-    //     if (obstacleIndex != -1)
-    //     {
-    //         if (obstacles[obstacleIndex].getType() == ObstacleType::RockHole)
-    //             return SceneUpdateResult::S_Next;
-    //         else if (obstacles[obstacleIndex].getType() == ObstacleType::StairsUp)
-    //             return SceneUpdateResult::S_PreviousFloor;
-    //         else if (obstacles[obstacleIndex].getType() == ObstacleType::StairsDown)
-    //             return SceneUpdateResult::S_NextFloor;
-    //         else if (obstacles[obstacleIndex].getType() == ObstacleType::CrackedIce)
-    //         {
-    //             obstacles[obstacleIndex].setDestroy();
-    //             player->playFallingAnimation();
-    //             return SceneUpdateResult::S_Restart;
-    //         }
-            
-    //         if (bn::keypad::a_pressed() && 
-    //             (obstacles[obstacleIndex].getType() == ObstacleType::CrackedWall || 
-    //             obstacles[obstacleIndex].getType() == ObstacleType::Snowball))
-    //         {
-    //             obstacles[obstacleIndex].setDestroy();
-    //         }
-    //     }
-    // }
     
     return SceneUpdateResult::S_None;
 }
