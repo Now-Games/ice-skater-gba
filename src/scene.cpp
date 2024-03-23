@@ -1,6 +1,7 @@
 #include "scene.h"
 #include "player.h"
 #include "shuriken_obstacle.h"
+#include "destructible_component.h"
 #include "bn_math.h"
 #include "game_constants.h"
 #include "bn_regular_bg_items_stage_scene.h"
@@ -60,9 +61,14 @@ SceneUpdateResult Scene::update()
                 case GameObjectType::GOT_StairsDown:
                     return SceneUpdateResult::S_NextFloor;
                 case GameObjectType::GOT_CrackedIce:
-                    //obstacles[obstacleIndex].setDestroyed();
+                {
+                    DestructibleComponent *destComp = obstacles[obstacleIndex].getComponent<DestructibleComponent>();
+                    if (destComp != nullptr)
+                        destComp->destroy();
+                        
                     // obstacles[PLAYER_INDEX].play_fall_animation();
                     return SceneUpdateResult::S_Restart;
+                }
                 default:
                     break;
             }

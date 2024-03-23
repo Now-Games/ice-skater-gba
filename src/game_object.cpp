@@ -14,6 +14,11 @@ GameObject::GameObject(bn::fixed_point tilePosition, bn::sprite_item spriteItem)
     sprite->set_z_order(4);
 }
 
+bn::sprite_ptr GameObject::getSprite()
+{
+    return sprite.value();
+}
+
 bn::fixed_point GameObject::getPosition()
 {
     return position;

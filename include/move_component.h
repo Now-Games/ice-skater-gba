@@ -1,14 +1,13 @@
 #pragma once
 
 #include "direction.h"
-#include "game_object.h"
+#include "base_component.h"
 #include "bn_unique_ptr.h"
 #include "bn_fixed_point.h"
 
-class MoveComponent
+class MoveComponent : public BaseComponent
 {
     private:
-        bn::unique_ptr<GameObject> parent;
         bn::fixed_point targetPosition;
         int speed = 4;
         bool moving = false;
@@ -16,9 +15,14 @@ class MoveComponent
         void move();
 
     public:
+        MoveComponent() : BaseComponent() {}
         MoveComponent(GameObject *p, int speed);
         ~MoveComponent() = default;
         bool isMoving();
         void setPosition(bn::fixed_point newPos);
         void update();
+        ComponentType getType() const override
+        {
+            return ComponentType::CT_Movement;
+        }
 };

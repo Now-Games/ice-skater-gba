@@ -1,9 +1,9 @@
 #include "move_component.h"
+#include "game_object.h"
 
-MoveComponent::MoveComponent(GameObject *p, int spd)
+MoveComponent::MoveComponent(GameObject *p, int spd) : BaseComponent(p)
 {
     speed = spd;
-    parent = bn::unique_ptr(p);
     targetPosition = parent->getPosition();
 }
 

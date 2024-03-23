@@ -1,21 +1,25 @@
 #pragma once
 
-#include "game_object.h"
+#include "base_component.h"
 #include "bn_rect.h"
 #include "bn_fixed_point.h"
 #include "bn_unique_ptr.h"
 
-class ColliderComponent
+class ColliderComponent : public BaseComponent
 {
     private:
-        bn::unique_ptr<GameObject> parent;
-        bn::rect bounds;
+        bn::size bounds;
         bn::fixed_point collisionPoint;
 
     public:
+        ColliderComponent() : BaseComponent() {}
         ColliderComponent(GameObject *p, int width, int height);
         ~ColliderComponent() = default;
         bn::rect getBounds();
         bn::fixed_point getCollisionPoint();
         bool isIntersecting(ColliderComponent *other);
+        ComponentType getType() const override
+        {
+            return ComponentType::CT_Collider;
+        }
 };

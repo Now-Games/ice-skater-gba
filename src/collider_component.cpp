@@ -1,15 +1,16 @@
 #include "collider_component.h"
+#include "game_object.h"
 
-ColliderComponent::ColliderComponent(GameObject *p, int width, int height)
+ColliderComponent::ColliderComponent(GameObject *p, int width, int height) : 
+    BaseComponent(p)
 {
-    parent = bn::unique_ptr(p);
-    bn::fixed_point position = parent->getPosition();
-    bounds = bn::rect(bn::point(position.x().data(), position.y().data()), bn::size(width, height));
+    bounds = bn::size(width, height);
 }
 
 bn::rect ColliderComponent::getBounds()
 {
-    return bounds;
+    bn::fixed_point position = parent->getPosition();
+    return bn::rect(bn::point(position.x().data(), position.y().data()), bounds);
 }
 
 bn::fixed_point ColliderComponent::getCollisionPoint()
@@ -19,5 +20,6 @@ bn::fixed_point ColliderComponent::getCollisionPoint()
 
 bool ColliderComponent::isIntersecting(ColliderComponent *other)
 {
-    return bounds.intersects(other->getBounds());
+    bn::fixed_point position = parent->getPosition();
+    return bn::rect(bn::point(position.x().data(), position.y().data()), bounds).intersects(other->getBounds());
 }
