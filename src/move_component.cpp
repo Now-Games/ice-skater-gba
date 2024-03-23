@@ -1,5 +1,5 @@
-#include "move_component.h"
-#include "game_object.h"
+#include "components/move_component.h"
+#include "gameObjects/game_object.h"
 
 MoveComponent::MoveComponent(GameObject *p, int spd) : BaseComponent(p)
 {
@@ -10,6 +10,11 @@ MoveComponent::MoveComponent(GameObject *p, int spd) : BaseComponent(p)
 bool MoveComponent::isMoving()
 {
     return moving;
+}
+
+void MoveComponent::setMoving(bool b)
+{
+    moving = b;
 }
 
 void MoveComponent::setPosition(bn::fixed_point newPos)
@@ -57,12 +62,12 @@ void MoveComponent::move()
         default:
             break;
     }
-
+       
     if (passedTarget)
         parent->setPosition(targetPosition);
     else
         parent->setPosition(parent->getPosition() + dPos);
-    
+
     if (parent->getPosition() == targetPosition)
         moving = false;
 }

@@ -16,10 +16,11 @@ class MoveComponent : public BaseComponent
 
     public:
         MoveComponent() : BaseComponent() {}
-        MoveComponent(GameObject *p, int speed);
+        MoveComponent(GameObject *, int);
         ~MoveComponent() = default;
         bool isMoving();
-        void setPosition(bn::fixed_point newPos);
+        void setMoving(bool);
+        void setPosition(bn::fixed_point);
         void update();
         ComponentType getType() const override
         {

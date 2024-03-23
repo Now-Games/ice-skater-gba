@@ -1,6 +1,6 @@
-#include "destructible_component.h"
+#include "components/destructible_component.h"
 #include "bn_core.h"
-#include "game_object.h"
+#include "gameObjects/game_object.h"
 
 DestructibleComponent::DestructibleComponent(GameObject *p, bn::sprite_item spritesheet) : 
     BaseComponent(p),

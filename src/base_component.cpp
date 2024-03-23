@@ -1,4 +1,4 @@
-#include "base_component.h"
+#include "components/base_component.h"
 
 BaseComponent::BaseComponent(GameObject* p) : parent(bn::unique_ptr(p))
 {

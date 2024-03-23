@@ -1,5 +1,5 @@
-#include "collider_component.h"
-#include "game_object.h"
+#include "components/collider_component.h"
+#include "gameObjects/game_object.h"
 
 ColliderComponent::ColliderComponent(GameObject *p, int width, int height) : 
     BaseComponent(p)

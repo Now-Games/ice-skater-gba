@@ -9,8 +9,8 @@
 #include "bn_vector.h"
 #include "bn_string.h"
 #include "direction.h"
-#include "obstacle_type.h"
 #include "scene_type.h"
+#include "gameObjects/game_object.h"
 
 #include "bn_sprite_items_ice_rock.h"
 #include "bn_sprite_items_rock_wall.h"
@@ -22,7 +22,7 @@
 
 struct ObstacleInfo
 {
-    ObstacleType type;
+    GameObjectType type = GameObjectType::GOT_None;
     bn::fixed_point position;
     Direction direction;
 };

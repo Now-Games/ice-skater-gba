@@ -1,7 +1,7 @@
 #include "scene.h"
-#include "player.h"
-#include "shuriken_obstacle.h"
-#include "destructible_component.h"
+#include "gameObjects/player.h"
+#include "components/destructible_component.h"
+#include "gameObjects/game_object_factory.h"
 #include "bn_math.h"
 #include "game_constants.h"
 #include "bn_regular_bg_items_stage_scene.h"
@@ -9,17 +9,19 @@
 
 Scene::Scene(SceneInfo sceneInfo)
 {
-    obstacles.push_back(Player(this, sceneInfo.startPos, sceneInfo.startDirection));
+    obstacles.push_back(bn::unique_ptr(new Player(this, sceneInfo.startPos, sceneInfo.startDirection)));
     BN_LOG("Player Starts: ", sceneInfo.startPos.x());
     
     //generate all obstacles based on sceneInfo
-    // for (ObstacleInfo info : sceneInfo.obstalces)
-    // {
-        // if (info.type == ObstacleType::OT_Shuriken)
-        //     obstacles.push_back(Shuriken(info, this));
-        // else
-        //     obstacles.push_back(Obstacle(info));
-    // }
+    for (ObstacleInfo info : sceneInfo.obstalces)
+    {
+        if (info.type == GameObjectType::GOT_None)
+            continue;
+
+        GameObject* objPtr = createGameObject(this, info);
+        BN_LOG("Object: ", objPtr->getObjectType());
+        obstacles.push_back(bn::unique_ptr(objPtr));
+    }
     
     maxBounds = bn::fixed_point((SCREEN_WIDTH / 2) - BLOCK_SIZE, (SCREEN_HEIGHT / 2) - BLOCK_SIZE);
     minBounds = bn::fixed_point(-(SCREEN_WIDTH / 2) + BLOCK_SIZE, -(SCREEN_HEIGHT / 2) + BLOCK_SIZE);
@@ -45,14 +47,14 @@ SceneUpdateResult Scene::update()
 {    
     for (int i = 0; i < obstacles.size(); i ++)
     {
-        obstacles[i].update();
+        obstacles[i]->update();
     }
 
     if (obstacleIndex != -1)
     {
-        if (obstacles[PLAYER_INDEX].getPosition() == obstacles[obstacleIndex].getPosition())
+        if (obstacles[PLAYER_INDEX]->getPosition() == obstacles[obstacleIndex]->getPosition())
         {
-            switch (obstacles[obstacleIndex].getObjectType())
+            switch (obstacles[obstacleIndex]->getObjectType())
             {
                 case GameObjectType::GOT_RockHole:
                     return SceneUpdateResult::S_Next;
@@ -62,11 +64,11 @@ SceneUpdateResult Scene::update()
                     return SceneUpdateResult::S_NextFloor;
                 case GameObjectType::GOT_CrackedIce:
                 {
-                    DestructibleComponent *destComp = obstacles[obstacleIndex].getComponent<DestructibleComponent>();
+                    DestructibleComponent *destComp = obstacles[obstacleIndex]->getComponent<DestructibleComponent>();
                     if (destComp != nullptr)
                         destComp->destroy();
                         
-                    // obstacles[PLAYER_INDEX].play_fall_animation();
+                    // obstacles[PLAYER_INDEX]->play_fall_animation();
                     return SceneUpdateResult::S_Restart;
                 }
                 default:
@@ -100,74 +102,94 @@ void Scene::setMinBounds(bn::fixed_point bounds)
 
 void Scene::setPlayerPosition(bn::fixed_point rawPosition)
 {
-    obstacles[PLAYER_INDEX].setPosition(rawPosition);
+    obstacles[PLAYER_INDEX]->setPosition(rawPosition);
 }
 
 bn::fixed_point Scene::getPlayerPosition()
 {
-    return obstacles[PLAYER_INDEX].getPosition();
+    return obstacles[PLAYER_INDEX]->getPosition();
+}
+
+bool Scene::isEmptySpace(GameObject* other)
+{
+    ColliderComponent* otherColl = other->getComponent<ColliderComponent>();
+    bool hasCollision = false;
+    for (int i = 0; i < obstacles.size(); i ++)
+    {
+        if (!obstacles[i]->isEnabled() || obstacles[i]->isActive())
+            continue;
+
+        ColliderComponent *collComp = obstacles[i]->getComponent<ColliderComponent>();
+        if (collComp != nullptr)
+        {
+             hasCollision = collComp->isIntersecting(otherColl);
+        }
+    }
+
+    return hasCollision;
 }
 
 int Scene::getNextObstacle(bn::fixed_point position, Direction direction)
 {
-    int index = -1;
-    bn::fixed minDist = UINT16_MAX;
-    for (int i = 0; i < obstacles.size(); i ++)
-    {
-        if (!obstacles[i].isEnabled() || !obstacles[i].isActive() || 
-                obstacles[i].getPosition() == position)
-        {
-            continue;
-        }
+    return 0;
+    // int index = -1;
+    // bn::fixed minDist = UINT16_MAX;
+    // for (int i = 0; i < obstacles.size(); i ++)
+    // {
+    //     if (!obstacles[i]->isEnabled() || !obstacles[i]->isActive() || 
+    //             obstacles[i]->getPosition() == position)
+    //     {
+    //         continue;
+    //     }
             
-        bn::fixed dist = 0;
-        switch (direction) {
-            case Direction::Up:
-                if (obstacles[i].getPosition().x() != position.x() || 
-                        obstacles[i].getPosition().y() > position.y()) 
-                {
-                    continue;
-                }
+    //     bn::fixed dist = 0;
+    //     switch (direction) {
+    //         case Direction::Up:
+    //             if (obstacles[i]->getPosition().x() != position.x() || 
+    //                     obstacles[i]->getPosition().y() > position.y()) 
+    //             {
+    //                 continue;
+    //             }
                 
-                dist = bn::abs(obstacles[i].getPosition().y() - position.y());
-                break;
-            case Direction::Down:
-                if (obstacles[i].getPosition().x() != position.x() || 
-                        obstacles[i].getPosition().y() < position.y()) 
-                {
-                    continue;
-                }
+    //             dist = bn::abs(obstacles[i]->getPosition().y() - position.y());
+    //             break;
+    //         case Direction::Down:
+    //             if (obstacles[i]->getPosition().x() != position.x() || 
+    //                     obstacles[i]->getPosition().y() < position.y()) 
+    //             {
+    //                 continue;
+    //             }
                 
-                dist = bn::abs(obstacles[i].getPosition().y() - position.y());
-                break;
-            case Direction::Left:
-                if (obstacles[i].getPosition().y() != position.y() || 
-                        obstacles[i].getPosition().x() > position.x()) 
-                {
-                    continue;
-                }
+    //             dist = bn::abs(obstacles[i]->getPosition().y() - position.y());
+    //             break;
+    //         case Direction::Left:
+    //             if (obstacles[i]->getPosition().y() != position.y() || 
+    //                     obstacles[i]->getPosition().x() > position.x()) 
+    //             {
+    //                 continue;
+    //             }
                 
-                dist = bn::abs(obstacles[i].getPosition().x() - position.x());
-                break;
-            case Direction::Right:
-                if (obstacles[i].getPosition().y() != position.y() || 
-                        obstacles[i].getPosition().x() < position.x())
-                {
-                    continue;
-                }
+    //             dist = bn::abs(obstacles[i]->getPosition().x() - position.x());
+    //             break;
+    //         case Direction::Right:
+    //             if (obstacles[i]->getPosition().y() != position.y() || 
+    //                     obstacles[i]->getPosition().x() < position.x())
+    //             {
+    //                 continue;
+    //             }
                 
-                dist = bn::abs(obstacles[i].getPosition().x() - position.x());
-                break;
-            default:
-                break;
-        }
+    //             dist = bn::abs(obstacles[i]->getPosition().x() - position.x());
+    //             break;
+    //         default:
+    //             break;
+    //     }
     
-        if (dist <= minDist) {
-            minDist = dist;
-            index = i;
-        }
-    }
+    //     if (dist <= minDist) {
+    //         minDist = dist;
+    //         index = i;
+    //     }
+    // }
     
-    BN_LOG("Closest Obstacle: ", index);
-    return index;
+    // BN_LOG("Closest Obstacle: ", index);
+    // return index;
 }

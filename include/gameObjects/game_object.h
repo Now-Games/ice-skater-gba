@@ -1,6 +1,6 @@
 #pragma once
 
-#include "base_component.h"
+#include "components/base_component.h"
 #include "direction.h"
 #include "bn_unique_ptr.h"
 #include "bn_fixed_point.h"
@@ -16,6 +16,7 @@ enum GameObjectType
     GOT_IceRock,
     GOT_RockWall,
     GOT_RockHole,
+    GOT_CrackedWall,
     GOT_CrackedIce,
     GOT_Snowball,
     GOT_SnowPatch,
@@ -24,9 +25,11 @@ enum GameObjectType
     GOT_Shuriken
 };
 
+class Scene;
 class GameObject
 {
     protected:
+        bn::unique_ptr<Scene> currentScene;
         GameObjectType type = GameObjectType::GOT_None;
         bn::fixed_point position;
         Direction direction = Direction::Down;
@@ -36,9 +39,9 @@ class GameObject
         bool enabled = true;
 
     public:
-        GameObject(bn::fixed_point pos);
-        GameObject(bn::fixed_point pos, bn::sprite_item sprite);
-        virtual ~GameObject() = default;
+        GameObject(Scene*, bn::fixed_point, GameObjectType);
+        GameObject(Scene*, bn::fixed_point, GameObjectType, bn::sprite_item);
+        virtual ~GameObject();
         bn::sprite_ptr getSprite();
         bn::fixed_point getPosition();
         Direction getDirection();

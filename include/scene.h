@@ -1,7 +1,6 @@
-#ifndef SCENE_H
-#define SCENE_H
+#pragma once
 
-#include "game_object.h"
+#include "gameObjects/game_object.h"
 #include "bn_unique_ptr.h"
 #include "bn_keypad.h"
 #include "bn_log.h"
@@ -16,7 +15,7 @@ class Scene
     protected:
         bn::fixed_point startPosition;
         bn::optional<bn::regular_bg_ptr> background;
-        bn::vector<GameObject, 32> obstacles;
+        bn::vector<bn::unique_ptr<GameObject>, 32> obstacles;
         bn::fixed_point maxBounds;
         bn::fixed_point minBounds;
         int obstacleIndex = -1;
@@ -31,7 +30,6 @@ class Scene
         void setMinBounds(bn::fixed_point bounds);
         void setPlayerPosition(bn::fixed_point rawPosition);
         bn::fixed_point getPlayerPosition();
+        bool isEmptySpace(GameObject*);
         int getNextObstacle(bn::fixed_point position, Direction direction);
 };
-
-#endif // SCENE_H
