@@ -36,43 +36,39 @@ void Player::getInput()
 {
     Direction newDirection = direction;
     bn::fixed_point limits = bn::fixed_point();
+    bn::fixed_point nextPosition = getPosition();
     bool inputPressed = false;
 
-    if (bn::keypad::up_pressed())
+    if (bn::keypad::up_held())
     {
-        inputPressed = true;
         newDirection = Direction::Up;
         limits = bn::fixed_point(position.x(), MIN_Y);
+        nextPosition += bn::fixed_point(0, -BLOCK_SIZE * 2);
     }
-    else if (bn::keypad::down_pressed())
+    else if (bn::keypad::down_held())
     {
-        inputPressed = true;
         newDirection = Direction::Down;
         limits = bn::fixed_point(position.x(), MAX_Y);
+        nextPosition += bn::fixed_point(0, BLOCK_SIZE * 2);
     }
-    else if (bn::keypad::left_pressed())
+    else if (bn::keypad::left_held())
     {
-        inputPressed = true;
         newDirection = Direction::Left;
         limits = bn::fixed_point(MIN_X, position.y());
+        nextPosition += bn::fixed_point(-BLOCK_SIZE * 2, 0);
     }
-    else if (bn::keypad::right_pressed())
+    else if (bn::keypad::right_held())
     {
-        inputPressed = true;
         newDirection = Direction::Right;
         limits = bn::fixed_point(MAX_X, position.y());
+        nextPosition += bn::fixed_point(BLOCK_SIZE * 2, 0);
     }
 
-    if (!inputPressed) //dont change anything if the player hasnt moved
-        return;
-
     setDirection(newDirection);
-    int obstacleIndex = currentScene->getNextObstacle(position, newDirection);
-    if (obstacleIndex == -1)
-        moveComponent->setPosition(limits); //Set the move position limit to the obstacle's stopping position based on direction
-    else 
+
+    if (currentScene->isEmptySpace(this))
     {
-        //TODO: Stop at the Object's stopping point
+        moveComponent->setTargetPosition(nextPosition);
     }
 }
 

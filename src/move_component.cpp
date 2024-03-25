@@ -17,7 +17,7 @@ void MoveComponent::setMoving(bool b)
     moving = b;
 }
 
-void MoveComponent::setPosition(bn::fixed_point newPos)
+void MoveComponent::setTargetPosition(bn::fixed_point newPos)
 {
     targetPosition = newPos;
     if (targetPosition != parent->getPosition())

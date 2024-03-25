@@ -15,7 +15,7 @@ class Scene
     protected:
         bn::fixed_point startPosition;
         bn::optional<bn::regular_bg_ptr> background;
-        bn::vector<bn::unique_ptr<GameObject>, 32> obstacles;
+        bn::vector<bn::unique_ptr<GameObject>, 32> gameObjects;
         bn::fixed_point maxBounds;
         bn::fixed_point minBounds;
         int obstacleIndex = -1;
