@@ -17,7 +17,7 @@ class ColliderComponent : public BaseComponent
         ~ColliderComponent() = default;
         bn::rect getBounds();
         bn::fixed_point getCollisionPoint();
-        bool isIntersecting(ColliderComponent *other);
+        bool isIntersecting(bn::rect other);
         ComponentType getType() const override
         {
             return ComponentType::CT_Collider;

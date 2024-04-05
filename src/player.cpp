@@ -66,7 +66,7 @@ void Player::getInput()
 
     setDirection(newDirection);
 
-    if (currentScene->isEmptySpace(this))
+    if (currentScene->isEmptySpace(getComponent<ColliderComponent>()))
     {
         moveComponent->setTargetPosition(nextPosition);
     }

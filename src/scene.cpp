@@ -110,9 +110,8 @@ bn::fixed_point Scene::getPlayerPosition()
     return gameObjects[PLAYER_INDEX]->getPosition();
 }
 
-bool Scene::isEmptySpace(GameObject* other)
+bool Scene::isEmptySpace(ColliderComponent* other)
 {
-    ColliderComponent* otherColl = other->getComponent<ColliderComponent>();
     bool hasCollision = false;
     for (int i = 0; i < gameObjects.size(); i ++)
     {
@@ -122,7 +121,7 @@ bool Scene::isEmptySpace(GameObject* other)
         ColliderComponent *collComp = gameObjects[i]->getComponent<ColliderComponent>();
         if (collComp != nullptr)
         {
-             hasCollision = collComp->isIntersecting(otherColl);
+             hasCollision = collComp->isIntersecting(other->getBounds());
         }
     }
 

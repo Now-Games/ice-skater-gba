@@ -18,8 +18,7 @@ bn::fixed_point ColliderComponent::getCollisionPoint()
     return collisionPoint;
 }
 
-bool ColliderComponent::isIntersecting(ColliderComponent *other)
+bool ColliderComponent::isIntersecting(bn::rect other)
 {
-    bn::fixed_point position = parent->getPosition();
-    return bn::rect(bn::point(position.x().data(), position.y().data()), bounds).intersects(other->getBounds());
+    return getBounds().intersects(other);
 }

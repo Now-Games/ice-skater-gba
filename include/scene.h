@@ -30,6 +30,6 @@ class Scene
         void setMinBounds(bn::fixed_point bounds);
         void setPlayerPosition(bn::fixed_point rawPosition);
         bn::fixed_point getPlayerPosition();
-        bool isEmptySpace(GameObject*);
+        bool isEmptySpace(ColliderComponent*);
         int getNextObstacle(bn::fixed_point position, Direction direction);
 };
