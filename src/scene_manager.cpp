@@ -191,8 +191,9 @@ void SceneManager::updateFloorScene()
 
         BN_LOG("Scene Index: ", saveData.currentScene);
         currentScene.reset();
-        currentMultiLevelScene.reset();
+        // currentMultiLevelScene.reset();
         
+        BN_LOG("Loading Next Scene");
         if (saveData.currentScene > -1)
             loadFloorTitleScene();
         else

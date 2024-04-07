@@ -94,5 +94,5 @@ void GameObject::setPosition(int newX, int newY)
     x = newX;
     y = newY;
     if (sprite.has_value())
-        sprite->set_position(getFixedPoint());
+        sprite->set_position(x, y);
 }

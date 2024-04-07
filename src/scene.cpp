@@ -111,22 +111,27 @@ bn::point Scene::getPlayerPosition()
 
 bool Scene::isEmptySpace(ColliderComponent* other, int dx, int dy)
 {
+    obstacleIndex = -1;
     bool hasCollision = false;
     bn::rect bounds = other->getBounds();
     bounds.set_position(bounds.position().x() + dx, bounds.position().y() + dy);
 
     for (int i = 0; i < gameObjects.size(); i ++)
     {
-        if (!gameObjects[i]->isEnabled() || gameObjects[i]->isActive())
+        if (!gameObjects[i]->isEnabled() || !gameObjects[i]->isActive())
             continue;
 
+        BN_LOG("Object is enabled & active: ", gameObjects[i]->getObjectType());
         ColliderComponent *collComp = gameObjects[i]->getComponent<ColliderComponent>();
-        if (collComp != nullptr && !collComp->isTrigger())
+        if (collComp != nullptr)
         {
             hasCollision = collComp->isIntersecting(bounds);
             if (hasCollision) {
-                BN_LOG("Collision Found: ", i);
                 obstacleIndex = i;
+
+                if (collComp->isTrigger()) 
+                    hasCollision = false;
+
                 break;
             }
         }
@@ -134,19 +139,26 @@ bool Scene::isEmptySpace(ColliderComponent* other, int dx, int dy)
 
     if (!hasCollision)
     {
-        BN_LOG("Bounds Y: ", bounds.position().y());
-        BN_LOG("Limit Y: ", maxBounds.y());
+        // BN_LOG("Bounds X: ", bounds.position().x());
+        // BN_LOG("Bounds Y: ", bounds.position().y());
 
         //return true if limit has not been reached
         bool limitY = bounds.position().y() > maxBounds.y() || bounds.position().y() < minBounds.y();
         bool limitX = bounds.position().x() > maxBounds.x() || bounds.position().x() < minBounds.x();
-        return !limitX && !limitY;
+        return !(limitX || limitY);
     }
 
     return !hasCollision;
 }
 
-int Scene::getNextObstacle(bn::fixed_point position, Direction direction)
+bool Scene::isCurrentObjectTrigger()
 {
-    return 0;
+    if (obstacleIndex == -1 || obstacleIndex >= gameObjects.size())
+        return false;
+    
+    ColliderComponent* collider = gameObjects[obstacleIndex]->getComponent<ColliderComponent>();
+    if (collider == nullptr)
+        return false;
+
+    return collider->isTrigger();
 }

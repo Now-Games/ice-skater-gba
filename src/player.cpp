@@ -20,7 +20,7 @@ Player::Player(Scene *scene, int posX, int posY, Direction dir) :
 
     moveComponent = bn::unique_ptr(new MoveComponent(this, 4));
     addComponent(moveComponent.get());
-    addComponent(new ColliderComponent(this, 16, 16));
+    addComponent(new ColliderComponent(this, 16, 16, true));
 }
 
 void Player::setDirection(Direction dir)
@@ -92,7 +92,7 @@ void Player::setNextTarget()
             break;
     }
 
-    if (!(dx == 0 && dy == 0) && currentScene->isEmptySpace(getComponent<ColliderComponent>(), dx, dy))
+    if ((dx != 0 || dy != 0) && currentScene->isEmptySpace(getComponent<ColliderComponent>(), dx, dy))
     {
         constantMoving = true;
         moveComponent->setTargetPosition(x + dx, y + dy);
@@ -109,8 +109,15 @@ void Player::update()
     else 
     {
         moveComponent->update();
-        if (!moveComponent->isMoving())
-            setNextTarget();
+
+        if (!moveComponent->isMoving()) 
+        {
+            //If current object is a trigger stop the player
+            if (currentScene->isCurrentObjectTrigger())
+                constantMoving = false;
+            else
+                setNextTarget();
+        }
     }
 }
 

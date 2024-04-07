@@ -32,5 +32,5 @@ class Scene
         void setPlayerPosition(bn::point position);
         bn::point getPlayerPosition();
         bool isEmptySpace(ColliderComponent*, int, int);
-        int getNextObstacle(bn::fixed_point position, Direction direction);
+        bool isCurrentObjectTrigger();
 };

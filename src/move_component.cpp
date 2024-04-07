@@ -4,8 +4,8 @@
 MoveComponent::MoveComponent(GameObject *p, int spd) : BaseComponent(p)
 {
     speed = spd;
-    targetX = 0;
-    targetY = 0;
+    targetX = p->getX();
+    targetY = p->getY();
 }
 
 bool MoveComponent::isMoving()
@@ -22,7 +22,7 @@ void MoveComponent::setTargetPosition(int newX, int newY)
 {
     targetX = newX;
     targetY = newY;
-    if (targetX != parent->getX() && targetY != parent->getY())
+    if (targetX != parent->getX() || targetY != parent->getY())
         moving = true;
 }
 
