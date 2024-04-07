@@ -10,6 +10,7 @@
 #include "scene_info.h"
 #include "scene_update_result.h"
 
+class ColliderComponent;
 class Scene
 {
     protected:
@@ -28,8 +29,8 @@ class Scene
         bn::fixed_point getMinBounds();
         void setMaxBounds(bn::fixed_point bounds);
         void setMinBounds(bn::fixed_point bounds);
-        void setPlayerPosition(bn::fixed_point rawPosition);
-        bn::fixed_point getPlayerPosition();
-        bool isEmptySpace(ColliderComponent*);
+        void setPlayerPosition(bn::point position);
+        bn::point getPlayerPosition();
+        bool isEmptySpace(ColliderComponent*, int, int);
         int getNextObstacle(bn::fixed_point position, Direction direction);
 };

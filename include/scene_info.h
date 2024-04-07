@@ -23,14 +23,16 @@
 struct ObstacleInfo
 {
     GameObjectType type = GameObjectType::GOT_None;
-    bn::fixed_point position;
+    int posX;
+    int posY;
     Direction direction;
 };
 
 struct SceneInfo
 {
     bn::string<4> sceneName;
-    bn::fixed_point startPos;
+    int startX;
+    int startY;
     Direction startDirection;
     ObstacleInfo obstalces[32];
     SceneType sceneType;

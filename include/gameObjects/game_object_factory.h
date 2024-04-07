@@ -21,58 +21,58 @@ static GameObject* createGameObject(Scene* currentScene, ObstacleInfo info)
     {
         case GameObjectType::GOT_IceRock:
         {
-            GameObject* newObject = new GameObject(currentScene, info.position, info.type, bn::sprite_items::ice_rock);
+            GameObject* newObject = new GameObject(currentScene, info.posX, info.posY, info.type, bn::sprite_items::ice_rock);
             newObject->addComponent(new ColliderComponent(newObject, 16, 16));
             return newObject;
         }
         case GameObjectType::GOT_RockWall:
         {
-            GameObject* newObject = new GameObject(currentScene, info.position, info.type, bn::sprite_items::rock_wall);
+            GameObject* newObject = new GameObject(currentScene, info.posX, info.posY, info.type, bn::sprite_items::rock_wall);
             newObject->addComponent(new ColliderComponent(newObject, 16, 16));
             return newObject;
         }
         case GameObjectType::GOT_RockHole:
         {
-            GameObject* newObject = new GameObject(currentScene, info.position, info.type, bn::sprite_items::rock_wall_hole);
-            newObject->addComponent(new ColliderComponent(newObject, 16, 16));
+            GameObject* newObject = new GameObject(currentScene, info.posX, info.posY, info.type, bn::sprite_items::rock_wall_hole);
+            newObject->addComponent(new ColliderComponent(newObject, 16, 16, true));
             return newObject;
         }
         case GameObjectType::GOT_SnowPatch:
         {
-            GameObject* newObject = new GameObject(currentScene, info.position, info.type, bn::sprite_items::snow_tile);
-            newObject->addComponent(new ColliderComponent(newObject, 16, 16));
+            GameObject* newObject = new GameObject(currentScene, info.posX, info.posY, info.type, bn::sprite_items::snow_tile);
+            newObject->addComponent(new ColliderComponent(newObject, 16, 16, true));
             return newObject;
         }
         case GameObjectType::GOT_StairsUp:
         {
-            GameObject* newObject = new GameObject(currentScene, info.position, info.type, bn::sprite_items::stairs_up);
-            newObject->addComponent(new ColliderComponent(newObject, 16, 16));
+            GameObject* newObject = new GameObject(currentScene, info.posX, info.posY, info.type, bn::sprite_items::stairs_up);
+            newObject->addComponent(new ColliderComponent(newObject, 16, 16, true));
             return newObject;
         }
         case GameObjectType::GOT_StairsDown:
         {
-            GameObject* newObject = new GameObject(currentScene, info.position, info.type, bn::sprite_items::stairs_down);
-            newObject->addComponent(new ColliderComponent(newObject, 16, 16));
+            GameObject* newObject = new GameObject(currentScene, info.posX, info.posY, info.type, bn::sprite_items::stairs_down);
+            newObject->addComponent(new ColliderComponent(newObject, 16, 16, true));
             return newObject;
         }
         case GameObjectType::GOT_Snowball:
         {
-            GameObject* newObject = new GameObject(currentScene, info.position, info.type, bn::sprite_items::snowball_sheet);
+            GameObject* newObject = new GameObject(currentScene, info.posX, info.posY, info.type, bn::sprite_items::snowball_sheet);
             newObject->addComponent(new ColliderComponent(newObject, 16, 16));
             newObject->addComponent(new DestructibleComponent(newObject, bn::sprite_items::snowball_sheet));
             return newObject;
         }
         case GameObjectType::GOT_CrackedWall:
         {
-            GameObject* newObject = new GameObject(currentScene, info.position, info.type, bn::sprite_items::cracked_wall_sheet);
+            GameObject* newObject = new GameObject(currentScene, info.posX, info.posY, info.type, bn::sprite_items::cracked_wall_sheet);
             newObject->addComponent(new ColliderComponent(newObject, 16, 16));
             newObject->addComponent(new DestructibleComponent(newObject, bn::sprite_items::cracked_wall_sheet));
             return newObject;
         }
         case GameObjectType::GOT_Shuriken:
         {
-            Shuriken *newObject = new Shuriken(currentScene, info.position, bn::sprite_items::shuriken);
-            newObject->addComponent(new ColliderComponent(newObject, 16, 16));
+            Shuriken *newObject = new Shuriken(currentScene, info.posX, info.posY, bn::sprite_items::shuriken);
+            newObject->addComponent(new ColliderComponent(newObject, 16, 16, true));
             newObject->addComponent(new MoveComponent(newObject, 2));
             return newObject;
         }

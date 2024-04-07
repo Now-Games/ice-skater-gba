@@ -13,13 +13,15 @@
 class Player : public GameObject
 {
     private:
+        bool constantMoving = false;
         bn::unique_ptr<MoveComponent> moveComponent;
         bn::optional<bn::sprite_animate_action<20>> fallAnim;
         
+        void setNextTarget();
         void getInput();
 
     public:
-        Player(Scene *scene, bn::fixed_point pos, Direction dir);
+        Player(Scene *scene, int posX, int posY, Direction dir);
         ~Player() = default;
         void setDirection(Direction newDir) override;
         void update() override;

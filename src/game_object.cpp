@@ -3,19 +3,21 @@
 
 #include "game_constants.h"
 
-GameObject::GameObject(Scene* scene, bn::fixed_point tilePosition, GameObjectType gameObjectType)
+GameObject::GameObject(Scene* scene, int tileX, int tileY, GameObjectType gameObjectType)
 {
     currentScene = bn::unique_ptr(scene);
     type = gameObjectType;
-    position = tilePosition * BLOCK_SIZE;
+    x = tileX * BLOCK_SIZE;
+    y = tileY * BLOCK_SIZE;
 }
 
-GameObject::GameObject(Scene* scene, bn::fixed_point tilePosition, GameObjectType gameObjectType, bn::sprite_item spriteItem)
+GameObject::GameObject(Scene* scene, int tileX, int tileY, GameObjectType gameObjectType, bn::sprite_item spriteItem)
 {
     currentScene = bn::unique_ptr(scene);
-    position = tilePosition * BLOCK_SIZE;
+    x = tileX * BLOCK_SIZE;
+    y = tileY * BLOCK_SIZE;
     type = gameObjectType;
-    sprite = spriteItem.create_sprite(position.x(), position.y());
+    sprite = spriteItem.create_sprite(x, y);
     sprite->set_z_order(4);
 }
 
@@ -32,9 +34,24 @@ bn::sprite_ptr GameObject::getSprite()
     return sprite.value();
 }
 
-bn::fixed_point GameObject::getPosition()
+bn::fixed_point GameObject::getFixedPoint()
 {
-    return position;
+    return bn::fixed_point(x, y);
+}
+
+bn::point GameObject::getPoint()
+{
+    return bn::point(x, y);
+}
+
+int GameObject::getX()
+{
+    return x;
+}
+
+int GameObject::getY()
+{
+    return y;
 }
 
 Direction GameObject::getDirection()
@@ -72,9 +89,10 @@ void GameObject::setDirection(Direction dir)
     direction = dir;
 }
 
-void GameObject::setPosition(bn::fixed_point newPos)
+void GameObject::setPosition(int newX, int newY)
 {
-    position = newPos;
+    x = newX;
+    y = newY;
     if (sprite.has_value())
-        sprite->set_position(position);
+        sprite->set_position(getFixedPoint());
 }

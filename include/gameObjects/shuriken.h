@@ -13,7 +13,7 @@ class Shuriken : public GameObject
         void changeDirection();
 
     public:
-        Shuriken(Scene* scene, bn::fixed_point, bn::sprite_item);
+        Shuriken(Scene* scene, int x, int y, bn::sprite_item);
         ~Shuriken() = default;
         void update() override;
 };

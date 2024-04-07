@@ -13,7 +13,7 @@ void MultiLevelScene::loadNextFloor()
 {
     currentSceneLoaded ++;
     SceneInfo sceneInfo = getSceneDetails(sceneIndexes[currentSceneLoaded]);
-    bn::fixed_point playerPosition = currentScene->getPlayerPosition();
+    bn::point playerPosition = currentScene->getPlayerPosition();
     
     currentScene.reset();
     currentScene = bn::unique_ptr(new Scene(sceneInfo));
@@ -24,7 +24,7 @@ void MultiLevelScene::loadPreviousFloor()
 {
     currentSceneLoaded --;
     SceneInfo sceneInfo = getSceneDetails(sceneIndexes[currentSceneLoaded]);
-    bn::fixed_point playerPosition = currentScene->getPlayerPosition();
+    bn::point playerPosition = currentScene->getPlayerPosition();
     
     currentScene.reset();
     currentScene = bn::unique_ptr(new Scene(sceneInfo));

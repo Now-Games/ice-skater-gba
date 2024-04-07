@@ -8,7 +8,8 @@
 class MoveComponent : public BaseComponent
 {
     private:
-        bn::fixed_point targetPosition;
+        int targetX = 0;
+        int targetY = 0;
         int speed = 4;
         bool moving = false;
 
@@ -20,7 +21,7 @@ class MoveComponent : public BaseComponent
         ~MoveComponent() = default;
         bool isMoving();
         void setMoving(bool);
-        void setTargetPosition(bn::fixed_point);
+        void setTargetPosition(int, int);
         void update();
         ComponentType getType() const override
         {

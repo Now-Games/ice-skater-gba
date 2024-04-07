@@ -31,7 +31,8 @@ class GameObject
     protected:
         bn::unique_ptr<Scene> currentScene;
         GameObjectType type = GameObjectType::GOT_None;
-        bn::fixed_point position;
+        int x = 0;
+        int y = 0;
         Direction direction = Direction::Down;
         bn::optional<bn::sprite_ptr> sprite;
         bn::vector<BaseComponent*, 5> components;
@@ -39,18 +40,21 @@ class GameObject
         bool enabled = true;
 
     public:
-        GameObject(Scene*, bn::fixed_point, GameObjectType);
-        GameObject(Scene*, bn::fixed_point, GameObjectType, bn::sprite_item);
+        GameObject(Scene*, int, int, GameObjectType);
+        GameObject(Scene*, int, int, GameObjectType, bn::sprite_item);
         virtual ~GameObject();
         bn::sprite_ptr getSprite();
-        bn::fixed_point getPosition();
+        bn::fixed_point getFixedPoint();
+        bn::point getPoint();
+        int getX();
+        int getY();
         Direction getDirection();
         GameObjectType getObjectType();
         bool isEnabled();
         bool isActive();
         void setEnabled(bool e);
         void setActive(bool a);
-        virtual void setPosition(bn::fixed_point newPos);
+        virtual void setPosition(int newX, int newY);
         virtual void setDirection(Direction newDir);
         virtual void update() {};
 

@@ -9,8 +9,7 @@
 
 Scene::Scene(SceneInfo sceneInfo)
 {
-    gameObjects.push_back(bn::unique_ptr(new Player(this, sceneInfo.startPos, sceneInfo.startDirection)));
-    BN_LOG("Player Starts: ", sceneInfo.startPos.x());
+    gameObjects.push_back(bn::unique_ptr(new Player(this, sceneInfo.startX, sceneInfo.startY, sceneInfo.startDirection)));
     
     //generate all gameObjects based on sceneInfo
     for (ObstacleInfo info : sceneInfo.obstalces)
@@ -23,8 +22,8 @@ Scene::Scene(SceneInfo sceneInfo)
         gameObjects.push_back(bn::unique_ptr(objPtr));
     }
     
-    maxBounds = bn::fixed_point((SCREEN_WIDTH / 2) - BLOCK_SIZE, (SCREEN_HEIGHT / 2) - BLOCK_SIZE);
-    minBounds = bn::fixed_point(-(SCREEN_WIDTH / 2) + BLOCK_SIZE, -(SCREEN_HEIGHT / 2) + BLOCK_SIZE);
+    maxBounds = bn::fixed_point((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2));
+    minBounds = bn::fixed_point(-(SCREEN_WIDTH / 2), -(SCREEN_HEIGHT / 2));
     
     //load in the background
     switch(sceneInfo.sceneType) 
@@ -52,7 +51,7 @@ SceneUpdateResult Scene::update()
 
     if (obstacleIndex != -1)
     {
-        if (gameObjects[PLAYER_INDEX]->getPosition() == gameObjects[obstacleIndex]->getPosition())
+        if (gameObjects[PLAYER_INDEX]->getFixedPoint() == gameObjects[obstacleIndex]->getFixedPoint())
         {
             switch (gameObjects[obstacleIndex]->getObjectType())
             {
@@ -100,32 +99,51 @@ void Scene::setMinBounds(bn::fixed_point bounds)
     minBounds = bounds;
 }
 
-void Scene::setPlayerPosition(bn::fixed_point rawPosition)
+void Scene::setPlayerPosition(bn::point rawPosition)
 {
-    gameObjects[PLAYER_INDEX]->setPosition(rawPosition);
+    gameObjects[PLAYER_INDEX]->setPosition(rawPosition.x(), rawPosition.y());
 }
 
-bn::fixed_point Scene::getPlayerPosition()
+bn::point Scene::getPlayerPosition()
 {
-    return gameObjects[PLAYER_INDEX]->getPosition();
+    return gameObjects[PLAYER_INDEX]->getPoint();
 }
 
-bool Scene::isEmptySpace(ColliderComponent* other)
+bool Scene::isEmptySpace(ColliderComponent* other, int dx, int dy)
 {
     bool hasCollision = false;
+    bn::rect bounds = other->getBounds();
+    bounds.set_position(bounds.position().x() + dx, bounds.position().y() + dy);
+
     for (int i = 0; i < gameObjects.size(); i ++)
     {
         if (!gameObjects[i]->isEnabled() || gameObjects[i]->isActive())
             continue;
 
         ColliderComponent *collComp = gameObjects[i]->getComponent<ColliderComponent>();
-        if (collComp != nullptr)
+        if (collComp != nullptr && !collComp->isTrigger())
         {
-             hasCollision = collComp->isIntersecting(other->getBounds());
+            hasCollision = collComp->isIntersecting(bounds);
+            if (hasCollision) {
+                BN_LOG("Collision Found: ", i);
+                obstacleIndex = i;
+                break;
+            }
         }
     }
 
-    return hasCollision;
+    if (!hasCollision)
+    {
+        BN_LOG("Bounds Y: ", bounds.position().y());
+        BN_LOG("Limit Y: ", maxBounds.y());
+
+        //return true if limit has not been reached
+        bool limitY = bounds.position().y() > maxBounds.y() || bounds.position().y() < minBounds.y();
+        bool limitX = bounds.position().x() > maxBounds.x() || bounds.position().x() < minBounds.x();
+        return !limitX && !limitY;
+    }
+
+    return !hasCollision;
 }
 
 int Scene::getNextObstacle(bn::fixed_point position, Direction direction)

@@ -16,4 +16,6 @@ void DestructibleComponent::destroy()
         destroyAnimation->update();
         bn::core::update();
     }
+
+    parent->setActive(false);
 }

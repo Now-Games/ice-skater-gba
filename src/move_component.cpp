@@ -4,7 +4,8 @@
 MoveComponent::MoveComponent(GameObject *p, int spd) : BaseComponent(p)
 {
     speed = spd;
-    targetPosition = parent->getPosition();
+    targetX = 0;
+    targetY = 0;
 }
 
 bool MoveComponent::isMoving()
@@ -17,10 +18,11 @@ void MoveComponent::setMoving(bool b)
     moving = b;
 }
 
-void MoveComponent::setTargetPosition(bn::fixed_point newPos)
+void MoveComponent::setTargetPosition(int newX, int newY)
 {
-    targetPosition = newPos;
-    if (targetPosition != parent->getPosition())
+    targetX = newX;
+    targetY = newY;
+    if (targetX != parent->getX() && targetY != parent->getY())
         moving = true;
 }
 
@@ -34,29 +36,30 @@ void MoveComponent::update()
 
 void MoveComponent::move()
 {
-    bn::fixed_point dPos = bn::fixed_point();
+    int dx = 0;
+    int dy = 0;
     bool passedTarget = false;
 
     switch (parent->getDirection())
     {
         case Direction::Down:
-            dPos = bn::fixed_point(0, speed);
-            if (parent->getPosition().y() + speed > targetPosition.y())
+            dy = speed;
+            if (parent->getY() + speed > targetY)
                 passedTarget = true;
             break;
         case Direction::Left:
-            dPos = bn::fixed_point(-speed, 0);
-            if (parent->getPosition().x() - speed < targetPosition.x())
+            dx = -speed;
+            if (parent->getX() - speed < targetX)
                 passedTarget = true;
             break;
         case Direction::Right:
-            dPos = bn::fixed_point(speed, 0);
-            if (parent->getPosition().x() + speed > targetPosition.x())
+            dx = speed;
+            if (parent->getX() + speed > targetX)
                 passedTarget = true;
             break;
         case Direction::Up:
-            dPos = bn::fixed_point(0, -speed);
-            if (parent->getPosition().x() - speed < targetPosition.x())
+            dy = -speed;
+            if (parent->getY() - speed < targetY)
                 passedTarget = true;
             break;
         default:
@@ -64,10 +67,10 @@ void MoveComponent::move()
     }
        
     if (passedTarget)
-        parent->setPosition(targetPosition);
+        parent->setPosition(targetX, targetY);
     else
-        parent->setPosition(parent->getPosition() + dPos);
+        parent->setPosition(parent->getX() + dx, parent->getY() + dy);
 
-    if (parent->getPosition() == targetPosition)
+    if (parent->getX() == targetX && parent->getY() == targetY)
         moving = false;
 }

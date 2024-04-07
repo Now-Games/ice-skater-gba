@@ -7,9 +7,11 @@
 #include "bn_sprite_items_player_fall_sheet.h"
 #include "game_constants.h"
 
-Player::Player(Scene *scene, bn::fixed_point pos, Direction dir) : 
-    GameObject(scene, pos, GameObjectType::GOT_Player, bn::sprite_items::player_sheet)
+Player::Player(Scene *scene, int posX, int posY, Direction dir) : 
+    GameObject(scene, posX, posY, GameObjectType::GOT_Player, bn::sprite_items::player_sheet)
 {
+    sprite->set_z_order(3);
+
     fallAnim = bn::create_sprite_animate_action_once(sprite.value(), 4, 
                        bn::sprite_items::player_fall_sheet.tiles_item(), 
                        1, 2, 3, 4, 5, 6, 7, 8, 9,10, 11, 12, 13, 14, 15, 16, 17, 17, 17, 17);
@@ -35,47 +37,81 @@ void Player::setDirection(Direction dir)
 void Player::getInput()
 {
     Direction newDirection = direction;
-    bn::fixed_point limits = bn::fixed_point();
-    bn::fixed_point nextPosition = getPosition();
     bool inputPressed = false;
 
-    if (bn::keypad::up_held())
+    if (bn::keypad::up_pressed())
     {
         newDirection = Direction::Up;
-        limits = bn::fixed_point(position.x(), MIN_Y);
-        nextPosition += bn::fixed_point(0, -BLOCK_SIZE * 2);
+        inputPressed = true;
     }
-    else if (bn::keypad::down_held())
+    else if (bn::keypad::down_pressed())
     {
         newDirection = Direction::Down;
-        limits = bn::fixed_point(position.x(), MAX_Y);
-        nextPosition += bn::fixed_point(0, BLOCK_SIZE * 2);
+        inputPressed = true;
     }
-    else if (bn::keypad::left_held())
+    else if (bn::keypad::left_pressed())
     {
         newDirection = Direction::Left;
-        limits = bn::fixed_point(MIN_X, position.y());
-        nextPosition += bn::fixed_point(-BLOCK_SIZE * 2, 0);
+        inputPressed = true;
     }
-    else if (bn::keypad::right_held())
+    else if (bn::keypad::right_pressed())
     {
         newDirection = Direction::Right;
-        limits = bn::fixed_point(MAX_X, position.y());
-        nextPosition += bn::fixed_point(BLOCK_SIZE * 2, 0);
+        inputPressed = true;
     }
 
-    setDirection(newDirection);
+    if (!inputPressed)
+        return;
 
-    if (currentScene->isEmptySpace(getComponent<ColliderComponent>()))
+    if (direction != newDirection)
+        setDirection(newDirection);
+
+    setNextTarget();
+}
+
+void Player::setNextTarget()
+{
+    int dx = 0;
+    int dy = 0;
+
+    switch (direction)
     {
-        moveComponent->setTargetPosition(nextPosition);
+        case Direction::Up:
+            dy = -BLOCK_SIZE * 2;
+            break;
+        case Direction::Down:
+            dy = BLOCK_SIZE * 2;
+            break;
+        case Direction::Left:
+            dx = -BLOCK_SIZE * 2;
+            break;
+        case Direction::Right:
+            dx = BLOCK_SIZE * 2;
+            break;
+        default:
+            break;
+    }
+
+    if (!(dx == 0 && dy == 0) && currentScene->isEmptySpace(getComponent<ColliderComponent>(), dx, dy))
+    {
+        constantMoving = true;
+        moveComponent->setTargetPosition(x + dx, y + dy);
+    }
+    else {
+        constantMoving = false;
     }
 }
 
 void Player::update()
 {
-    getInput();
-    moveComponent->update();
+    if (!constantMoving)
+        getInput();
+    else 
+    {
+        moveComponent->update();
+        if (!moveComponent->isMoving())
+            setNextTarget();
+    }
 }
 
 void Player::playFallingAnimation()
