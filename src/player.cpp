@@ -1,132 +1,106 @@
-#include "gameObjects/player.h"
-#include "scene.h"
-#include "bn_core.h"
-#include "bn_log.h"
+#include "player.h"
+
 #include "bn_keypad.h"
-#include "bn_sprite_items_player_sheet.h"
-#include "bn_sprite_items_player_fall_sheet.h"
-#include "game_constants.h"
+#include "game_scene.h"
 
-Player::Player(Scene *scene, int posX, int posY, Direction dir) : 
-    GameObject(scene, posX, posY, GameObjectType::GOT_Player, bn::sprite_items::player_sheet)
+namespace is
 {
-    sprite->set_z_order(3);
-
-    fallAnim = bn::create_sprite_animate_action_once(sprite.value(), 4, 
-                       bn::sprite_items::player_fall_sheet.tiles_item(), 
-                       1, 2, 3, 4, 5, 6, 7, 8, 9,10, 11, 12, 13, 14, 15, 16, 17, 17, 17, 17);
-
-    setDirection(dir);
-
-    moveComponent = bn::unique_ptr(new MoveComponent(this, 4));
-    addComponent(moveComponent.get());
-    addComponent(new ColliderComponent(this, 16, 16, true));
-}
-
-void Player::setDirection(Direction dir)
-{
-    if (direction == dir) {
-        BN_LOG("Player is already facing this direction");
-        return;
-    }
-    
-    direction = dir;
-    sprite->set_tiles(bn::sprite_items::player_sheet.tiles_item().create_tiles(direction));
-}
-
-void Player::getInput()
-{
-    Direction newDirection = direction;
-    bool inputPressed = false;
-
-    if (bn::keypad::up_pressed())
+    Player::Player(GameScene& gs) : GameObject(gs, bn::point(0, 0))
     {
-        newDirection = Direction::Up;
-        inputPressed = true;
+        currentDirection = Direction::Down;
+        collider = bn::rect(position.x(), position.y(), 16, 16);
     }
-    else if (bn::keypad::down_pressed())
+
+    void Player::update()
     {
-        newDirection = Direction::Down;
-        inputPressed = true;
-    }
-    else if (bn::keypad::left_pressed())
-    {
-        newDirection = Direction::Left;
-        inputPressed = true;
-    }
-    else if (bn::keypad::right_pressed())
-    {
-        newDirection = Direction::Right;
-        inputPressed = true;
-    }
-
-    if (!inputPressed)
-        return;
-
-    if (direction != newDirection)
-        setDirection(newDirection);
-
-    setNextTarget();
-}
-
-void Player::setNextTarget()
-{
-    int dx = 0;
-    int dy = 0;
-
-    switch (direction)
-    {
-        case Direction::Up:
-            dy = -BLOCK_SIZE * 2;
-            break;
-        case Direction::Down:
-            dy = BLOCK_SIZE * 2;
-            break;
-        case Direction::Left:
-            dx = -BLOCK_SIZE * 2;
-            break;
-        case Direction::Right:
-            dx = BLOCK_SIZE * 2;
-            break;
-        default:
-            break;
-    }
-
-    if ((dx != 0 || dy != 0) && currentScene->isEmptySpace(getComponent<ColliderComponent>(), dx, dy))
-    {
-        constantMoving = true;
-        moveComponent->setTargetPosition(x + dx, y + dy);
-    }
-    else {
-        constantMoving = false;
-    }
-}
-
-void Player::update()
-{
-    if (!constantMoving)
         getInput();
-    else 
-    {
-        moveComponent->update();
+        if (!isMoving)
+            return;
 
-        if (!moveComponent->isMoving()) 
+        if (scene.checkCollisions(getCollider()) != nullptr)
         {
-            //If current object is a trigger stop the player
-            if (currentScene->isCurrentObjectTrigger())
-                constantMoving = false;
-            else
-                setNextTarget();
+            isMoving = false;
+        }
+        else {
+            move();
         }
     }
-}
 
-void Player::playFallingAnimation()
-{
-    while (!fallAnim->done())
+    void Player::getInput()
     {
-        BN_LOG("Player falling");
-        fallAnim->update();
-        bn::core::update();
+        if (bn::keypad::up_pressed())
+        {
+            isMoving = true;
+            currentDirection = Direction::Up;
+        }
+        else if (bn::keypad::left_pressed())
+        {
+            isMoving = true;
+            currentDirection = Direction::Left;
+        }
+        else if (bn::keypad::right_pressed())
+        {
+            isMoving = true;
+            currentDirection = Direction::Right;
+        }
+        else if (bn::keypad::down_pressed())
+        {
+            isMoving = true;
+            currentDirection = Direction::Down;
+        }
+        
+        if (bn::keypad::a_pressed())
+        {
+            //interact with the object infront of the player
+            bn::rect colliderAhead = bn::rect(collider.position(), collider.dimensions());
+            switch (currentDirection)
+            {
+                case Down:
+                    colliderAhead.set_y(colliderAhead.position().y() + 16);
+                    break;
+                case Right:
+                    colliderAhead.set_x(colliderAhead.position().x() + 16);
+                    break;
+                case Left:
+                    colliderAhead.set_x(colliderAhead.position().x() - 16);
+                    break;
+                case Up:
+                    colliderAhead.set_y(colliderAhead.position().y() - 16);
+                    break;
+                default:
+                    break;
+            }
+            
+            GameObject *object = scene.checkCollisions(colliderAhead);
+            if (object != nullptr)
+            {
+                //interact with the object
+                object->interact();
+            }
+        }
+    }
+    
+    void Player::move()
+    {
+        bn::point direction;
+        switch (currentDirection)
+        {
+            case Down:
+                direction = bn::point(0, 1);
+                break;
+            case Left:
+                direction = bn::point(-1, 0);
+                break;
+            case Right:
+                direction = bn::point(1, 0);
+                break;
+            case Up:
+                direction = bn::point(0, -1);
+                break;
+            default:
+                break;
+        }
+
+        position += direction * moveSpeed;
     }
 }

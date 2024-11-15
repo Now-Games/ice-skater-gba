@@ -4,8 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${default}",
-                "../../butano/include/",
-                "../../common/include/",
+                "engine/butano/include/",
+                "engine/common/include/",
                 "${workspaceFolder}/build/",
                 "${workspaceFolder}/include",
                 "${workspaceFolder}/graphics",

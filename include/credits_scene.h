@@ -1,14 +1,19 @@
 #pragma once
 
+#include "scene.h"
+
 #include "bn_regular_bg_ptr.h"
 
-class CreditsScene
+namespace is
 {
-    private:
-        bn::regular_bg_ptr background;
+    class CreditsScene : public Scene
+    {
+        private:
+            bn::regular_bg_ptr sceneBackground;
 
-    public:
-        CreditsScene();
-        ~CreditsScene() = default;
-        int update();
-};
+        public:
+            CreditsScene();
+
+            SceneUpdateResult update() override;
+    };
+}

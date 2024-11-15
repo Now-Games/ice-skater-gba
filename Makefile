@@ -23,13 +23,13 @@
 #---------------------------------------------------------------------------------------------------------------------
 TARGET      :=  $(notdir $(CURDIR))
 BUILD       :=  build
-LIBBUTANO   :=  ../../butano
-PYTHON      :=  python
-SOURCES     :=  src ../../common/src
-INCLUDES    :=  include ../../common/include
+LIBBUTANO   :=  engine/butano
+PYTHON      :=  python3
+SOURCES     :=  src engine/common/src
+INCLUDES    :=  include engine/common/include
 DATA        :=
-GRAPHICS    :=  graphics ../../common/graphics
-AUDIO       :=  audio ../../common/audio
+GRAPHICS    :=  graphics engine/common/graphics
+AUDIO       :=  audio engine/common/audio
 ROMTITLE    :=  ICE SKATER
 ROMCODE     :=  ISKA
 USERFLAGS   :=  

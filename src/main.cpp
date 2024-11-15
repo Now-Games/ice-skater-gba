@@ -1,21 +1,21 @@
+#pragma once
+
 #include "bn_core.h"
-#include "bn_log.h"
-#include "bn_music.h"
 #include "bn_bg_palettes.h"
-#include "scene_manager.h"
+#include "bn_color.h"
+
+#include "game.h"
 
 int main()
 {
     bn::core::init();
     bn::bg_palettes::set_transparent_color(bn::color(0, 0, 0));
-    
-    SceneManager sm = SceneManager();
+
+    is::Game game = is::Game();
 
     while(true)
     {
-        sm.update();
+        game.update();
         bn::core::update();
     }
-
-    bn::music::stop();
 }

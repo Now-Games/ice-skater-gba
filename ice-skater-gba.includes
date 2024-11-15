@@ -1,7 +1,0 @@
-include
-build
-graphics
-audio
-../../butano/include
-../../common/include
-src
