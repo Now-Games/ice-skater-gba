@@ -6,20 +6,63 @@
 namespace is
 {
     GameObject::GameObject(GameScene& gs, bn::point pos) : 
-        position(pos), 
-        collider(bn::rect()),
         scene(gs)
     {
-        
+        collider = bn::rect(bn::point(), bn::size(16, 16));
+        setPosition(pos);
+
+        currentCollisionState = CollisionState::Exit;
     }
-    
+
     void GameObject::update()
     {
         BN_LOG("Updating empty game object");
     }
     
+    bn::point GameObject::getPosition()
+    {
+        return position;
+    }
+
+    bn::rect GameObject::getCollider()
+    {
+        return collider;
+    }
+    
+    Transparency GameObject::getTransparency()
+    {
+        return collisionTransparency;
+    }
+    
+    CollisionState GameObject::getCollisionState()
+    {
+        return currentCollisionState;
+    }
+
+    void GameObject::setPosition(bn::point pos)
+    {
+        position = pos;
+        collider.set_position(pos);
+    }
+    
+    void GameObject::setTransparency(Transparency ct)
+    {
+        collisionTransparency = ct;
+    }
+    
+    void GameObject::setCollisionState(CollisionState state)
+    {
+        currentCollisionState = state;
+    }
+
+    void GameObject::interact()
+    {
+        //Do something here
+    }
+
     bool GameObject::checkCollision(bn::rect other)
     {
-        return other.intersects(collider);
+        bool collision = collider.intersects(other);
+        return collision;
     }
 }

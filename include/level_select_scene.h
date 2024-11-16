@@ -5,17 +5,29 @@
 #include "bn_vector.h"
 #include "bn_sprite_ptr.h"
 #include "bn_regular_bg_ptr.h"
+#include "bn_sprite_text_generator.h"
 
 namespace is
 {
     class LevelSelectScene : public Scene
     {
         private:
+            const int INPUT_DELAY = 10;
+            const int columns = 8;
+            const int rows = 4;
             bn::regular_bg_ptr background;
             bn::sprite_ptr pointer;
             bn::vector<bn::sprite_ptr, 20> levelButtons;
-            int levelIndexes[5];
-            int selectedLevel = 0;
+            bn::sprite_text_generator titleTextGenerator;
+            bn::sprite_text_generator levelTextGenerator;
+            bn::vector<bn::sprite_ptr, 12> titleTextSprites;
+            bn::vector<bn::sprite_ptr, 3> levelTextSprites;
+            bn::vector<int, 30> levelIndexes;
+            int selectedLevel;
+
+            void initializeSceneList();
+            void updatePointer();
+            void updateLevelText();
 
         public:
             LevelSelectScene();

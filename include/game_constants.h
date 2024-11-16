@@ -4,6 +4,9 @@ namespace is
 {
     #define GAME_VERSION "1.0.0"
     
+    #define PLAYER_LAYER 3
+    #define OBSTACLE_LAYER 4
+    
     #pragma region Scene Indexes
     
     #define START_MENU_SCENE 0

@@ -2,18 +2,44 @@
 
 #include "save_data.h"
 #include "game_constants.h"
+#include "scene_helper.h"
 
+#include "bn_keypad.h"
+#include "bn_display.h"
 #include "bn_regular_bg_items_level_select_bg.h"
 #include "bn_sprite_items_menu_pointer.h"
+#include "common_variable_16x16_sprite_font.h"
+#include "common_fixed_8x8_sprite_font.h"
+#include "bn_sprite_items_level_button.h"
 
 namespace is
 {
     LevelSelectScene::LevelSelectScene() : Scene(),
         background(bn::regular_bg_items::level_select_bg.create_bg(0, 0)),
         pointer(bn::sprite_items::menu_pointer.create_sprite(0, 0)),
-        levelIndexes({ B1_SCENE, B2_SCENE, 0, 0, 0 })
+        titleTextGenerator(bn::sprite_text_generator(common::variable_16x16_sprite_font)),
+        levelTextGenerator(bn::sprite_text_generator(common::fixed_8x8_sprite_font))
     {
-        for (int i = 0; i < sizeof(levelIndexes); i ++)
+        titleTextGenerator.set_center_alignment();
+        levelTextGenerator.set_center_alignment();
+
+        titleTextGenerator.generate(0, -(bn::display::height() / 2) + 12,
+                                    "Level Select", titleTextSprites);
+
+        initializeSceneList();
+        for (int i = 0; i < levelIndexes.size(); i++)
+        {
+            bn::sprite_ptr button = bn::sprite_items::level_button.create_sprite(0, 0);
+            button.set_position(
+                -(bn::display::width() / 2) + 20 + (i * 40),
+                -36 + (i * 24)
+            );
+
+            levelButtons.push_back(button);
+        }
+
+        selectedLevel = 0;
+        for (int i = 0; i < levelIndexes.size(); i++)
         {
             if (levelIndexes[i] == SAVE_DATA.currentScene) 
             {
@@ -21,10 +47,78 @@ namespace is
                 break;
             }
         }
+
+        updatePointer();
+        updateLevelText();
     }
 
     SceneUpdateResult LevelSelectScene::update()
     {
+        if (bn::keypad::a_held())
+        {
+            //The level has been selected
+            SceneUpdateResult result = SceneUpdateResult(levelIndexes[selectedLevel]);
+            return result;
+        }
+
+        bool pointerUpdated = false;
+        if (bn::keypad::up_held())
+        {
+            pointerUpdated = true;
+            selectedLevel -= columns;
+            if (selectedLevel < 0)
+                selectedLevel = 0;
+        }
+        else if (bn::keypad::down_held())
+        {
+            pointerUpdated = true;
+            selectedLevel += columns;
+            if (selectedLevel >= columns * rows)
+                selectedLevel = (columns * rows) - 1;
+        }
+        else if (bn::keypad::left_held())
+        {
+            pointerUpdated = true;
+            selectedLevel --;
+            if (selectedLevel < 0)
+                selectedLevel = 0;
+        }
+        else if (bn::keypad::right_held())
+        {
+            pointerUpdated = true;
+            selectedLevel ++;
+            if (selectedLevel >= columns * rows)
+                selectedLevel = (columns * rows) - 1;
+        }
+        
+        if (pointerUpdated) 
+        {
+            updatePointer();
+            updateLevelText();
+        }
+
         return SceneUpdateResult();
+    }
+    
+    void LevelSelectScene::updatePointer()
+    {
+        pointer.set_position(bn::point(
+            -(bn::display::width() / 2) + (selectedLevel % columns),
+            0
+        ));
+    }
+    
+    void LevelSelectScene::updateLevelText()
+    {
+        levelTextSprites.clear();
+        GameSceneDetails sceneDetails = getSceneDetails(levelIndexes[selectedLevel]);
+        levelTextGenerator.generate(0, -(bn::display::height() / 2) + 20,
+                                    sceneDetails.levelName, levelTextSprites);
+    }
+    
+    void LevelSelectScene::initializeSceneList()
+    {
+        levelIndexes.push_back(B1_SCENE);
+        levelIndexes.push_back(B2_SCENE);
     }
 }

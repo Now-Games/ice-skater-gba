@@ -1,35 +1,46 @@
 #pragma once
 
+#include "direction.h"
 #include "bn_point.h"
 #include "bn_rect.h"
 
 namespace is
 {
-    enum Direction
+    // Determines the player's interaction on collision
+    enum Transparency
     {
-        Down,
-        Right,
-        Left,
-        Up
+        Transparent,
+        Translucent,
+        Opaque
+    };
+
+    enum CollisionState
+    {
+        Enter,
+        Exit
     };
 
     class GameScene;
     class GameObject
     {
         protected:
+            GameScene &scene;
             bn::point position;
             bn::rect collider;
-            Direction currentDirection;
-            GameScene &scene;
+            Transparency collisionTransparency;
+            CollisionState currentCollisionState;
 
         public:
             GameObject(GameScene& gs, bn::point pos);
             virtual ~GameObject() = default;
 
-            bn::rect getCollider() { return collider; }
-            Direction getDirection() { return currentDirection; }
-            
-            virtual void setDirection(Direction dir) { currentDirection = dir; }
+            bn::point getPosition();
+            bn::rect getCollider();
+            Transparency getTransparency();
+            CollisionState getCollisionState();
+            virtual void setPosition(bn::point pos);
+            void setTransparency(Transparency ct);
+            void setCollisionState(CollisionState state);
 
             virtual void update();
             virtual void interact();
