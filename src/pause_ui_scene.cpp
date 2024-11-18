@@ -91,12 +91,12 @@ namespace is
     {
         optionTextSprites.clear();
         if (selectedOption == 0)
-            textGenerator.generate(0, -24, "Continue", optionTextSprites);
+            textGenerator.generate(0, -20, "Continue", optionTextSprites);
         else if (selectedOption == 1)
-            textGenerator.generate(0, -24, "Restart Level", optionTextSprites);
+            textGenerator.generate(0, -20, "Restart Level", optionTextSprites);
         else if (selectedOption == 2)
-            textGenerator.generate(0, -24, "Level Select", optionTextSprites);
+            textGenerator.generate(0, -20, "Level Select", optionTextSprites);
         else
-            textGenerator.generate(0, -24, "Title Screen", optionTextSprites);
+            textGenerator.generate(0, -20, "Title Screen", optionTextSprites);
     }
 }
