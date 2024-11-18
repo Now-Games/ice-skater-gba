@@ -14,7 +14,7 @@
 
 namespace is
 {
-    LevelSelectScene::LevelSelectScene() : Scene(),
+    LevelSelectScene::LevelSelectScene() : Scene("LevelSelect"),
         background(bn::regular_bg_items::level_select_bg.create_bg(0, 0)),
         pointer(bn::sprite_items::menu_pointer.create_sprite(0, 0)),
         titleTextGenerator(bn::sprite_text_generator(common::variable_16x16_sprite_font)),
@@ -41,7 +41,7 @@ namespace is
         selectedLevel = 0;
         for (int i = 0; i < levelIndexes.size(); i++)
         {
-            if (levelIndexes[i] == SAVE_DATA.currentScene) 
+            if (levelIndexes[i] == saveData.currentScene) 
             {
                 selectedLevel = i;
                 break;
@@ -54,11 +54,17 @@ namespace is
 
     SceneUpdateResult LevelSelectScene::update()
     {
-        if (bn::keypad::a_held())
+        if (bn::keypad::a_pressed())
         {
             //The level has been selected
             SceneUpdateResult result = SceneUpdateResult(levelIndexes[selectedLevel]);
             return result;
+        }
+        
+        if (timer < INPUT_DELAY) 
+        {
+            timer++;
+            return SceneUpdateResult();
         }
 
         bool pointerUpdated = false;
@@ -93,6 +99,7 @@ namespace is
         
         if (pointerUpdated) 
         {
+            timer = 0;
             updatePointer();
             updateLevelText();
         }

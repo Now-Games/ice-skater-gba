@@ -12,13 +12,13 @@
 
 namespace is
 {
-    StartMenuScene::StartMenuScene() : Scene(),
+    StartMenuScene::StartMenuScene() : Scene("StartMenu"),
         background(bn::regular_bg_items::title_scene.create_bg(0, 0)),
         optionsTextGenerator(common::fixed_8x16_sprite_font),
         versionTextGenerator(common::fixed_8x8_sprite_font),
         pointer(bn::sprite_items::menu_pointer.create_sprite(0, 0))
     {
-        if (SAVE_DATA.currentScene == 0)
+        if (saveData.currentScene == 0)
         {
             options.push_back("New Game");
             options.push_back("Credits");
@@ -92,10 +92,10 @@ namespace is
             case 0:
                 return SceneUpdateResult(B1_SCENE);
             case 1:
-                if (SAVE_DATA.currentScene == 0)
+                if (saveData.currentScene == 0)
                     return SceneUpdateResult(CREDITS_SCENE);
                 else
-                    return SceneUpdateResult(SAVE_DATA.currentScene);
+                    return SceneUpdateResult(saveData.currentScene);
             case 2:
                 return SceneUpdateResult(CREDITS_SCENE);
             default:

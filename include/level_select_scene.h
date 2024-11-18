@@ -24,6 +24,7 @@ namespace is
             bn::vector<bn::sprite_ptr, 3> levelTextSprites;
             bn::vector<int, 30> levelIndexes;
             int selectedLevel;
+            int timer = 0;
 
             void initializeSceneList();
             void updatePointer();

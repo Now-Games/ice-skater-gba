@@ -1,29 +1,21 @@
 #pragma once
 
+#include "scene_update_results.h"
 #include "bn_point.h"
+#include "bn_string.h"
 
 namespace is
 {
-    struct SceneUpdateResult
-    {
-        int nextSceneIndex = -1;
-        bn::point position;
-
-        SceneUpdateResult() = default;
-        SceneUpdateResult(int nextScene) { nextSceneIndex = nextScene; }
-        SceneUpdateResult(int nextScene, bn::point pos) 
-        {
-            nextSceneIndex = nextScene;
-            position = pos;
-        }
-    };
-
     class Scene
     {
+        private:
+            bn::string<10> name;
+
         public:
-            Scene();
+            Scene(bn::string<10> ln);
             virtual ~Scene() = default;
 
+            bn::string<10> getLevelName();
             virtual SceneUpdateResult update();
     };
 }

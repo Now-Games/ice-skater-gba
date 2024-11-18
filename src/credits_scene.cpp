@@ -7,7 +7,7 @@
 
 namespace is
 {
-    CreditsScene::CreditsScene() :
+    CreditsScene::CreditsScene() : Scene("Credits"),
         sceneBackground(bn::regular_bg_items::credits_bg.create_bg(0, 0))
     {
         

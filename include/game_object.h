@@ -1,5 +1,6 @@
 #pragma once
 
+#include "scene_update_results.h"
 #include "direction.h"
 #include "bn_point.h"
 #include "bn_rect.h"
@@ -42,7 +43,7 @@ namespace is
             void setTransparency(Transparency ct);
             void setCollisionState(CollisionState state);
 
-            virtual void update();
+            virtual SceneUpdateResult update();
             virtual void interact();
             bool checkCollision(bn::rect other);
     };

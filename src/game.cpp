@@ -5,7 +5,7 @@ namespace is
 {
     Game::Game()
     {
-        loadData(); //loads the game data
+        load(); //loads the game data
 
         sm.initialize();
     }

@@ -2,6 +2,7 @@
 
 #include "bn_array.h"
 #include "bn_sram.h"
+#include "bn_log.h"
 
 namespace is
 {
@@ -12,26 +13,8 @@ namespace is
         int currentScene = 0;
     };    
     
-    static SaveData SAVE_DATA;
+    extern SaveData saveData;
 
-    static void saveData()
-    {
-        bn::sram::write(SAVE_DATA);
-    }
-
-    static void loadData()
-    {
-        bn::array<char, 32> expectedFormatTag;
-
-        bn::sram::read(SAVE_DATA);
-        bn::istring_base expectedFormatTagIstring(expectedFormatTag._data);
-        bn::ostringstream expectedFormatTagStream(expectedFormatTagIstring);
-        
-        if (SAVE_DATA.format != expectedFormatTag)
-        {
-            //clear the data saved in sram
-            bn::sram::clear(bn::sram::size());
-            SAVE_DATA = SaveData();
-        }
-        }
+    void save();
+    void load();
 }

@@ -14,11 +14,12 @@ namespace is
         currentCollisionState = CollisionState::Exit;
     }
 
-    void GameObject::update()
+    SceneUpdateResult GameObject::update()
     {
-        BN_LOG("Updating empty game object");
+        // BN_LOG("Updating empty game object");
+        return SceneUpdateResult();
     }
-    
+
     bn::point GameObject::getPosition()
     {
         return position;

@@ -1,5 +1,3 @@
-#pragma once
-
 #include "bn_core.h"
 #include "bn_bg_palettes.h"
 #include "bn_color.h"

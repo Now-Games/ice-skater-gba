@@ -2,6 +2,7 @@
 
 #include "scene.h"
 #include "bn_point.h"
+#include "ui_manager.h"
 
 namespace is
 {
@@ -9,6 +10,9 @@ namespace is
     {
         private:
             Scene *currentScene;
+            UIManager uiManager;
+            bool gameMusicPlaying = false;
+            int currentSceneIndex = 0;
 
             Scene *getScene(int index, bn::point pos);
 

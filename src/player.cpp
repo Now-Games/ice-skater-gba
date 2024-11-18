@@ -18,124 +18,150 @@ namespace is
                        1, 2, 3, 4, 5, 6, 7, 8, 9,10, 11, 12, 13, 14, 15, 16, 17, 17, 17, 17))
     {
         sprite.set_tiles(bn::sprite_items::player_sheet.tiles_item().create_tiles(currentDirection));
-        sprite.set_z_order(PLAYER_LAYER);
+        sprite.set_z_order(PLAYER_SPRITE_Z);
+        sprite.set_bg_priority(SCENE_BACKGROUND_LAYER);
 
+        nextPosition = bn::point(position.x(), position.y());
         collider = bn::rect(position.x(), position.y(), 16, 16);
     }
 
-    void Player::update()
+    void Player::setDirection(Direction newDir)
     {
-        //only allow input if the player is not moving
-        if (!isMoving)
+        if (currentDirection == newDir)
+            return;
+
+        currentDirection = newDir;
+        sprite.set_tiles(bn::sprite_items::player_sheet.tiles_item().create_tiles(currentDirection));
+    }
+
+    SceneUpdateResult Player::update()
+    {
+        if (!isMoving) 
         {
-            getInput();
-            if (!isMoving)
-                return;
+            if (bn::keypad::up_held())
+            {
+                setDirection(Direction::Up);
+                checkMoveAhead();
+            }
+            else if (bn::keypad::down_held())
+            {
+                setDirection(Direction::Down);
+                checkMoveAhead();
+            }
+            else if (bn::keypad::left_held())
+            {
+                setDirection(Direction::Left);
+                checkMoveAhead();
+            }
+            else if (bn::keypad::right_held())
+            {
+                setDirection(Direction::Right);
+                checkMoveAhead();
+            }
+            else if (bn::keypad::a_pressed())
+            {
+                //interact with the object infront of the player
+                GameObject *object = scene.checkCollisions(getColliderAhead());
+                if (object != nullptr)
+                {
+                    //interact with the object
+                    object->interact();
+                }
+            }
+        }
+        else
+        {
+            move();
+            
+            if (position == nextPosition)
+            {
+                GameObject *hit = scene.checkCollisions(getCollider());
+                if (hit->getTransparency() == Transparency::Translucent) 
+                {
+                    isMoving = false;
+                    hit->interact();
+                }
+                else
+                    checkMoveAhead();
+            }
         }
 
-        
-        GameObject *hit = scene.checkCollisions(getCollider());
-        if (hit != nullptr)
+        return SceneUpdateResult();
+    }
+
+    void Player::checkMoveAhead()
+    {
+        bn::rect colliderAhead = getColliderAhead();
+        GameObject *hit = scene.checkCollisions(colliderAhead);
+        if (hit == nullptr)
         {
-            BN_LOG("Collision with a game object");
-            //if the object is transparent, continue moving right through it
-            if (hit->getTransparency() == Transparency::Transparent)
+            isMoving = true;
+            nextPosition = colliderAhead.position();
+
+            BN_LOG("Hit is null");
+        }
+        else
+        {
+            if (hit->getTransparency() == Transparency::Translucent || 
+                hit->getTransparency() == Transparency::Transparent)
             {
-                move();
-                return;
+                isMoving = true;
+                nextPosition = colliderAhead.position();
+                BN_LOG("Hit is not null");
             }
-            else if (hit->getTransparency() == Transparency::Translucent)
-            {
-                if (position == hit->getPosition())
-                    isMoving = false;
-                else
-                    move();
-            }
-            else
+            else 
             {
                 isMoving = false;
             }
         }
-        else {
-            move();
-        }
-    }
-
-    void Player::getInput()
-    {
-        if (bn::keypad::up_held())
-        {
-            isMoving = true;
-            currentDirection = Direction::Up;
-        }
-        else if (bn::keypad::left_held())
-        {
-            isMoving = true;
-            currentDirection = Direction::Left;
-        }
-        else if (bn::keypad::right_held())
-        {
-            isMoving = true;
-            currentDirection = Direction::Right;
-        }
-        else if (bn::keypad::down_held())
-        {
-            isMoving = true;
-            currentDirection = Direction::Down;
-        }
-
-        if (bn::keypad::a_pressed())
-        {
-            //interact with the object infront of the player
-            bn::rect colliderAhead = bn::rect(collider.position(), collider.dimensions());
-            switch (currentDirection)
-            {
-                case Down:
-                    colliderAhead.set_y(colliderAhead.position().y() + 16);
-                    break;
-                case Right:
-                    colliderAhead.set_x(colliderAhead.position().x() + 16);
-                    break;
-                case Left:
-                    colliderAhead.set_x(colliderAhead.position().x() - 16);
-                    break;
-                case Up:
-                    colliderAhead.set_y(colliderAhead.position().y() - 16);
-                    break;
-                default:
-                    break;
-            }
-            
-            GameObject *object = scene.checkCollisions(colliderAhead);
-            if (object != nullptr)
-            {
-                //interact with the object
-                object->interact();
-            }
-        }
     }
     
-    void Player::move()
+    bn::rect Player::getColliderAhead()
     {
-        bn::point direction;
+        bn::rect colliderAhead = bn::rect(collider.position(), collider.dimensions());
         switch (currentDirection)
         {
             case Down:
-                direction = bn::point(0, 1);
-                break;
-            case Left:
-                direction = bn::point(-1, 0);
+                colliderAhead.set_y(colliderAhead.position().y() + TILE_SIZE);
                 break;
             case Right:
-                direction = bn::point(1, 0);
+                colliderAhead.set_x(colliderAhead.position().x() + TILE_SIZE);
+                break;
+            case Left:
+                colliderAhead.set_x(colliderAhead.position().x() - TILE_SIZE);
                 break;
             case Up:
-                direction = bn::point(0, -1);
+                colliderAhead.set_y(colliderAhead.position().y() - TILE_SIZE);
+                break;
+            default:
+                break;
+        }
+        
+        return colliderAhead;
+    }
+
+    void Player::move()
+    {
+        bn::point newPosition = bn::point(position.x(), position.y());
+
+        switch (currentDirection)
+        {
+            case Down:
+                newPosition.set_y(newPosition.y() + PLAYER_MOVE_SPEED);
+                break;
+            case Left:
+                newPosition.set_x(newPosition.x() - PLAYER_MOVE_SPEED);
+                break;
+            case Right:
+                newPosition.set_x(newPosition.x() + PLAYER_MOVE_SPEED);
+                break;
+            case Up:
+                newPosition.set_y(newPosition.y() - PLAYER_MOVE_SPEED);
                 break;
             default:
                 break;
         }
 
-        setPosition(position + (direction * moveSpeed));
+        setPosition(newPosition);
     }
 }

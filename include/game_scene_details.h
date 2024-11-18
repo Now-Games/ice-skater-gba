@@ -17,14 +17,11 @@ namespace is
     {
         bn::string<3> levelName = "";
         SceneType sceneType = SceneType::Normal;
+        bn::point startPosition = bn::point(0, 0);
+        bn::point exitPosition = bn::point(0, 0);
+        int nextScene = 0;
         bn::vector<GameObjectDetails, 30> gameObjectDetails;
 
         GameSceneDetails() = default;
-        GameSceneDetails(bn::string<3> name) { levelName = name; }
-        GameSceneDetails(bn::string<3> name, SceneType type)
-        {
-            levelName = name;
-            sceneType = type;
-        }
     };
 }

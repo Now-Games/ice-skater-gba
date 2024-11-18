@@ -8,20 +8,21 @@ namespace is
     class Player : public SpriteGameObject
     {
         private:
-            const int8_t moveSpeed = 2;
             bool isMoving = false;
             Direction currentDirection;
             bn::sprite_animate_action<20> fallAnim;
+            bn::point nextPosition;
 
-            void getInput();
+            bn::rect getColliderAhead();
+            void checkMoveAhead();
             void move();
 
         public:
             Player(GameScene& gs);
 
             Direction getDirection() { return currentDirection; }
-            virtual void setDirection(Direction dir) { currentDirection = dir; }
-            
-            void update() override;
+            void setDirection(Direction dir);
+
+            SceneUpdateResult update() override;
     };
 }

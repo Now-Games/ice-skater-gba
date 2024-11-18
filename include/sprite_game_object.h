@@ -15,6 +15,6 @@ namespace is
             SpriteGameObject(GameScene& gs, bn::sprite_item si, bn::point pos);
 
             void setPosition(bn::point pos) override;
-            void update() override;
+            SceneUpdateResult update() override;
     };
 }
