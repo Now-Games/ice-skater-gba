@@ -5,9 +5,12 @@
 
 namespace is
 {
-    RockWallHoleGameObject::RockWallHoleGameObject(GameScene& gs, bn::point pos, int nextScene) : 
+    RockWallHoleGameObject::RockWallHoleGameObject(GameScene& gs, bn::point pos, Direction dir, int nextScene) : 
         SpriteGameObject(gs, bn::sprite_items::rock_wall_hole, pos)
     {
+        sprite.set_tiles(bn::sprite_items::rock_wall_hole.tiles_item().create_tiles(dir));
+        sprite.set_z_order(5);
+
         setTransparency(Transparency::Translucent);
         nextSceneIndex = nextScene;
         eventTriggered = false;
@@ -21,7 +24,7 @@ namespace is
             return SceneUpdateResult();
     }
 
-    void RockWallHoleGameObject::interact()
+    void RockWallHoleGameObject::interact(Player& player)
     {
         eventTriggered = true;
     }

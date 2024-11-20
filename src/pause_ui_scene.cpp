@@ -3,7 +3,7 @@
 #include "save_data.h"
 
 #include "bn_keypad.h"
-#include "common_fixed_8x8_sprite_font.h"
+#include "common_variable_8x8_sprite_font.h"
 #include "bn_sprite_items_menu_pointer.h"
 #include "bn_regular_bg_items_pause_scene.h"
 #include "bn_sprite_items_home_icon.h"
@@ -16,7 +16,7 @@ namespace is
     PauseUIScene::PauseUIScene() : UIScene(),
         background(bn::regular_bg_items::pause_scene.create_bg(0, 0)),
         pointer(bn::sprite_items::menu_pointer.create_sprite(-64, 4)),
-        textGenerator(common::fixed_8x8_sprite_font)
+        textGenerator(common::variable_8x8_sprite_font)
     {
         textGenerator.set_center_alignment();
         textGenerator.set_bg_priority(UI_BACKGROUND_LAYER);

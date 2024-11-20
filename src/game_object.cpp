@@ -56,7 +56,7 @@ namespace is
         currentCollisionState = state;
     }
 
-    void GameObject::interact()
+    void GameObject::interact(Player& player)
     {
         //Do something here
     }

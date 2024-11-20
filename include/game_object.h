@@ -22,6 +22,7 @@ namespace is
     };
 
     class GameScene;
+    class Player;
     class GameObject
     {
         protected:
@@ -44,7 +45,7 @@ namespace is
             void setCollisionState(CollisionState state);
 
             virtual SceneUpdateResult update();
-            virtual void interact();
+            virtual void interact(Player& player);
             bool checkCollision(bn::rect other);
     };
 }

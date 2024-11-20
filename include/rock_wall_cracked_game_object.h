@@ -5,13 +5,13 @@
 
 namespace is
 {
-    class SnowballGameObject : public SpriteGameObject
+    class RockWallCrackedGameObject : public SpriteGameObject
     {
         private:
-            bn::sprite_animate_action<5> breakAnim;
+            bn::sprite_animate_action<4> crumbleAnim;
 
         public:
-            SnowballGameObject(GameScene& gs, bn::point pos);
+            RockWallCrackedGameObject(GameScene& gs, bn::point pos, Direction dir);
 
             void interact(Player& player) override;
     };

@@ -11,9 +11,9 @@ namespace is
             bool eventTriggered;
 
         public:
-            RockWallHoleGameObject(GameScene& gs, bn::point pos, int nextScene);
+            RockWallHoleGameObject(GameScene& gs, bn::point pos, Direction dir, int nextScene);
 
             SceneUpdateResult update() override;
-            void interact() override;
+            void interact(Player& player) override;
     };
 }

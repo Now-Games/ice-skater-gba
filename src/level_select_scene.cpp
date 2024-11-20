@@ -29,10 +29,13 @@ namespace is
         initializeSceneList();
         for (int i = 0; i < levelIndexes.size(); i++)
         {
+            if (levelIndexes[i] > saveData.furthestScene)
+                break;
+
             bn::sprite_ptr button = bn::sprite_items::level_button.create_sprite(0, 0);
             button.set_position(
-                -(bn::display::width() / 2) + 20 + (i * 40),
-                -36 + (i * 24)
+                -(bn::display::width() / 2) + 20 + ((i % columns) * 40),
+                -36 + ((i / columns) * 24)
             );
 
             levelButtons.push_back(button);
@@ -79,8 +82,8 @@ namespace is
         {
             pointerUpdated = true;
             selectedLevel += columns;
-            if (selectedLevel >= columns * rows)
-                selectedLevel = (columns * rows) - 1;
+            if (selectedLevel >= levelButtons.size())
+                selectedLevel = levelButtons.size() - 1;
         }
         else if (bn::keypad::left_held())
         {
@@ -93,8 +96,8 @@ namespace is
         {
             pointerUpdated = true;
             selectedLevel ++;
-            if (selectedLevel >= columns * rows)
-                selectedLevel = (columns * rows) - 1;
+            if (selectedLevel >= levelButtons.size())
+                selectedLevel = levelButtons.size() - 1;
         }
         
         if (pointerUpdated) 
@@ -110,22 +113,33 @@ namespace is
     void LevelSelectScene::updatePointer()
     {
         pointer.set_position(bn::point(
-            -(bn::display::width() / 2) + (selectedLevel % columns),
-            0
-        ));
+            -(bn::display::width() / 2) + 8 + ((selectedLevel % columns) * 40),
+            -36 + ((selectedLevel / columns) * 24)));
     }
     
     void LevelSelectScene::updateLevelText()
     {
         levelTextSprites.clear();
-        GameSceneDetails sceneDetails = getSceneDetails(levelIndexes[selectedLevel]);
-        levelTextGenerator.generate(0, -(bn::display::height() / 2) + 20,
-                                    sceneDetails.levelName, levelTextSprites);
+        GameSceneDetails* sceneDetails = getSceneDetails(levelIndexes[selectedLevel]);
+        levelTextGenerator.generate(0, -(bn::display::height() / 2) + 24,
+                                    sceneDetails->levelName, levelTextSprites);
     }
     
     void LevelSelectScene::initializeSceneList()
     {
         levelIndexes.push_back(B1_SCENE);
         levelIndexes.push_back(B2_SCENE);
+        levelIndexes.push_back(B3_SCENE);
+        levelIndexes.push_back(B4_SCENE);
+        levelIndexes.push_back(B5_SCENE);
+        levelIndexes.push_back(B6_SCENE);
+        levelIndexes.push_back(B7_SCENE);
+        levelIndexes.push_back(B8_SCENE);
+        levelIndexes.push_back(B9_SCENE);
+        levelIndexes.push_back(B10_SCENE);
+        levelIndexes.push_back(B11_SCENE);
+        levelIndexes.push_back(B12_SCENE);
+        levelIndexes.push_back(B13_SCENE);
+        levelIndexes.push_back(B14_SCENE);
     }
 }

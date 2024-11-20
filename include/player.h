@@ -23,6 +23,7 @@ namespace is
             Direction getDirection() { return currentDirection; }
             void setDirection(Direction dir);
 
+            void fall();
             SceneUpdateResult update() override;
     };
 }

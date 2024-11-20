@@ -12,7 +12,7 @@ namespace is
         
     }
 
-    void SnowballGameObject::interact()
+    void SnowballGameObject::interact(Player& player)
     {
         while (!breakAnim.done())
         {

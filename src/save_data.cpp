@@ -19,7 +19,8 @@ namespace is
         
         if (saveData.format != expectedFormatTag)
         {
-            //clear the data saved in sram
+            BN_LOG("Data was not of correct format, Resetting SRAM");
+            // clear the data saved in sram
             bn::sram::clear(bn::sram::size());
             saveData = SaveData();
         }

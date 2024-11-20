@@ -12,17 +12,19 @@ namespace is
 {
     class GameScene : public Scene
     {
-        private:
-            RockWallHoleGameObject exit;
-            bn::vector<GameObject *, 30> obstacles;
+        protected:
+            bn::rect sceneBounds;
+            bn::vector<GameObject *, 40> obstacles;
             bn::optional<bn::regular_bg_ptr> background;
             Player player;
 
         public:
-            GameScene(GameSceneDetails details);
+            GameScene(GameSceneDetails* details);
             ~GameScene() override;
 
+            bn::rect getSceneBounds();
+
             SceneUpdateResult update() override;
-            GameObject *checkCollisions(bn::rect collider);
+            virtual GameObject *checkCollisions(bn::rect collider);
     };
 }

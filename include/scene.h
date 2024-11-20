@@ -9,10 +9,10 @@ namespace is
     class Scene
     {
         private:
-            bn::string<10> name;
+            bn::string<12> name;
 
         public:
-            Scene(bn::string<10> ln);
+            Scene(bn::string<12> ln);
             virtual ~Scene() = default;
 
             bn::string<10> getLevelName();

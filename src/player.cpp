@@ -3,8 +3,10 @@
 #include "game_scene.h"
 #include "game_constants.h"
 
+#include "bn_display.h"
 #include "bn_keypad.h"
 #include "bn_log.h"
+#include "bn_core.h"
 #include "bn_sprite_items_player_sheet.h"
 #include "bn_sprite_items_player_fall_sheet.h"
 
@@ -65,7 +67,7 @@ namespace is
                 if (object != nullptr)
                 {
                     //interact with the object
-                    object->interact();
+                    object->interact(*this);
                 }
             }
         }
@@ -79,7 +81,7 @@ namespace is
                 if (hit->getTransparency() == Transparency::Translucent) 
                 {
                     isMoving = false;
-                    hit->interact();
+                    hit->interact(*this);
                 }
                 else
                     checkMoveAhead();
@@ -92,6 +94,17 @@ namespace is
     void Player::checkMoveAhead()
     {
         bn::rect colliderAhead = getColliderAhead();
+        //Check if collider is out of bounds
+        if (colliderAhead.left() < scene.getSceneBounds().left() ||
+            colliderAhead.right() > scene.getSceneBounds().right() ||
+            colliderAhead.top() < scene.getSceneBounds().top() ||
+            colliderAhead.bottom() > scene.getSceneBounds().bottom())
+        {
+            BN_LOG("Moving out of bounds");
+            isMoving = false;
+            return;
+        }
+
         GameObject *hit = scene.checkCollisions(colliderAhead);
         if (hit == nullptr)
         {
@@ -107,11 +120,12 @@ namespace is
             {
                 isMoving = true;
                 nextPosition = colliderAhead.position();
-                BN_LOG("Hit is not null");
+                BN_LOG("Hit is Transparent or Translucent");
             }
             else 
             {
                 isMoving = false;
+                BN_LOG("Hit is Opaque");
             }
         }
     }
@@ -163,5 +177,14 @@ namespace is
         }
 
         setPosition(newPosition);
+    }
+    
+    void Player::fall()
+    {
+        while (!fallAnim.done())
+        {
+            fallAnim.update();
+            bn::core::update();
+        }
     }
 }

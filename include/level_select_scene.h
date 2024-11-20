@@ -13,7 +13,7 @@ namespace is
     {
         private:
             const int INPUT_DELAY = 10;
-            const int columns = 8;
+            const int columns = 6;
             const int rows = 4;
             bn::regular_bg_ptr background;
             bn::sprite_ptr pointer;

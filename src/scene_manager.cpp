@@ -6,6 +6,7 @@
 #include "credits_scene.h"
 #include "game_scene.h"
 #include "level_select_scene.h"
+#include "event_game_scene.h"
 #include "save_data.h"
 
 #include "bn_log.h"
@@ -99,8 +100,13 @@ namespace is
             default:
             {
                 BN_LOG("Generating Game Scene: ", sceneIndex);
-                GameSceneDetails details = getSceneDetails(sceneIndex);
-                return new GameScene(details);
+                GameSceneDetails* details = getSceneDetails(sceneIndex);
+                if (details->sceneType == SceneType::Normal)
+                    return new GameScene(details);
+                else if (details->sceneType == SceneType::Tutorial)
+                    return new EventGameScene(static_cast<EventSceneDetails*>(details));
+                else
+                    return new GameScene(details);
             }
         }
     }

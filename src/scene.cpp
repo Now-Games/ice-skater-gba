@@ -2,7 +2,7 @@
 
 namespace is
 {
-    Scene::Scene(bn::string<10> ln) : name(ln)
+    Scene::Scene(bn::string<12> ln) : name(ln)
     {
         
     }
