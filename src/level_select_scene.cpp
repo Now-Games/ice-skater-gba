@@ -141,5 +141,13 @@ namespace is
         levelIndexes.push_back(B12_SCENE);
         levelIndexes.push_back(B13_SCENE);
         levelIndexes.push_back(B14_SCENE);
+        levelIndexes.push_back(B15_SCENE);
+        levelIndexes.push_back(B16_SCENE);
+        levelIndexes.push_back(B17_SCENE_1);
+        levelIndexes.push_back(B18_SCENE_2);
+        levelIndexes.push_back(B19_SCENE);
+        levelIndexes.push_back(B20_SCENE_2);
+        levelIndexes.push_back(B21_SCENE);
+        levelIndexes.push_back(B22_SCENE);
     }
 }

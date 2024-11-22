@@ -3,8 +3,7 @@
  * zlib License, see LICENSE file.
  */
 
-#ifndef FIXED_32x64_SPRITE_FONT_H
-#define FIXED_32x64_SPRITE_FONT_H
+#pragma once
 
 #include "bn_sprite_font.h"
 #include "bn_utf8_characters_map.h"
@@ -22,5 +21,3 @@ constexpr auto fixed_32x64_sprite_font_utf8_characters_map =
 
 constexpr bn::sprite_font fixed_32x64_sprite_font(
         bn::sprite_items::fixed_32x64_font, fixed_32x64_sprite_font_utf8_characters_map.reference());
-
-#endif

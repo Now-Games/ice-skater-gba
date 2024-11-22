@@ -9,6 +9,7 @@
 #include "bn_core.h"
 #include "bn_sprite_items_player_sheet.h"
 #include "bn_sprite_items_player_fall_sheet.h"
+#include "bn_sprite_items_player_death_sheet.h"
 
 namespace is
 {
@@ -17,7 +18,10 @@ namespace is
         currentDirection(Direction::Down),
         fallAnim(bn::create_sprite_animate_action_once(sprite, 4, 
                        bn::sprite_items::player_fall_sheet.tiles_item(), 
-                       1, 2, 3, 4, 5, 6, 7, 8, 9,10, 11, 12, 13, 14, 15, 16, 17, 17, 17, 17))
+                       1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 17, 17, 17)),
+        deathAnim(bn::create_sprite_animate_action_once(sprite, 6,
+                       bn::sprite_items::player_death_sheet.tiles_item(),
+                       1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 11))
     {
         sprite.set_tiles(bn::sprite_items::player_sheet.tiles_item().create_tiles(currentDirection));
         sprite.set_z_order(PLAYER_SPRITE_Z);
@@ -40,6 +44,12 @@ namespace is
     {
         if (!isMoving) 
         {
+            if (inputTimer < INPUT_DELAY) 
+            {
+                inputTimer++;
+                return SceneUpdateResult();
+            }
+
             if (bn::keypad::up_held())
             {
                 setDirection(Direction::Up);
@@ -80,6 +90,7 @@ namespace is
                 GameObject *hit = scene.checkCollisions(getCollider());
                 if (hit->getTransparency() == Transparency::Translucent) 
                 {
+                    inputTimer = 0;
                     isMoving = false;
                     hit->interact(*this);
                 }
@@ -102,6 +113,7 @@ namespace is
         {
             BN_LOG("Moving out of bounds");
             isMoving = false;
+            inputTimer = 0;
             return;
         }
 
@@ -109,6 +121,7 @@ namespace is
         if (hit == nullptr)
         {
             isMoving = true;
+            inputTimer = 0;
             nextPosition = colliderAhead.position();
 
             BN_LOG("Hit is null");
@@ -125,6 +138,7 @@ namespace is
             else 
             {
                 isMoving = false;
+                inputTimer = 0;
                 BN_LOG("Hit is Opaque");
             }
         }
@@ -181,9 +195,20 @@ namespace is
     
     void Player::fall()
     {
+        //play Fall animation
         while (!fallAnim.done())
         {
             fallAnim.update();
+            bn::core::update();
+        }
+    }
+    
+    void Player::dead()
+    {
+        //play Death animation
+        while (!deathAnim.done())
+        {
+            deathAnim.update();
             bn::core::update();
         }
     }

@@ -15,6 +15,7 @@ namespace is
     
     struct GameSceneDetails
     {
+        int sceneIndex = 0;
         bn::string<3> levelName = "";
         SceneType sceneType = SceneType::Normal;
         bn::point startPosition = bn::point(0, 0);
@@ -23,14 +24,14 @@ namespace is
         int nextScene = 0;
         bn::vector<GameObjectDetails, 40> gameObjectDetails;
 
-        GameSceneDetails() = default;
+        GameSceneDetails(int index) { sceneIndex = index; };
     };
     
     struct EventSceneDetails : public GameSceneDetails
     {
         bn::string<64> eventText;
         
-        EventSceneDetails(bn::string<64> text) : GameSceneDetails()
+        EventSceneDetails(int index, bn::string<64> text) : GameSceneDetails(index)
         {
             eventText = text;
         }
@@ -40,7 +41,7 @@ namespace is
     {
         bn::vector<int, 5> sceneFloors;
         
-        MultiSceneDetails(bn::vector<int, 5> floors) : GameSceneDetails()
+        MultiSceneDetails(int index, bn::vector<int, 5> floors) : GameSceneDetails(index)
         {
             sceneFloors = floors;
         }

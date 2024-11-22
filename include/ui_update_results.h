@@ -8,7 +8,7 @@ namespace is
         Continue,
         Restart,
         LevelSelect,
-        Title
+        Home
     };
 
     struct UIUpdateResults

@@ -7,6 +7,7 @@
 #include "game_scene.h"
 #include "level_select_scene.h"
 #include "event_game_scene.h"
+#include "multilevel_game_scene.h"
 #include "save_data.h"
 
 #include "bn_log.h"
@@ -31,7 +32,7 @@ namespace is
     void SceneManager::update()
     {
         //Only press start if the current scene is a GameScene 
-        if (currentSceneIndex > 2) 
+        if (currentScene != nullptr && currentScene->getCurrentState() != SceneState::Title) 
         {
             if (bn::keypad::start_pressed())
             {
@@ -42,9 +43,6 @@ namespace is
                     uiManager.showUI();
             }
         }
-
-        // if (currentScene != nullptr)
-        //     BN_LOG("Current Scene: ", currentScene->getLevelName());
 
         SceneUpdateResult result;
         if (uiManager.isShowing()) 
@@ -106,7 +104,7 @@ namespace is
                 else if (details->sceneType == SceneType::Tutorial)
                     return new EventGameScene(static_cast<EventSceneDetails*>(details));
                 else
-                    return new GameScene(details);
+                    return new MultiLevelGameScene(static_cast<MultiSceneDetails*>(details));
             }
         }
     }

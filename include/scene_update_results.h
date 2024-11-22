@@ -8,6 +8,7 @@ namespace is
     {
         int nextSceneIndex = -1;
         bn::point position;
+        bool isScenePaused = false;
 
         SceneUpdateResult() = default;
         SceneUpdateResult(int nextScene) { nextSceneIndex = nextScene; }

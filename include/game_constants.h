@@ -34,6 +34,18 @@ namespace is
     #define B12_SCENE 14
     #define B13_SCENE 15
     #define B14_SCENE 16
+    #define B15_SCENE 17
+    #define B16_SCENE 18
+    #define B17_SCENE_1 19
+    #define B17_SCENE_2 20
+    #define B18_SCENE_1 21
+    #define B18_SCENE_2 22
+    #define B19_SCENE 23
+    #define B20_SCENE_1 24
+    #define B20_SCENE_2 25
+    #define B20_SCENE_3 26
+    #define B21_SCENE 27
+    #define B22_SCENE 28
     
     #pragma endregion
 }

@@ -34,7 +34,7 @@ namespace is
                     closeUI();
                     BN_LOG("Loading Level Select Scene");
                     return SceneUpdateResult(LEVEL_SELECT_SCENE);
-                case UIActions::Title:
+                case UIActions::Home:
                     closeUI();
                     BN_LOG("Loading Start Screen");
                     return SceneUpdateResult(START_MENU_SCENE);

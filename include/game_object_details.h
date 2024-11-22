@@ -15,8 +15,8 @@ namespace is
         Snowball,
         IceRock,
         CrackedIce,
-        StairsUp,
-        StairsDown
+        Stairs,
+        Shuriken
     };
     
     struct GameObjectDetails
