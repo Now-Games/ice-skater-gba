@@ -39,10 +39,10 @@ namespace is
 
         sceneType = details->sceneType;
         
-        initializeGameObjects(details->gameObjectDetails);
-
         //add the exit
         gameObjects.push_back(new RockWallHoleGameObject(*this, details->exitPosition, details->exitDirection, details->nextScene));
+        initializeGameObjects(details->gameObjectDetails);
+
     }
 
     GameScene::~GameScene()
@@ -97,7 +97,7 @@ namespace is
             for (int i = 0; i < gameObjects.size(); i ++)
             {
                 SceneUpdateResult result = gameObjects[i]->update();
-                if (result.nextSceneIndex != -1) 
+                if (result.nextSceneIndex != -1 || result.died) 
                 {
                     BN_LOG("Next Scene: ", result.nextSceneIndex);
                     return result;
@@ -109,19 +109,16 @@ namespace is
 
     GameObject* GameScene::checkCollisions(bn::rect collider)
     {
-        GameObject *priority = nullptr;
-        for (int i = 0; i < gameObjects.size(); i++)
+        for (int i = gameObjects.size() - 1; i >= 0; i--)
         {
-            //Transparent objects should be ignored
-            //If a game object in the same spot has a higher Level of Transparency, then that takes priority
+            //if the objects colliders intersect and the object is not Trnasparent
             if (gameObjects[i]->checkCollision(collider) && gameObjects[i]->getTransparency() != Transparency::Transparent)
             {
-                if (priority == nullptr || gameObjects[i]->getTransparency() > priority->getTransparency())
-                    priority = gameObjects[i];
+                return gameObjects[i];
             }
         }
 
-        return priority;
+        return nullptr;
     }
     
     Player* GameScene::checkPlayerCollision(bn::rect collider)

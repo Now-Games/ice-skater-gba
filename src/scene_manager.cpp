@@ -4,6 +4,7 @@
 #include "scene_helper.h"
 #include "start_menu_scene.h"
 #include "credits_scene.h"
+#include "final_scene.h"
 #include "game_scene.h"
 #include "level_select_scene.h"
 #include "event_game_scene.h"
@@ -23,7 +24,8 @@ namespace is
     void SceneManager::initialize()
     {
         bn::music_items::music_box.play();
-        
+        creditsMusicPlaying = true;
+
         // Create the start scene
         currentScene = new StartMenuScene();
         currentSceneIndex = 0;
@@ -50,19 +52,16 @@ namespace is
         else
             result = currentScene->update();
 
-        if (result.nextSceneIndex == -1)
+        if (result.died)
+            result.nextSceneIndex = saveData.currentScene;
+        else if (result.nextSceneIndex == -1)
             return;
 
         BN_LOG("Deleting old scene");
         delete currentScene;
         
         BN_LOG("Old Scene Deleted");
-        if (result.nextSceneIndex != START_MENU_SCENE && result.nextSceneIndex != CREDITS_SCENE && 
-            !gameMusicPlaying)
-        {
-            bn::music_items::mystical_p.play();
-            gameMusicPlaying = true;
-        }
+        playMusic(result.nextSceneIndex);
 
         BN_LOG("Next Scene: ", result.nextSceneIndex);
         currentScene = getScene(result.nextSceneIndex, result.position);
@@ -81,6 +80,25 @@ namespace is
             BN_LOG("Setting Current Scene: ", saveData.currentScene);
         }
     }
+    
+    void SceneManager::playMusic(int sceneIndex)
+    {
+        if (sceneIndex == B30_SCENE || sceneIndex == CREDITS_SCENE || sceneIndex == START_MENU_SCENE) 
+        {
+            if (!creditsMusicPlaying) 
+            {
+                bn::music_items::music_box.play();
+                creditsMusicPlaying = true;
+                gameMusicPlaying = false;
+            }
+        }
+        else if (!gameMusicPlaying) 
+        {
+            bn::music_items::mystical_p.play();
+            gameMusicPlaying = true;
+            creditsMusicPlaying = false;
+        }
+    }
 
     Scene* SceneManager::getScene(int sceneIndex, bn::point position)
     {
@@ -95,6 +113,8 @@ namespace is
             case LEVEL_SELECT_SCENE:
                 BN_LOG("Generating LevelSelect Scene");
                 return new LevelSelectScene();
+            case B30_SCENE:
+                return new FinalScene();
             default:
             {
                 BN_LOG("Generating Game Scene: ", sceneIndex);

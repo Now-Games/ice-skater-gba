@@ -2,7 +2,7 @@
 
 namespace is
 {
-    #define GAME_VERSION "1.0.0"
+    #define GAME_VERSION "3.0"
     
     #define TILE_SIZE 16
     
@@ -46,6 +46,18 @@ namespace is
     #define B20_SCENE_3 26
     #define B21_SCENE 27
     #define B22_SCENE 28
+    #define B23_SCENE 29
+    #define B24_SCENE_1 30
+    #define B24_SCENE_2 31
+    #define B25_SCENE 32
+    #define B26_SCENE 33
+    #define B27_SCENE 34
+    #define B28_SCENE_1 35
+    #define B28_SCENE_2 36
+    #define B28_SCENE_3 37
+    #define B28_SCENE_4 38
+    #define B29_SCENE 39
+    #define B30_SCENE 40
     
     #pragma endregion
 }

@@ -17,7 +17,7 @@ namespace is
             const int rows = 4;
             bn::regular_bg_ptr background;
             bn::sprite_ptr pointer;
-            bn::vector<bn::sprite_ptr, 20> levelButtons;
+            bn::vector<bn::sprite_ptr, 30> levelButtons;
             bn::sprite_text_generator titleTextGenerator;
             bn::sprite_text_generator levelTextGenerator;
             bn::vector<bn::sprite_ptr, 12> titleTextSprites;

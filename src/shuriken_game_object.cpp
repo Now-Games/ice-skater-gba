@@ -20,7 +20,7 @@ namespace is
     SceneUpdateResult ShurikenGameObject::update()
     {
         if (triggered)
-            return SceneUpdateResult(saveData.currentScene);
+            return SceneUpdateResult(true);
 
         bn::fixed angle = sprite.rotation_angle() + bn::fixed(ROTATE_SPEED);
         if (angle > 360)

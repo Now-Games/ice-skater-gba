@@ -18,16 +18,14 @@ namespace is
 
         for (int i = 0; i < sceneLevels.size(); i ++)
         {
-            if (sceneLevels[i] == result.nextSceneIndex) {
+            if (sceneLevels[i] == result.nextSceneIndex) 
+            {
                 generateNextLevel(result.nextSceneIndex, result.position);
                 return SceneUpdateResult();
             }
         }
         
-        if (result.nextSceneIndex != -1 && result.nextSceneIndex != currentSceneIndex)
-            return result;
-
-        return SceneUpdateResult();
+        return result;
     }
 
     void MultiLevelGameScene::generateNextLevel(int sceneIndex, bn::point pos)
@@ -42,8 +40,8 @@ namespace is
 
         currentSceneIndex = details->sceneIndex;
 
-        initializeGameObjects(details->gameObjectDetails);
         gameObjects.push_back(new RockWallHoleGameObject(*this, details->exitPosition, details->exitDirection, details->nextScene));
+        initializeGameObjects(details->gameObjectDetails);
         
         player.setPosition(pos);
     }

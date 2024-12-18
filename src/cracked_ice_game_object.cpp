@@ -1,7 +1,6 @@
 #include "cracked_ice_game_object.h"
 
 #include "player.h"
-#include "save_data.h"
 
 #include "bn_core.h"
 #include "bn_sprite_items_cracked_ice_sheet.h"
@@ -18,7 +17,7 @@ namespace is
     SceneUpdateResult CrackedIceGameObject::update()
     {
         if (triggered)
-            return SceneUpdateResult(saveData.currentScene);
+            return SceneUpdateResult(true);
 
         return SceneUpdateResult();
     }

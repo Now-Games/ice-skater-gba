@@ -5,7 +5,7 @@
 #include "bn_keypad.h"
 #include "bn_display.h"
 #include "common_fixed_8x16_sprite_font.h"
-#include "common_fixed_8x8_sprite_font.h"
+#include "common_variable_8x8_sprite_font.h"
 #include "bn_sprite_items_menu_pointer.h"
 #include "bn_regular_bg_items_title_scene.h"
 #include "bn_music_items.h"
@@ -15,7 +15,7 @@ namespace is
     StartMenuScene::StartMenuScene() : Scene("StartMenu"),
         background(bn::regular_bg_items::title_scene.create_bg(0, 0)),
         optionsTextGenerator(common::fixed_8x16_sprite_font),
-        versionTextGenerator(common::fixed_8x8_sprite_font),
+        versionTextGenerator(common::variable_8x8_sprite_font),
         pointer(bn::sprite_items::menu_pointer.create_sprite(0, 0))
     {
         if (saveData.currentScene == 0)
@@ -95,7 +95,7 @@ namespace is
                 if (saveData.currentScene == 0)
                     return SceneUpdateResult(CREDITS_SCENE);
                 else
-                    return SceneUpdateResult(saveData.currentScene);
+                    return SceneUpdateResult(LEVEL_SELECT_SCENE);
             case 2:
                 return SceneUpdateResult(CREDITS_SCENE);
             default:

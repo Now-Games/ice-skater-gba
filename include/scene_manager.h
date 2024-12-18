@@ -12,9 +12,11 @@ namespace is
             Scene *currentScene;
             UIManager uiManager;
             bool gameMusicPlaying = false;
+            bool creditsMusicPlaying = false;
             int currentSceneIndex = 0;
 
             Scene *getScene(int index, bn::point pos);
+            void playMusic(int index);
 
         public:
             SceneManager();
